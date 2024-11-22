@@ -48,14 +48,11 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="lessons.php" class="nav-link">
-                                <i class="bi bi-journal-text me-2"></i> Lessons
-                            </a>
+                        
                         </li>
                         <li class="w-100">
                             <a href="videos.php" class="nav-link">
-                                <i class="bi bi-play-circle me-2"></i> Videos
+                                <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100">

@@ -117,6 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <i class="bi bi-grid me-2"></i> Categories
                             </a>
                         </li>
+                        <li class="w-100">
+                            <a href="videos.php" class="nav-link">
+                                <i class="bi bi-play-circle me-2"></i> Quiz
+                            </a>
+                        </li>
                         <!-- Other menu items remain the same as in categories.php -->
                         <li class="w-100 mt-auto">
                             <a href="logout.php" class="nav-link text-danger">

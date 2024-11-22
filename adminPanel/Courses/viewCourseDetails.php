@@ -3,10 +3,10 @@ require_once '../config.php';
 session_start();
 
 // Check if course ID is provided
-if (!isset($_GET['course_id'])) {
-    header("Location: courses.php");
-    exit();
-}
+// if (!isset($_GET['course_id'])) {
+//     header("Location: courses.php");
+//     exit();
+// }
 
 $course_id = intval($_GET['course_id']);
 
@@ -58,7 +58,7 @@ $lessons_result = mysqli_stmt_get_result($lessons_stmt);
                         <li><strong>Category:</strong> <?php echo htmlspecialchars($course['category_name']); ?></li>
                         <li><strong>Language:</strong> <?php echo htmlspecialchars($course['language']); ?></li>
                         <li><strong>Level:</strong> <?php echo ucfirst(htmlspecialchars($course['level'])); ?></li>
-                        <li><strong>Price:</strong> $<?php echo number_format($course['price'], 2); ?></li>
+                        <li><strong>Price:</strong> ₹<?php echo number_format($course['price'], 2); ?></li>
                     </ul>
                 </div>
             </div>

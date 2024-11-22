@@ -122,14 +122,10 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="lessons.php" class="nav-link">
-                                <i class="bi bi-journal-text me-2"></i> Lessons
-                            </a>
-                        </li>
+                        
                         <li class="w-100">
                             <a href="videos.php" class="nav-link">
-                                <i class="bi bi-play-circle me-2"></i> Videos
+                                <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100">
@@ -214,7 +210,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                     <!-- Course Details -->
                     <div class="d-flex justify-content-between align-items-center mt-auto">
                         <span class="price-tag">
-                            <?php echo $course['price'] > 0 ? '$' . number_format($course['price'], 2) : 'Free'; ?>
+                            <?php echo $course['price'] > 0 ? '₹' . number_format($course['price'], 2) : 'Free'; ?>
                         </span>
                         <div class="btn-group" role="group">
                             <!-- Publish Button -->
@@ -227,7 +223,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 </a>
                             <?php endif; ?>
 
-                            <a href="edit_course.php?id=<?php echo $course['course_id']; ?>"
+                            <a href="./edit_course.php?id=<?php echo $course['course_id']; ?>"
                                class="btn btn-sm btn-outline-primary"
                                title="Edit Course">
                                 <i class="bi bi-pencil"></i>

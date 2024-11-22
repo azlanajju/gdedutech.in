@@ -207,6 +207,22 @@ CREATE TABLE recent_activities (
     
 );
 
+---------userprogress----------------------
+CREATE TABLE UserProgress (
+    progress_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    course_id INT NOT NULL,
+    lesson_id INT NOT NULL,
+    video_id INT NOT NULL,
+    completed TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id),
+    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id),
+    FOREIGN KEY (video_id) REFERENCES Videos(video_id),
+    UNIQUE KEY unique_progress (user_id, course_id, lesson_id, video_id)
+);
 
 
 
