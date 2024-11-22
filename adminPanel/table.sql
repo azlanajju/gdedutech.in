@@ -35,7 +35,7 @@ CREATE TABLE Courses (
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     category_id INT,
     course_type VARCHAR(50),
-    status ENUM('published', 'draft') DEFAULT 'published',
+    status ENUM('published', 'draft') DEFAULT 'draft',
     isPopular VARCHAR(50),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

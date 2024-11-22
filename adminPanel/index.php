@@ -51,7 +51,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                         
                         </li>
                         <li class="w-100">
-                            <a href="videos.php" class="nav-link">
+                            <a href="./Quiz/quiz.php" class="nav-link">
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>

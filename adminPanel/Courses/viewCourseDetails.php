@@ -2,12 +2,6 @@
 require_once '../config.php';
 session_start();
 
-// Check if course ID is provided
-// if (!isset($_GET['course_id'])) {
-//     header("Location: courses.php");
-//     exit();
-// }
-
 $course_id = intval($_GET['course_id']);
 
 // Fetch course details
@@ -36,7 +30,15 @@ $lessons_stmt = mysqli_prepare($conn, $lessons_query);
 mysqli_stmt_bind_param($lessons_stmt, 'i', $course_id);
 mysqli_stmt_execute($lessons_stmt);
 $lessons_result = mysqli_stmt_get_result($lessons_stmt);
+
+// Fetch quizzes for the course
+$quizzes_query = "SELECT * FROM Quizzes WHERE course_id = ?";
+$quizzes_stmt = mysqli_prepare($conn, $quizzes_query);
+mysqli_stmt_bind_param($quizzes_stmt, 'i', $course_id);
+mysqli_stmt_execute($quizzes_stmt);
+$quizzes_result = mysqli_stmt_get_result($quizzes_stmt);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +46,21 @@ $lessons_result = mysqli_stmt_get_result($lessons_stmt);
     <title><?php echo htmlspecialchars($course['title']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" rel="stylesheet">
+    <style>
+        .correct-option {
+            background-color: lightgreen;
+        }
+        .quiz-options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .quiz-options li {
+            padding: 8px;
+        }
+        .quiz-options li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -104,6 +121,50 @@ $lessons_result = mysqli_stmt_get_result($lessons_stmt);
                 </div>
                 <?php endwhile; ?>
             </div>
+            
+            <!-- Display the quizzes below the videos -->
+            <h2 class="mt-5">Quizzes</h2>
+            <?php if (mysqli_num_rows($quizzes_result) > 0): ?>
+                <?php while ($quiz = mysqli_fetch_assoc($quizzes_result)): ?>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo htmlspecialchars($quiz['title']); ?></h5>
+                            <p class="card-text"><?php echo nl2br(htmlspecialchars($quiz['instructions'])); ?></p>
+                            
+                            <?php 
+                            // Fetch questions for the quiz
+                            $questions_query = "SELECT * FROM Questions WHERE quiz_id = ?";
+                            $questions_stmt = mysqli_prepare($conn, $questions_query);
+                            mysqli_stmt_bind_param($questions_stmt, 'i', $quiz['quiz_id']);
+                            mysqli_stmt_execute($questions_stmt);
+                            $questions_result = mysqli_stmt_get_result($questions_stmt);
+                            ?>
+                            
+                            <?php while ($question = mysqli_fetch_assoc($questions_result)): ?>
+                                <div class="mb-3">
+                                    <h6><?php echo nl2br(htmlspecialchars($question['content'])); ?></h6>
+                                    <ul class="quiz-options">
+                                        <li class="<?php echo $question['correct_option'] == 'A' ? 'correct-option' : ''; ?>">
+                                            A: <?php echo htmlspecialchars($question['option_a']); ?>
+                                        </li>
+                                        <li class="<?php echo $question['correct_option'] == 'B' ? 'correct-option' : ''; ?>">
+                                            B: <?php echo htmlspecialchars($question['option_b']); ?>
+                                        </li>
+                                        <li class="<?php echo $question['correct_option'] == 'C' ? 'correct-option' : ''; ?>">
+                                            C: <?php echo htmlspecialchars($question['option_c']); ?>
+                                        </li>
+                                        <li class="<?php echo $question['correct_option'] == 'D' ? 'correct-option' : ''; ?>">
+                                            D: <?php echo htmlspecialchars($question['option_d']); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                            <?php endwhile; ?>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No quizzes available for this course.</p>
+            <?php endif; ?>
         </div>
     </div>
 </div>
