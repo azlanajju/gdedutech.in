@@ -34,7 +34,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="admin_dashboard.php" class="nav-link active">
+                            <a href="./" class="nav-link active">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
@@ -48,7 +48,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-                        
+
                         </li>
                         <li class="w-100">
                             <a href="./Quiz/" class="nav-link">
@@ -65,7 +65,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <i class="bi bi-people me-2"></i> Users
                             </a>
                         </li>
-                      <li class="w-100 mt-auto">
+                        <li class="w-100 mt-auto">
                             <a href="./logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
@@ -88,64 +88,64 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                     <!-- Statistics Cards -->
                     <div class="row g-4 mb-4">
                         <div class="col-md-3">
-                        <?php
-// Include the database configuration file
-require_once 'config.php';
+                            <?php
+                            // Include the database configuration file
+                            require_once 'config.php';
 
-// Query to fetch the total number of users and new users for the current month
-$totalUsersQuery = "
+                            // Query to fetch the total number of users and new users for the current month
+                            $totalUsersQuery = "
     SELECT 
         COUNT(*) AS total_users,
         SUM(CASE WHEN MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE()) THEN 1 ELSE 0 END) AS new_users_this_month
     FROM Users
 ";
 
-$totalUsersResult = mysqli_query($conn, $totalUsersQuery);
+                            $totalUsersResult = mysqli_query($conn, $totalUsersQuery);
 
-// Check for query errors
-if (!$totalUsersResult) {
-    die("Database query failed: " . mysqli_error($conn));
-}
+                            // Check for query errors
+                            if (!$totalUsersResult) {
+                                die("Database query failed: " . mysqli_error($conn));
+                            }
 
-$data = mysqli_fetch_assoc($totalUsersResult);
-$totalUsers = $data['total_users'];
-$newUsersThisMonth = $data['new_users_this_month'];
+                            $data = mysqli_fetch_assoc($totalUsersResult);
+                            $totalUsers = $data['total_users'];
+                            $newUsersThisMonth = $data['new_users_this_month'];
 
-// Calculate percentage increase dynamically
-$previousMonthUsersQuery = "
+                            // Calculate percentage increase dynamically
+                            $previousMonthUsersQuery = "
     SELECT COUNT(*) AS previous_month_users
     FROM Users
     WHERE MONTH(created_at) = MONTH(CURDATE()) - 1 AND YEAR(created_at) = YEAR(CURDATE())
 ";
 
-$previousMonthResult = mysqli_query($conn, $previousMonthUsersQuery);
-if (!$previousMonthResult) {
-    die("Database query failed: " . mysqli_error($conn));
-}
+                            $previousMonthResult = mysqli_query($conn, $previousMonthUsersQuery);
+                            if (!$previousMonthResult) {
+                                die("Database query failed: " . mysqli_error($conn));
+                            }
 
-$previousMonthUsers = mysqli_fetch_assoc($previousMonthResult)['previous_month_users'];
-$percentageIncrease = $previousMonthUsers > 0 
-    ? round(($newUsersThisMonth / $previousMonthUsers) * 100) 
-    : 0;
+                            $previousMonthUsers = mysqli_fetch_assoc($previousMonthResult)['previous_month_users'];
+                            $percentageIncrease = $previousMonthUsers > 0
+                                ? round(($newUsersThisMonth / $previousMonthUsers) * 100)
+                                : 0;
 
-?>
+                            ?>
 
-<div class="card stats-card">
-    <div class="card-body">
-        <h6 class="card-title">Total Users</h6>
-        <h2><?php echo number_format($totalUsers); ?></h2>
-        <p class="mb-0">
-            <i class="bi bi-arrow-up"></i> <?php echo $percentageIncrease; ?>% this month
-        </p>
-    </div>
-</div>
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Total Users</h6>
+                                    <h2><?php echo number_format($totalUsers); ?></h2>
+                                    <p class="mb-0">
+                                        <i class="bi bi-arrow-up"></i> <?php echo $percentageIncrease; ?>% this month
+                                    </p>
+                                </div>
+                            </div>
 
-<?php
-// Free result sets and close the connection
-mysqli_free_result($totalUsersResult);
-mysqli_free_result($previousMonthResult);
-// mysqli_close($conn);
-?>
+                            <?php
+                            // Free result sets and close the connection
+                            mysqli_free_result($totalUsersResult);
+                            mysqli_free_result($previousMonthResult);
+                            // mysqli_close($conn);
+                            ?>
 
 
                         </div>
@@ -197,57 +197,57 @@ mysqli_free_result($previousMonthResult);
                                 <div class="card-body">
                                     <h6 class="card-title">Total Revenue</h6>
                                     <h2>₹
-                                    12,845</h2>
+                                        12,845</h2>
                                     <p class="mb-0"><i class="bi bi-arrow-up"></i> 8% this month</p>
                                 </div>
                             </div>
                         </div>
                         <?php
-// Include the config file for database connection
-include 'config.php';
+                        // Include the config file for database connection
+                        include 'config.php';
 
-// Initialize variables for course completion
-$courseCompletion = 0;
+                        // Initialize variables for course completion
+                        $courseCompletion = 0;
 
-try {
-    // 1. Query to get the count of active courses
-    $activeResult = $conn->query("SELECT COUNT(*) AS active_courses FROM Enrollments WHERE access_status = 'active'");
-    $activeCourses = 0;
+                        try {
+                            // 1. Query to get the count of active courses
+                            $activeResult = $conn->query("SELECT COUNT(*) AS active_courses FROM Enrollments WHERE access_status = 'active'");
+                            $activeCourses = 0;
 
-    if ($activeResult && $activeRow = $activeResult->fetch_assoc()) {
-        $activeCourses = (int) $activeRow['active_courses'];
-    }
+                            if ($activeResult && $activeRow = $activeResult->fetch_assoc()) {
+                                $activeCourses = (int) $activeRow['active_courses'];
+                            }
 
-    // 2. Query to get the count of completed courses
-    $completedResult = $conn->query("SELECT COUNT(*) AS completed_courses FROM Enrollments WHERE completion_status = 'completed'");
-    $completedCourses = 0;
+                            // 2. Query to get the count of completed courses
+                            $completedResult = $conn->query("SELECT COUNT(*) AS completed_courses FROM Enrollments WHERE completion_status = 'completed'");
+                            $completedCourses = 0;
 
-    if ($completedResult && $completedRow = $completedResult->fetch_assoc()) {
-        $completedCourses = (int) $completedRow['completed_courses'];
-    }
+                            if ($completedResult && $completedRow = $completedResult->fetch_assoc()) {
+                                $completedCourses = (int) $completedRow['completed_courses'];
+                            }
 
-    // 3. Calculate the completion percentage
-    if ($activeCourses > 0) {
-        $courseCompletion = ($completedCourses / $activeCourses) * 100;
-        $courseCompletion = round($courseCompletion, 2); // Round to 2 decimal places
-    }
-} catch (Exception $e) {
-    echo "Error fetching data: " . $e->getMessage();
-}
-?>
+                            // 3. Calculate the completion percentage
+                            if ($activeCourses > 0) {
+                                $courseCompletion = ($completedCourses / $activeCourses) * 100;
+                                $courseCompletion = round($courseCompletion, 2); // Round to 2 decimal places
+                            }
+                        } catch (Exception $e) {
+                            echo "Error fetching data: " . $e->getMessage();
+                        }
+                        ?>
 
-<!-- HTML for the stats card -->
-<div class="col-md-3">
-    <div class="card stats-card">
-        <div class="card-body">
-            <h6 class="card-title">Course Completion</h6>
-            <h2><?php echo $courseCompletion; ?>%</h2>
-            <p class="mb-0">
-            <i class="bi bi-arrow-right"></i> <?php echo abs($completedCourses); ?> / <?php echo abs($activeCourses); ?> 
-            </p>
-        </div>
-    </div>
-</div>
+                        <!-- HTML for the stats card -->
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Course Completion</h6>
+                                    <h2><?php echo $courseCompletion; ?>%</h2>
+                                    <p class="mb-0">
+                                        <i class="bi bi-arrow-right"></i> <?php echo abs($completedCourses); ?> / <?php echo abs($activeCourses); ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
 
                     </div>
@@ -460,9 +460,9 @@ try {
                                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                                 <tr>
                                                     <td><?php echo htmlspecialchars($row['title']); ?></td>
-                                                    <td>Dummy Students</td>
+                                                    <td> Students</td>
                                                     <td>
-                                                        <i class="bi bi-star-fill text-warning"></i> Dummy Rating
+                                                        <i class="bi bi-star-fill text-warning"></i>  Rating
                                                     </td>
                                                 </tr>
                                             <?php } ?>

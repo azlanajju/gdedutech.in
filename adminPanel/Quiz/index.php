@@ -103,39 +103,39 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../index.php" class="nav-link ">
+                            <a href="../" class="nav-link ">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Categories/categories.php" class="nav-link">
+                            <a href="../Categories/" class="nav-link">
                                 <i class="bi bi-grid me-2"></i> Categories
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Courses/Courses.php" class="nav-link">
+                            <a href="../Courses/" class="nav-link">
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
                         
                         </li>
                         <li class="w-100">
-                            <a href="./Quiz/quiz.php" class="nav-link active">
+                            <a href="./" class="nav-link active">
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="faq.php" class="nav-link">
+                            <a href="../FAQ/" class="nav-link">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Users/users.php" class="nav-link">
+                            <a href="../Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
                             </a>
                         </li>
                         <li class="w-100 mt-auto">
-                            <a href="logout.php" class="nav-link text-danger">
+                            <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </li>

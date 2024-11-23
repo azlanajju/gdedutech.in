@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Courses/" class="nav-link">
+                            <a href="../Courses/" class="nav-link">
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </li>
                      
                         <li class="w-100">
-                            <a href="" class="nav-link active">
+                            <a href="./" class="nav-link active">
                                 <i class="bi bi-people me-2"></i> Users
                             </a>
                         </li>
