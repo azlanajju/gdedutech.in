@@ -213,3 +213,14 @@ CREATE TABLE UserProgress (
     FOREIGN KEY (video_id) REFERENCES Videos(video_id) ON DELETE CASCADE,
     UNIQUE KEY unique_progress (user_id, course_id, lesson_id, video_id)
 );
+
+CREATE TABLE FAQs (
+    faq_id INT PRIMARY KEY AUTO_INCREMENT,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    type ENUM('course', 'public') NOT NULL,
+    course_id INT DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
+);
