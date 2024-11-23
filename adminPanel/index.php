@@ -2,13 +2,13 @@
 session_start();
 
 // Check if user is logged in and is admin
-// if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-//     header('Location: login.php');
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: admin_login.php');
+    exit();
+}
 
 // Get admin details from session
-$admin_name = $_SESSION['first_name'] ?? 'Admin';
+$admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 
 <!DOCTYPE html>
@@ -39,33 +39,33 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Categories/categories.php" class="nav-link">
+                            <a href="./Categories/" class="nav-link">
                                 <i class="bi bi-grid me-2"></i> Categories
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Courses/Courses.php" class="nav-link">
+                            <a href="./Courses/" class="nav-link">
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
                         
                         </li>
                         <li class="w-100">
-                            <a href="./Quiz/quiz.php" class="nav-link">
+                            <a href="./Quiz/" class="nav-link">
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="faq.php" class="nav-link">
+                            <a href="./FAQ/" class="nav-link">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Users/users.php" class="nav-link">
+                            <a href="./Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
                             </a>
                         </li>
-                        <li class="w-100 mt-auto">
+                      <li class="w-100 mt-auto">
                             <a href="logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
@@ -196,20 +196,60 @@ mysqli_free_result($previousMonthResult);
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <h6 class="card-title">Total Revenue</h6>
-                                    <h2>$12,845</h2>
+                                    <h2>₹
+                                    12,845</h2>
                                     <p class="mb-0"><i class="bi bi-arrow-up"></i> 8% this month</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card stats-card">
-                                <div class="card-body">
-                                    <h6 class="card-title">Course Completion</h6>
-                                    <h2>76%</h2>
-                                    <p class="mb-0"><i class="bi bi-arrow-up"></i> 5% increase</p>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+// Include the config file for database connection
+include 'config.php';
+
+// Initialize variables for course completion
+$courseCompletion = 0;
+
+try {
+    // 1. Query to get the count of active courses
+    $activeResult = $conn->query("SELECT COUNT(*) AS active_courses FROM Enrollments WHERE access_status = 'active'");
+    $activeCourses = 0;
+
+    if ($activeResult && $activeRow = $activeResult->fetch_assoc()) {
+        $activeCourses = (int) $activeRow['active_courses'];
+    }
+
+    // 2. Query to get the count of completed courses
+    $completedResult = $conn->query("SELECT COUNT(*) AS completed_courses FROM Enrollments WHERE completion_status = 'completed'");
+    $completedCourses = 0;
+
+    if ($completedResult && $completedRow = $completedResult->fetch_assoc()) {
+        $completedCourses = (int) $completedRow['completed_courses'];
+    }
+
+    // 3. Calculate the completion percentage
+    if ($activeCourses > 0) {
+        $courseCompletion = ($completedCourses / $activeCourses) * 100;
+        $courseCompletion = round($courseCompletion, 2); // Round to 2 decimal places
+    }
+} catch (Exception $e) {
+    echo "Error fetching data: " . $e->getMessage();
+}
+?>
+
+<!-- HTML for the stats card -->
+<div class="col-md-3">
+    <div class="card stats-card">
+        <div class="card-body">
+            <h6 class="card-title">Course Completion</h6>
+            <h2><?php echo $courseCompletion; ?>%</h2>
+            <p class="mb-0">
+            <i class="bi bi-arrow-right"></i> <?php echo abs($completedCourses); ?> / <?php echo abs($activeCourses); ?> 
+            </p>
+        </div>
+    </div>
+</div>
+
+
                     </div>
 
                     <!-- Recent Activities & Quick Actions -->
@@ -217,8 +257,10 @@ mysqli_free_result($previousMonthResult);
                         <!-- Recent Activities -->
                         <div class="col-md-8">
                             <div class="card table-card">
-                                <div class="card-header bg-white">
+                                <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0 color-primary">Recent Activities</h5>
+                                    <a href="" class="btn btn-sm btn-outline-primary">View All</a>
+
                                 </div>
                                 <?php
                                 // config.php (Database Connection)
@@ -331,7 +373,7 @@ mysqli_free_result($previousMonthResult);
                             <div class="card">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Recent Users</h5>
-                                    <a href="./Users/users.php" class="btn btn-sm btn-outline-primary">View All</a>
+                                    <a href="./Users/" class="btn btn-sm btn-outline-primary">View All</a>
                                 </div>
                                 <?php
                                 // Include the database configuration file
@@ -387,7 +429,7 @@ mysqli_free_result($previousMonthResult);
                             <div class="card">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Popular Courses</h5>
-                                    <button class="btn btn-sm btn-outline-primary">View All</button>
+                                    <a href="./Courses/" class="btn btn-sm btn-outline-primary">View All</a>
                                 </div>
                                 <?php
                                 // Include the database configuration file

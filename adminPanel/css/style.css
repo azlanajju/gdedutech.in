@@ -2,6 +2,7 @@
   background: #e2e2e2 !important;
   min-height: 100vh;
   color: white;
+  
 }
 .nav-link {
   color:black;
@@ -54,6 +55,8 @@ border-color: #d30043 !important;
 
 }
 
-.color-primary{
-  color: linear-gradient(45deg, #0086d3, #0a5fc08d) !important;
+
+.bg-primary{
+    background: linear-gradient(45deg, #0086d3, #0a5fc08d) !important;
+
 }

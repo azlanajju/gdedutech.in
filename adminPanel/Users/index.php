@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($stmt->execute()) {
                     $_SESSION['message'] = "User added successfully.";
                     $_SESSION['message_type'] = "success";
-                    header("Location: ./");
+                    header("Location: users.php");
                     exit();
                 } else {
                     $errors[] = "Error adding user: " . $stmt->error;
@@ -99,50 +99,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;"><img height="35px" src="../images/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
+                        <span class="fs-5 fw-bolder">GD Edu Tech</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../" class="nav-link">
+                            <a href="../index.php" class="nav-link">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../Categories/" class="nav-link">
-                                <i class="bi bi-grid me-2"></i> Categories
+                            <a href="users.php" class="nav-link active">
+                                <i class="bi bi-person me-2"></i> Users
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="./Courses/" class="nav-link">
-                                <i class="bi bi-book me-2 "></i> Courses
-                            </a>
-                        </li>
-                        
-                        </li>
-                        <li class="w-100">
-                            <a href="../Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../FAQ/" class="nav-link">
-                                <i class="bi bi-question-circle me-2"></i> FAQ
-                            </a>
-                        </li>
-                     
-                        <li class="w-100">
-                            <a href="" class="nav-link active">
-                                <i class="bi bi-people me-2"></i> Users
-                            </a>
-                        </li>
+                        <!-- Other menu items remain the same -->
                         <li class="w-100 mt-auto">
-                            <a href="../logout.php" class="nav-link text-danger">
+                            <a href="logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
+
             <!-- Main Content -->
             <div class="col py-3">
                 <div class="container-fluid">
@@ -153,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <p class="text-muted">Create a new user for the system</p>
                         </div>
                         <div class="col-auto">
-                            <a href="./" class="btn btn-secondary">
+                            <a href="users.php" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Back to Users
                             </a>
                         </div>

@@ -35,7 +35,7 @@ CREATE TABLE Courses (
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     category_id INT,
     course_type VARCHAR(50),
-    status ENUM('published', 'draft') DEFAULT 'draft',
+    status ENUM('published', 'draft') DEFAULT 'published',
     isPopular VARCHAR(50),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -77,6 +77,8 @@ CREATE TABLE Enrollments (
     payment_status ENUM('completed', 'pending', 'failed') DEFAULT 'completed',
     progress DECIMAL(5, 2) DEFAULT 0.00 CHECK (progress >= 0 AND progress <= 100),
     access_status ENUM('active', 'expired', 'canceled') DEFAULT 'active',
+        completion_status ENUM('peding', 'completed') DEFAULT 'peding',
+
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES Users(user_id),

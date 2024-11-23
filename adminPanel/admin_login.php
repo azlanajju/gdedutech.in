@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Create a session variable to track login state
                 $_SESSION['logged_in'] = true;
                 $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['role'] = $user['role'];
                 $_SESSION['username'] = $user['username'];
 
                 // Redirect to admin dashboard

@@ -1,9 +1,20 @@
 <?php
-require_once '../config.php';
 session_start();
 
+// Check if user is logged in and is admin
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../admin_login.php');
+    exit();
+}
+
+// Get admin details from session
+$admin_name = $_SESSION['username'] ?? 'Admin';
+?>
+<?php
+require_once '../config.php';
+
 if (!isset($_GET['course_id']) || !isset($_SESSION['user_id'])) {
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
@@ -21,7 +32,7 @@ $course_result = mysqli_stmt_get_result($course_stmt);
 $course = mysqli_fetch_assoc($course_result);
 
 if (!$course) {
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 

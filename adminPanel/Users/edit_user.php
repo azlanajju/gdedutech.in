@@ -1,6 +1,18 @@
 <?php
 session_start();
 
+// Check if user is logged in and is admin
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../admin_login.php');
+    exit();
+}
+
+// Get admin details from session
+$admin_name = $_SESSION['username'] ?? 'Admin';
+?>
+
+<?php
+
 // Check if user is logged in
 // if (!isset($_SESSION['user_id'])) {
 //     header("Location: login.php");
@@ -94,46 +106,44 @@ if (!$user) {
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 fw-bolder">GD Edu Tech</span>
+                    <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;"><img height="35px" src="../images/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../index.php" class="nav-link">
+                            <a href="../" class="nav-link">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="categories.php" class="nav-link">
+                            <a href="../Categories/" class="nav-link">
                                 <i class="bi bi-grid me-2"></i> Categories
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="courses.php" class="nav-link">
-                                <i class="bi bi-book me-2"></i> Courses
+                            <a href="../Courses/" class="nav-link">
+                                <i class="bi bi-book me-2 "></i> Courses
+                            </a>
+                        </li>
+                        
+                        </li>
+                        <li class="w-100">
+                            <a href="../Quiz/" class="nav-link">
+                                <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="lessons.php" class="nav-link">
-                                <i class="bi bi-journal-text me-2"></i> Lessons
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="videos.php" class="nav-link">
-                                <i class="bi bi-play-circle me-2"></i> Videos
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="faq.php" class="nav-link">
+                            <a href="../FAQ/" class="nav-link">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="users.php" class="nav-link active">
+                     
+                           <li class="w-100">
+                            <a href="./" class="nav-link active">
                                 <i class="bi bi-people me-2"></i> Users
                             </a>
                         </li>
                         <li class="w-100 mt-auto">
-                            <a href="logout.php" class="nav-link text-danger">
+                            <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </li>
@@ -151,7 +161,7 @@ if (!$user) {
                             <p class="text-muted">Update user details</p>
                         </div>
                         <div class="col-auto">
-                            <a href="users.php" class="btn btn-secondary">
+                            <a href="./" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Back to Users
                             </a>
                         </div>
