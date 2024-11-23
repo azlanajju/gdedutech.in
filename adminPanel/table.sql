@@ -39,34 +39,32 @@ CREATE TABLE Courses (
     isPopular VARCHAR(50),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES Users(user_id),
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    FOREIGN KEY (created_by) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE SET NULL
 );
-
 
 CREATE TABLE Lessons (
     lesson_id INT PRIMARY KEY AUTO_INCREMENT,
     course_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT,
-    lesson_order INT NOT NULL,  -- Order of the lesson within the course
+    lesson_order INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE Videos (
     video_id INT PRIMARY KEY AUTO_INCREMENT,
-    lesson_id INT NOT NULL,     -- Reference to the Lesson
+    lesson_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT,
     video_url VARCHAR(255) NOT NULL,
-    duration TIME,              -- Duration of the video (HH:MM:SS)
-    video_order INT NOT NULL,   -- Order of the video within the lesson
+    duration TIME,
+    video_order INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id)
+    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Enrollments (
@@ -77,14 +75,12 @@ CREATE TABLE Enrollments (
     payment_status ENUM('completed', 'pending', 'failed') DEFAULT 'completed',
     progress DECIMAL(5, 2) DEFAULT 0.00 CHECK (progress >= 0 AND progress <= 100),
     access_status ENUM('active', 'expired', 'canceled') DEFAULT 'active',
-        completion_status ENUM('peding', 'completed') DEFAULT 'peding',
-
+    completion_status ENUM('pending', 'completed') DEFAULT 'pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES Users(user_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE Transactions (
     transaction_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -95,8 +91,8 @@ CREATE TABLE Transactions (
     payment_method VARCHAR(50),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES Users(user_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE StaffAssignments (
@@ -106,8 +102,8 @@ CREATE TABLE StaffAssignments (
     role ENUM('instructor', 'assistant') NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (staff_id) REFERENCES Users(user_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (staff_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Reviews (
@@ -119,8 +115,8 @@ CREATE TABLE Reviews (
     date_posted DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES Users(user_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Quizzes (
@@ -131,7 +127,7 @@ CREATE TABLE Quizzes (
     total_marks INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Questions (
@@ -145,7 +141,7 @@ CREATE TABLE Questions (
     correct_option CHAR(1) CHECK (correct_option IN ('A', 'B', 'C', 'D')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (quiz_id) REFERENCES Quizzes(quiz_id)
+    FOREIGN KEY (quiz_id) REFERENCES Quizzes(quiz_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Certificates (
@@ -156,8 +152,8 @@ CREATE TABLE Certificates (
     issue_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES Users(user_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Notifications (
@@ -168,9 +164,8 @@ CREATE TABLE Notifications (
     is_read BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE Logs (
     log_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -180,23 +175,17 @@ CREATE TABLE Logs (
     ip_address VARCHAR(45),
     user_agent TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
-
-
-
 
 CREATE TABLE password_resets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     token VARCHAR(255) NOT NULL,
     expiry INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-
-
--- Create a table to track recent user activities
 CREATE TABLE recent_activities (
     activity_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -206,10 +195,9 @@ CREATE TABLE recent_activities (
     activity_description TEXT,
     activity_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     additional_details JSON,
-    
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
----------userprogress----------------------
 CREATE TABLE UserProgress (
     progress_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -219,15 +207,9 @@ CREATE TABLE UserProgress (
     completed TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id),
-    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id),
-    FOREIGN KEY (video_id) REFERENCES Videos(video_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE,
+    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id) ON DELETE CASCADE,
+    FOREIGN KEY (video_id) REFERENCES Videos(video_id) ON DELETE CASCADE,
     UNIQUE KEY unique_progress (user_id, course_id, lesson_id, video_id)
 );
-
-
-
-
-
-
