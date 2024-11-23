@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in and is admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: admin_login.php');
+    header('Location: ../admin_login.php');
     exit();
 }
 
@@ -214,8 +214,8 @@ if(isset($_GET['delete']) && !empty($_GET['delete'])) {
                                         <?php if(mysqli_num_rows($result) > 0): ?>
                                             <?php while($faq = mysqli_fetch_assoc($result)): ?>
                                                 <tr>
-                                                    <td><?php echo htmlspecialchars(substr($faq['question'], 0, 50)) . '...'; ?></td>
-                                                    <td><?php echo htmlspecialchars(substr($faq['answer'], 0, 50)) . '...'; ?></td>
+                                                    <td title="<?php echo htmlspecialchars($faq['question'])  ?>"><?php echo htmlspecialchars(substr($faq['question'], 0, 10)) . '...'; ?></td>
+                                                    <td><?php echo htmlspecialchars(substr($faq['answer'], 0, 10)) . '...'; ?></td>
                                                     <td>
                                                         <span class="badge bg-<?php echo $faq['type'] == 'public' ? 'success' : 'info'; ?>">
                                                             <?php echo ucfirst($faq['type']); ?>
