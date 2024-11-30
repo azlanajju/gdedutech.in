@@ -246,7 +246,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                 <?php foreach ($popular_courses as $course): ?>
                     <div class="col-md-4">
                         <div class="course-card card h-100">
-                            <img src="./adminPanel/Courses/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                            <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
                                  class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
                                  style="height: 200px; object-fit: cover;">
                             <div class="card-body">

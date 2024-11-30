@@ -54,6 +54,11 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="./Messages/index.php" class="nav-link">
+                                <i class="bi bi-chat-dots me-2"></i> Messages
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="./FAQ/" class="nav-link">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
@@ -293,11 +298,11 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                 ORDER BY a.created_at DESC
                                                 LIMIT 8
                                             ";
-                                            
+
                                             $activity_result = mysqli_query($conn, $activity_query);
-                                            
+
                                             if ($activity_result && mysqli_num_rows($activity_result) > 0):
-                                                while ($activity = mysqli_fetch_assoc($activity_result)): 
+                                                while ($activity = mysqli_fetch_assoc($activity_result)):
                                                     // Determine badge color based on activity type
                                                     $badge_class = '';
                                                     $icon_class = '';
@@ -335,14 +340,14 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                         <td class="d-none d-md-table-cell">
                                                             <div class="d-flex align-items-center">
                                                                 <?php if ($activity['profile_image']): ?>
-                                                                    <img src="uploads/profile_images/<?php echo htmlspecialchars($activity['profile_image']); ?>" 
-                                                                         class="rounded-circle me-2" 
-                                                                         width="32" 
-                                                                         height="32" 
-                                                                         alt="Profile">
+                                                                    <img src="uploads/profile_images/<?php echo htmlspecialchars($activity['profile_image']); ?>"
+                                                                        class="rounded-circle me-2"
+                                                                        width="32"
+                                                                        height="32"
+                                                                        alt="Profile">
                                                                 <?php else: ?>
-                                                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" 
-                                                                         style="width: 32px; height: 32px;">
+                                                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+                                                                        style="width: 32px; height: 32px;">
                                                                         <i class="bi bi-person"></i>
                                                                     </div>
                                                                 <?php endif; ?>
@@ -371,14 +376,14 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                             <!-- Show time on mobile -->
                                                             <div class="d-sm-none mt-1">
                                                                 <small class="text-muted">
-                                                                    <?php 
+                                                                    <?php
                                                                     $time_ago = time() - strtotime($activity['created_at']);
                                                                     if ($time_ago < 60) {
                                                                         echo 'Just now';
                                                                     } elseif ($time_ago < 3600) {
-                                                                        echo floor($time_ago/60) . 'm ago';
+                                                                        echo floor($time_ago / 60) . 'm ago';
                                                                     } elseif ($time_ago < 86400) {
-                                                                        echo floor($time_ago/3600) . 'h ago';
+                                                                        echo floor($time_ago / 3600) . 'h ago';
                                                                     } else {
                                                                         echo date('M d, Y', strtotime($activity['created_at']));
                                                                     }
@@ -393,24 +398,24 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                             </span>
                                                         </td>
                                                         <td class="d-none d-sm-table-cell text-muted">
-                                                            <?php 
+                                                            <?php
                                                             $time_ago = time() - strtotime($activity['created_at']);
                                                             if ($time_ago < 60) {
                                                                 echo 'Just now';
                                                             } elseif ($time_ago < 3600) {
-                                                                echo floor($time_ago/60) . 'm ago';
+                                                                echo floor($time_ago / 60) . 'm ago';
                                                             } elseif ($time_ago < 86400) {
-                                                                echo floor($time_ago/3600) . 'h ago';
+                                                                echo floor($time_ago / 3600) . 'h ago';
                                                             } else {
                                                                 echo date('M d, Y', strtotime($activity['created_at']));
                                                             }
                                                             ?>
                                                         </td>
                                                     </tr>
-                                            <?php 
+                                                <?php
                                                 endwhile;
-                                            else: 
-                                            ?>
+                                            else:
+                                                ?>
                                                 <tr>
                                                     <td colspan="4" class="text-center py-4">
                                                         <i class="bi bi-clock-history fs-1 text-muted"></i>
@@ -570,7 +575,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                     <td><?php echo htmlspecialchars($row['title']); ?></td>
                                                     <td> Students</td>
                                                     <td>
-                                                        <i class="bi bi-star-fill text-warning"></i>  Rating
+                                                        <i class="bi bi-star-fill text-warning"></i> Rating
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -599,11 +604,11 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
             .table-responsive {
                 border: 0;
             }
-            
+
             .table td {
                 padding: 0.75rem;
             }
-            
+
             .badge-sm {
                 font-size: 0.75em;
             }
@@ -614,14 +619,15 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
             margin-bottom: 0;
         }
 
-        .table td, .table th {
+        .table td,
+        .table th {
             white-space: normal;
             vertical-align: middle;
         }
 
         /* Add hover effect */
         .table tbody tr:hover {
-            background-color: rgba(0,0,0,.02);
+            background-color: rgba(0, 0, 0, .02);
         }
 
         /* Improve badge appearance */

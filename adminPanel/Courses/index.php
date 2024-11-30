@@ -95,6 +95,11 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="./" class="nav-link">
+                                <i class="bi bi-chat-dots me-2"></i> Messages
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="../FAQ/" class="nav-link">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
