@@ -1,24 +1,18 @@
 <?php
 session_start();
 
-// Check if user is logged in and is admin
+// Check if user is logged in and is Staff
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
     header('Location: ../staff_login.php');
     exit();
 }
 
-// Get admin details from session
-$admin_name = $_SESSION['username'] ?? 'Staff';
+// Get staff details from session
+$staff_name = $_SESSION['username'] ?? 'Staff';
 ?>
 <?php
 
-require_once '../config.php';
-
-// // Check if user is logged in and has admin privileges
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: login.php");
-//     exit();
-// }
+require_once '../../Configurations/config.php';
 
 // Fetch categories for dropdown
 $categories_query = mysqli_query($conn, "SELECT * FROM Categories");
@@ -43,8 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $max_size = 5 * 1024 * 1024; // 5MB
 
         if (in_array($_FILES['thumbnail']['type'], $allowed_types) && $_FILES['thumbnail']['size'] <= $max_size) {
-            $thumbnail_name = uniqid() . '_' . $_FILES['thumbnail']['name'];
-            $upload_path = '../../adminPanel/Courses/thumbnails/' . $thumbnail_name;
+            // Create a URL-friendly version of the course title
+            $safe_title = preg_replace('/[^a-z0-9]+/', '-', strtolower($title));
+            $safe_title = trim($safe_title, '-');
+            
+            // Create filename with course title and unique identifier
+            $thumbnail_name = $safe_title . '_' . uniqid() . '_' . $_FILES['thumbnail']['name'];
+            $upload_path = '../../uploads/course_uploads/thumbnails/' . $thumbnail_name;
             
             if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $upload_path)) {
                 $thumbnail = $thumbnail_name;
@@ -103,18 +102,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../" class="nav-link">
+                            <a href="../index.php" class="nav-link text-primary">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./courses.php" class="nav-link active">
+                            <a href="./" class="nav-link active">
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../student_progress.php" class="nav-link">
-                                <i class="bi bi-graph-up me-2"></i> Student Progress
+                            <a href="../Quiz/" class="nav-link">
+                                <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100 mt-auto">

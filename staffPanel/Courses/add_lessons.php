@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
 $staff_name = $_SESSION['username'] ?? 'Staff';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Check if course data exists in session
 if (!isset($_SESSION['course_data'])) {
@@ -93,19 +93,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $video_title = $_POST['video_titles'][$index][$video_index] ?? $video_name;
                     $video_description = $_POST['video_descriptions'][$index][$video_index] ?? '';
 
-                    // Move uploaded video
-                    $video_filename = uniqid() . '_' . $video_name;
-                    $upload_path = '../../adminPanel/Courses/course_videos/' . $video_filename;
+                    // Get file extension
+                    $ext = pathinfo($video_name, PATHINFO_EXTENSION);
+                    // Create sanitized filename from video title
+                    $safe_video_title = preg_replace('/[^a-z0-9]+/', '-', strtolower($video_title));
+                    $video_filename = $safe_video_title . '.' . $ext;
+                    $upload_path = '../../uploads/course_uploads/course_videos/' . $video_filename;
 
                     if (!move_uploaded_file($tmp_name, $upload_path)) {
-                        throw new Exception("Failed to upload video: " . $video_name);
+                        throw new Exception("Failed to upload video: " . $video_title);
                     }
 
-                    // Insert video details
-                    $video_query = "INSERT INTO Videos (lesson_id, title, description, video_url, video_order) VALUES (?, ?, ?, ?, ?)";
+                    // Add subtitle file processing
+                    $subtitle_filename = null;
+                    if (isset($_FILES['lesson_subtitles']['name'][$index][$video_index]) && 
+                        !empty($_FILES['lesson_subtitles']['name'][$index][$video_index])) {
+                        
+                        $subtitle_name = $_FILES['lesson_subtitles']['name'][$index][$video_index];
+                        $subtitle_tmp_name = $_FILES['lesson_subtitles']['tmp_name'][$index][$video_index];
+                        
+                        // Use the same base name as the video file
+                        $subtitle_ext = pathinfo($subtitle_name, PATHINFO_EXTENSION);
+                        $subtitle_filename = $safe_video_title . '.' . $subtitle_ext;
+                        $subtitle_upload_path = '../../uploads/course_uploads/course_subtitles/' . $subtitle_filename;
+
+                        if (!move_uploaded_file($subtitle_tmp_name, $subtitle_upload_path)) {
+                            throw new Exception("Failed to upload subtitle file for video: " . $video_title);
+                        }
+                    }
+
+                    // Modify video query to include subtitle_url
+                    $video_query = "INSERT INTO Videos (lesson_id, title, description, video_url, subtitle_url, video_order) 
+                                   VALUES (?, ?, ?, ?, ?, ?)";
                     $video_stmt = mysqli_prepare($conn, $video_query);
                     $video_order = $video_index + 1;
-                    mysqli_stmt_bind_param($video_stmt, 'isssi', $lesson_id, $video_title, $video_description, $video_filename, $video_order);
+                    mysqli_stmt_bind_param($video_stmt, 'issssi', $lesson_id, $video_title, $video_description, 
+                                         $video_filename, $subtitle_filename, $video_order);
 
                     if (!mysqli_stmt_execute($video_stmt)) {
                         throw new Exception("Failed to insert video details");
@@ -119,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Clear session data and redirect
         unset($_SESSION['course_data']);
-        header("Location: ./courses.php");
+        header("Location: ./");
         exit();
     } catch (Exception $e) {
         // Rollback transaction
@@ -148,23 +171,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;">
-                            <img height="35px" src="../../adminPanel/images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
+                            <img height="35px" src="../../staffPanel/images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
                         </span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../" class="nav-link">
+                            <a href="../index.php" class="nav-link text-primary">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./courses.php" class="nav-link active">
+                            <a href="./" class="nav-link active">
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../student_progress.php" class="nav-link">
-                                <i class="bi bi-graph-up me-2"></i> Student Progress
+                            <a href="../Quiz/" class="nav-link">
+                                <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
                         <li class="w-100 mt-auto">
@@ -218,6 +241,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                     <label>Video File</label>
                                                     <input type="file" name="lesson_videos[0][]" class="form-control" accept="video/*">
                                                 </div>
+                                                <div class="mb-3">
+                                                    <label>Subtitle File (Optional)</label>
+                                                    <input type="file" name="lesson_subtitles[0][]" class="form-control" accept=".srt,.vtt">
+                                                </div>
                                             </div>
                                         </div>
 
@@ -267,6 +294,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label>Video File</label>
                     <input type="file" name="lesson_videos[${lessonIndex-1}][]" class="form-control" accept="video/*">
                 </div>
+                <div class="mb-3">
+                    <label>Subtitle File (Optional)</label>
+                    <input type="file" name="lesson_subtitles[${lessonIndex-1}][]" class="form-control" accept=".srt,.vtt">
+                </div>
             </div>
         `;
 
@@ -297,6 +328,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="mb-3">
                     <label>Video File</label>
                     <input type="file" name="lesson_videos[${lessonIndex}][]" class="form-control" accept="video/*">
+                </div>
+                <div class="mb-3">
+                    <label>Subtitle File (Optional)</label>
+                    <input type="file" name="lesson_subtitles[${lessonIndex}][]" class="form-control" accept=".srt,.vtt">
                 </div>
             `;
 

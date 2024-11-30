@@ -1,17 +1,18 @@
 <?php
 session_start();
 
-// Check if user is logged in and is admin
+// Check if user is logged in and is staff
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
     header('Location: ../staff_login.php');
     exit();
 }
 
-// Get admin details from session
-$admin_name = $_SESSION['username'] ?? 'Staff';
+// Get staff details from session
+$staff_id = $_SESSION['user_id'];
+$staff_name = $_SESSION['username'] ?? 'Staff';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 if (!isset($_GET['course_id']) || !isset($_SESSION['user_id'])) {
     header("Location: ./");

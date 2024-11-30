@@ -62,6 +62,7 @@ CREATE TABLE Videos (
     title VARCHAR(150) NOT NULL,
     description TEXT,
     video_url VARCHAR(255) NOT NULL,
+    subtitle_url VARCHAR(255) NULL,
     duration TIME,
     video_order INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

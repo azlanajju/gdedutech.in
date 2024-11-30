@@ -1,19 +1,18 @@
 <?php
 session_start();
 
-// Check if user is logged in and is admin
+// Check if user is logged in and is staff
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
     header('Location: ../staff_login.php');
     exit();
 }
 
-// Get admin details from session
-$admin_name = $_SESSION['username'] ?? 'Staff';
-?>
-<?php
-require_once '../config.php';
+// Get staff details from session
+$staff_name = $_SESSION['username'] ?? 'Staff';
 
-if (!isset($_GET['course_id']) || !isset($_SESSION['user_id'])) {
+require_once '../../Configurations/config.php';
+
+if (!isset($_GET['course_id'])) {
     header("Location: ./");
     exit();
 }
@@ -21,17 +20,19 @@ if (!isset($_GET['course_id']) || !isset($_SESSION['user_id'])) {
 $course_id = intval($_GET['course_id']);
 $user_id = $_SESSION['user_id'];
 
+// Add check to ensure staff can only view their own courses
 $course_query = "SELECT c.*, cat.name AS category_name 
                  FROM Courses c 
                  JOIN Categories cat ON c.category_id = cat.category_id 
-                 WHERE c.course_id = ?";
+                 WHERE c.course_id = ? AND c.created_by = ?";
 $course_stmt = mysqli_prepare($conn, $course_query);
-mysqli_stmt_bind_param($course_stmt, 'i', $course_id);
+mysqli_stmt_bind_param($course_stmt, 'ii', $course_id, $user_id);
 mysqli_stmt_execute($course_stmt);
 $course_result = mysqli_stmt_get_result($course_stmt);
 $course = mysqli_fetch_assoc($course_result);
 
 if (!$course) {
+    // If course doesn't exist or doesn't belong to the staff member
     header("Location: ./");
     exit();
 }
@@ -125,18 +126,13 @@ mysqli_data_seek($lessons_result, 0);
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                 <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                     <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;">
-                        <img height="35px" src="../images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
+                        <img height="35px" src="../../staffPanel/images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
                     </span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                     <li class="w-100">
-                        <a href="../" class="nav-link">
+                        <a href="../index.php" class="nav-link text-primary">
                             <i class="bi bi-speedometer2 me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="w-100">
-                        <a href="../Categories/" class="nav-link">
-                            <i class="bi bi-grid me-2"></i> Categories
                         </a>
                     </li>
                     <li class="w-100">
@@ -144,29 +140,16 @@ mysqli_data_seek($lessons_result, 0);
                             <i class="bi bi-book me-2"></i> Courses
                         </a>
                     </li>
-
-
-                        <li class="w-100">
-                            <a href="../Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../FAQ/" class="nav-link">
-                                <i class="bi bi-question-circle me-2"></i> FAQ
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../Users/" class="nav-link">
-                                <i class="bi bi-people me-2"></i> Users
-                            </a>
-                        </li>
-                        <li class="w-100 mt-auto">
-                            <a href="../logout.php" class="nav-link text-danger">
-                                <i class="bi bi-box-arrow-right me-2"></i> Logout
-                            </a>
-                        </li>
-
+                    <li class="w-100">
+                        <a href="../Quiz/" class="nav-link">
+                            <i class="bi bi-lightbulb me-2"></i> Quiz
+                        </a>
+                    </li>
+                    <li class="w-100 mt-auto">
+                        <a href="../logout.php" class="nav-link text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -177,7 +160,7 @@ mysqli_data_seek($lessons_result, 0);
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="./thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" class="card-img-top" alt="Course Thumbnail">
+                            <img src="../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" class="card-img-top" alt="Course Thumbnail">
                             <div class="card-body">
                                 <h1 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h1>
                                 <p class="card-text"><?php echo htmlspecialchars($course['description']); ?></p>
@@ -246,7 +229,14 @@ mysqli_data_seek($lessons_result, 0);
                                             <video controls crossorigin playsinline
                                                    class="course-video"
                                                    <?php echo !$is_unlocked ? 'disabled' : ''; ?>>
-                                                <source src="./course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" type="video/mp4">
+                                                <source src="../../uploads/course_uploads/course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" type="video/mp4">
+                                                <?php if (!empty($video['subtitle_url'])): ?>
+                                                <track kind="subtitles" 
+                                                       label="English" 
+                                                       src="../../uploads/course_uploads/course_subtitles/<?php echo htmlspecialchars($video['subtitle_url']); ?>" 
+                                                       srclang="en" 
+                                                       default>
+                                                <?php endif; ?>
                                             </video>
                                         </div>
                                         <?php endwhile; ?>

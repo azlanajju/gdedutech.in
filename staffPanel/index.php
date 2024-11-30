@@ -3,15 +3,15 @@ session_start();
 
 // Check if user is logged in and is staff
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
-    header('Location: ../staffPanel/staff_login.php');
+    header('Location: ./staff_login.php');
     exit();
 }
 
 // Get staff details from session
 $staff_id = $_SESSION['user_id'];
-$staff_name = $_SESSION['username'] ?? 'Staff Member';
+$staff_name = $_SESSION['username'] ?? 'Staff';
 
-require_once '../adminPanel/config.php';
+require_once '../Configurations/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -28,38 +28,40 @@ require_once '../adminPanel/config.php';
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
-                    <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;">
-                            <img height="35px" src="../adminPanel/images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
-                        </span>
-                    </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
-                        <li class="w-100">
-                            <a href="./" class="nav-link active">
-                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="./courses/courses.php" class="nav-link">
-                                <i class="bi bi-book me-2"></i> Courses
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="./student_progress.php" class="nav-link">
-                                <i class="bi bi-graph-up me-2"></i> Student Progress
-                            </a>
-                        </li>
-                        <li class="w-100 mt-auto">
-                            <a href="../staffPanel/logout.php" class="nav-link text-danger">
-                                <i class="bi bi-box-arrow-right me-2"></i> Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+          <!-- Sidebar -->
+<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
+        <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
+            <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;">
+                <img height="35px" src="../../adminPanel/images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
+            </span>
+        </a>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
+            <li class="w-100">
+                <a href="./index.php" class="nav-link active">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+            </li>
+           
+            <li class="w-100">
+                <a href="./Courses/" class="nav-link ">
+                    <i class="bi bi-book me-2"></i> Courses
+                </a>
+            </li>
+            <li class="w-100">
+                <a href="./Quiz/" class="nav-link">
+                    <i class="bi bi-lightbulb me-2"></i> Quiz
+                </a>
+            </li>
+           
+            <li class="w-100 mt-auto">
+                <a href="../logout.php" class="nav-link text-danger">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
 
             <!-- Main Content -->
             <div class="col py-3">
@@ -160,8 +162,9 @@ require_once '../adminPanel/config.php';
                                                     ra.activity_timestamp
                                                 FROM recent_activities ra
                                                 JOIN Users u ON ra.user_id = u.user_id
-                                                JOIN StaffAssignments sa ON ra.user_id = sa.staff_id
-                                                JOIN Courses c ON sa.course_id = c.course_id
+                                                JOIN Enrollments e ON ra.user_id = e.student_id
+                                                JOIN Courses c ON e.course_id = c.course_id
+                                                JOIN StaffAssignments sa ON c.course_id = sa.course_id
                                                 WHERE sa.staff_id = ?
                                                 ORDER BY ra.activity_timestamp DESC
                                                 LIMIT 5";

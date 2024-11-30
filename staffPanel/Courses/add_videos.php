@@ -29,6 +29,15 @@
         $errors[] = "Database error: " . $e->getMessage();
     }
 }
+
+// Helper function to sanitize filename
+function sanitize_filename($filename) {
+    // Remove any character that isn't a letter, number, dot, hyphen or underscore
+    $filename = preg_replace('/[^a-zA-Z0-9.-_]/', '', $filename);
+    // Remove any dots except the last one
+    $filename = preg_replace('/\.(?=.*\.)/', '', $filename);
+    return $filename;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +76,12 @@
                                     </div>
                                     <div class="col-md-4 mb-2">
                                         <label class="form-label">Duration (HH:MM:SS)</label>
-                                        <input type="text" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" name="videos[x][y][duration]" class="form-control video-duration" placeholder="00:00:00">
+                                        <input type="text" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" name="videos[x][y][duration]" class="form-control video-duration" placeholder="00:00:00" required>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label">Subtitle File</label>
+                                        <input type="file" name="videos[x][y][subtitle]" class="form-control video-subtitle" accept=".vtt,.srt">
+                                        <small class="text-muted">Upload WebVTT (.vtt) or SubRip (.srt) subtitle files. The file will be saved using the video title.</small>
                                     </div>
                                 </div>
                             </div>
@@ -99,6 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
             newVideo.querySelector('.video-title').name = `videos[${lessonIndex}][${videoCount}][title]`;
             newVideo.querySelector('.video-url').name = `videos[${lessonIndex}][${videoCount}][url]`;
             newVideo.querySelector('.video-duration').name = `videos[${lessonIndex}][${videoCount}][duration]`;
+            newVideo.querySelector('.video-subtitle').name = `videos[${lessonIndex}][${videoCount}][subtitle]`;
+            
+            // Add event listener for video title changes
+            const titleInput = newVideo.querySelector('.video-title');
+            const subtitleInput = newVideo.querySelector('.video-subtitle');
+            
+            titleInput.addEventListener('change', function() {
+                if (this.value) {
+                    subtitleInput.setAttribute('data-title', this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                }
+            });
             
             container.appendChild(newVideo);
         });
