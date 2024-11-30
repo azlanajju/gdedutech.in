@@ -103,12 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             if (in_array($_FILES['thumbnail']['type'], $allowed_types) && $_FILES['thumbnail']['size'] <= $max_size) {
                 $thumbnail_name = uniqid() . '_' . $_FILES['thumbnail']['name'];
-                $upload_path = './thumbnails/' . $thumbnail_name;
+                $upload_path = '../../uploads/course_uploads/thumbnails/' . $thumbnail_name;
                 
                 if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $upload_path)) {
                     // Delete old thumbnail if exists
-                    if ($course['thumbnail'] && file_exists('./thumbnails/' . $course['thumbnail'])) {
-                        unlink('./thumbnails/' . $course['thumbnail']);
+                    if ($course['thumbnail'] && file_exists('../../uploads/course_uploads/thumbnails/' . $course['thumbnail'])) {
+                        unlink('../../uploads/course_uploads/thumbnails/' . $course['thumbnail']);
                     }
                     
                     // Update thumbnail in database
@@ -214,8 +214,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 mysqli_stmt_execute($video_stmt);
                 $video_result = mysqli_fetch_assoc(mysqli_stmt_get_result($video_stmt));
                 
-                if ($video_result && file_exists('./course_videos/' . $video_result['video_url'])) {
-                    unlink('./course_videos/' . $video_result['video_url']);
+                if ($video_result && file_exists('../../uploads/course_uploads/course_videos/' . $video_result['video_url'])) {
+                    unlink('../../uploads/course_uploads/course_videos/' . $video_result['video_url']);
                 }
                 
                 $delete_video = mysqli_prepare($conn, "DELETE FROM Videos WHERE video_id = ?");

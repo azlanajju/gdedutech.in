@@ -251,7 +251,7 @@ $is_enrolled = $check_stmt->get_result()->num_rows > 0;
                         <div class="col-md-8">
                             <!-- Course Card -->
                             <div class="card course-card mb-4">
-                                <img src="../../adminPanel/Courses/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                                <img src="../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
                                      class="course-thumbnail" 
                                      alt="<?php echo htmlspecialchars($course['title']); ?>">
                                 <div class="card-body">

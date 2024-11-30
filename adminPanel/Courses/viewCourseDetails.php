@@ -177,7 +177,7 @@ mysqli_data_seek($lessons_result, 0);
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="./thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" class="card-img-top" alt="Course Thumbnail">
+                            <img src="../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" class="card-img-top" alt="Course Thumbnail">
                             <div class="card-body">
                                 <h1 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h1>
                                 <p class="card-text"><?php echo htmlspecialchars($course['description']); ?></p>

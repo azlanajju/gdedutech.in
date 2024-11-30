@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (in_array($_FILES['thumbnail']['type'], $allowed_types) && $_FILES['thumbnail']['size'] <= $max_size) {
             $thumbnail_name = uniqid() . '_' . $_FILES['thumbnail']['name'];
-            $upload_path = './thumbnails/' . $thumbnail_name;
+            $upload_path = '../../uploads/course_uploads/thumbnails/' . $thumbnail_name;
             
             if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $upload_path)) {
                 $thumbnail = $thumbnail_name;

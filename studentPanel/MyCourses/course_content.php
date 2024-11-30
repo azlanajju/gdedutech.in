@@ -238,7 +238,7 @@ $lessons_result->data_seek(0);
                         <!-- Course Info -->
                         <div class="col-md-4">
                             <div class="card mb-4">
-                                <img src="../../adminPanel/Courses/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                                <img src="../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
                                      class="card-img-top" alt="Course Thumbnail">
                                 <div class="card-body">
                                     <h4 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h4>
@@ -328,7 +328,7 @@ $lessons_result->data_seek(0);
                                                     <video controls crossorigin playsinline
                                                            class="course-video"
                                                            <?php echo !$is_unlocked ? 'disabled' : ''; ?>>
-                                                        <source src="../../adminPanel/Courses/course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" 
+                                                        <source src="../../uploads/course_uploads/course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" 
                                                                 type="video/mp4">
                                                     </video>
                                                     <?php if (isset($user_progress[$lesson['lesson_id']][$video['video_id']]) && 

@@ -106,7 +106,7 @@ $recommended_courses_query = "
     AND c.course_id NOT IN (
         SELECT course_id FROM Enrollments WHERE student_id = ?
     )
-    LIMIT 3
+ 
 ";
 $recommended_courses_stmt = $conn->prepare($recommended_courses_query);
 $recommended_courses_stmt->bind_param("i", $user_id);
@@ -239,7 +239,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                         <?php while ($course = $ongoing_courses_result->fetch_assoc()): ?>
                                             <div class="col-md-6">
                                                 <div class="d-flex align-items-center mb-3">
-                                                    <img src="../adminPanel/Courses/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                                                    <img src="../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
                                                          class="rounded me-3" style="width: 80px; height: 80px; object-fit: cover;" 
                                                          alt="Course">
                                                     <div>
@@ -279,7 +279,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                         <?php while ($course = $recommended_courses_result->fetch_assoc()): ?>
                             <div class="col-md-4">
                                 <div class="card course-card">
-                                    <img src="../adminPanel/Courses/thumbnails/<?php echo htmlspecialchars($course['thumbnail'] ?: './Courses/thumbnails'); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>">
+                                    <img src="../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail'] ?: './Courses/thumbnails'); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>">
                                     <div class="card-body">
                                         <span class="badge bg-primary mb-2"><?php echo htmlspecialchars($course['category'] ?: 'General'); ?></span>
                                         <h5 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h5>

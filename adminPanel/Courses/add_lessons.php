@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     // Move uploaded video
                     $video_filename = uniqid() . '_' . $video_name;
-                    $upload_path = './course_videos/' . $video_filename;
+                    $upload_path = '../../uploads/course_uploads/course_videos/' . $video_filename;
 
                     if (!move_uploaded_file($tmp_name, $upload_path)) {
                         throw new Exception("Failed to upload video: " . $video_name);

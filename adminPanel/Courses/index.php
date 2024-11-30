@@ -150,7 +150,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                             <a href="./viewCourseDetails.php?course_id=<?php echo $course['course_id'] ?>" class="course-link">
                                 <div class="thumbnail-container">
                                     <img 
-                                        src="<?php echo $course['thumbnail'] ? "./thumbnails/" . htmlspecialchars($course['thumbnail']) : '../images/default-course.png'; ?>"
+                                        src="<?php echo $course['thumbnail'] ? "../../uploads/course_uploads/thumbnails/" . htmlspecialchars($course['thumbnail']) : '../images/default-course.png'; ?>"
                                         class="course-thumbnail"
                                         alt="<?php echo htmlspecialchars($course['title']); ?>"
                                         loading="lazy"
