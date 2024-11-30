@@ -256,7 +256,7 @@ CREATE TABLE Messages (
 );
 
 -- For Q&A
-CREATE TABLE Questions (
+CREATE TABLE StudentQuestions (
     question_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,

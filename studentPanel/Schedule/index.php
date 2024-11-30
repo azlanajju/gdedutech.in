@@ -89,6 +89,10 @@ if (isset($_SESSION['success'])) {
                                 <label for="meeting_time" class="form-label">Time</label>
                                 <input type="time" class="form-control" name="meeting_time" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="meeting_link" class="form-label">Meeting Link</label>
+                                <input type="url" class="form-control" name="meeting_link" placeholder="https://example.com/meeting" required>
+                            </div>
                             <button type="submit" class="btn btn-primary w-100">
                                 Schedule Meeting
                             </button>
