@@ -129,8 +129,8 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <div  class="container-fluid">
+        <div  class="row">
             <!-- side bar  -->
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">

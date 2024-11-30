@@ -277,3 +277,20 @@ CREATE TABLE Answers (
 );
 
 
+
+-- Create the meeting_schedules table with proper foreign key relationships
+CREATE TABLE meeting_schedules (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    staff_id INT NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    description TEXT,
+    meeting_date DATE NOT NULL,
+    meeting_time TIME NOT NULL,
+    meeting_link VARCHAR(255),
+    status ENUM('pending', 'approved', 'rejected', 'completed') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (staff_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);

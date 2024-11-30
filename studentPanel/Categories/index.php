@@ -125,7 +125,7 @@ $categories_result = $conn->query($categories_query);
                         </li>
 
                         <li class="w-100 mt-auto">
-                            <a href="../logout.php" class="nav-link text-danger">
+                            <a href="../../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </li>

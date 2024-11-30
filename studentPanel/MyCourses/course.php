@@ -217,7 +217,7 @@ $is_enrolled = $check_stmt->get_result()->num_rows > 0;
                         </li>
                         
                         <li class="w-100 mt-auto">
-                            <a href="../logout.php" class="nav-link text-danger">
+                            <a href="../../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </li>
