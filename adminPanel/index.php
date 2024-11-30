@@ -54,6 +54,11 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="./Schedule/index.php" class="nav-link">
+                                <i class="bi bi-calendar-event me-2"></i> Schedule
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="./Messages/index.php" class="nav-link">
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
@@ -340,7 +345,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                         <td class="d-none d-md-table-cell">
                                                             <div class="d-flex align-items-center">
                                                                 <?php if ($activity['profile_image']): ?>
-                                                                    <img src="uploads/profile_images/<?php echo htmlspecialchars($activity['profile_image']); ?>"
+                                                                    <img src="../uploads/<?php echo htmlspecialchars($activity['profile_image']); ?>"
                                                                         class="rounded-circle me-2"
                                                                         width="32"
                                                                         height="32"
