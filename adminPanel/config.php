@@ -19,8 +19,3 @@ if ($conn->connect_error) {
 
 }
 ?>
-<?php
-// Enable error reporting
-error_reporting(E_ALL);  // Report all PHP errors
-ini_set('display_errors', 1);  // Display errors in the browser
-?>

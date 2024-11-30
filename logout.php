@@ -1,8 +1,12 @@
 <?php
-// Clear the JWT cookie by setting its expiration date in the past
-setcookie("auth_token", "", time() - 3600, "/");
+// Start the session
+session_start();
 
-// Redirect to the login page after logout
-header("Location: login.php");
-exit();
+// Destroy the session to log the user out
+session_unset();  // Remove all session variables
+session_destroy(); // Destroy the session
+
+// Redirect the user to the login page (or another page)
+header("Location: ./");
+exit;
 ?>

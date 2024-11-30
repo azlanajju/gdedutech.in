@@ -48,8 +48,6 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-
-                        </li>
                         <li class="w-100">
                             <a href="./Quiz/" class="nav-link">
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
@@ -63,6 +61,16 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         <li class="w-100">
                             <a href="./Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="./manage_qr.php" class="nav-link">
+                                <i class="bi bi-qr-code me-2"></i> Payment QR
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="./pending_payments.php" class="nav-link">
+                                <i class="bi bi-credit-card me-2"></i> Pending Payments
                             </a>
                         </li>
                         <li class="w-100 mt-auto">
@@ -324,9 +332,9 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <a href="./Courses/add_course.php" class="btn btn-primary">
+                                        <button class="btn btn-primary">
                                             <i class="bi bi-plus-circle me-2"></i>Add New Course
-                                        </a>
+                                        </button>
                                         <button class="btn btn-outline-primary">
                                             <i class="bi bi-person-plus me-2"></i>Create User
                                         </button>

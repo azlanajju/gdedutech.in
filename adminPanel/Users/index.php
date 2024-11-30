@@ -1,17 +1,6 @@
 <?php
 session_start();
 
-// Check if user is logged in and is admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../admin_login.php');
-    exit();
-}
-
-// Get admin details from session
-$admin_name = $_SESSION['username'] ?? 'Admin';
-?>
-<?php
-
 // Database connection
 require_once '../config.php';
 
@@ -28,7 +17,7 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
         $_SESSION['message_type'] = "danger";
     }
 
-    header("Location: index.php");
+    header("Location: users.php");
     exit();
 }
 
@@ -190,12 +179,12 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                                 <td class="px-4"><?php echo date('Y-m-d', strtotime($user['date_joined'])); ?></td>
                                                 <td class="px-4 text-center">
                                                     <div class="btn-group" role="group">
-                                                        <a href="edit_user.php?id=<?php echo $user['user_id']; ?>"
+                                                        <a href="edit_user.php?php echo $user['user_id']; ?>"
                                                             class="btn btn-sm btn-outline-primary rounded me-1"
                                                             title="Edit User">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
-                                                        <a href="index.php?delete=1&id=<?php echo $user['user_id']; ?>"
+                                                        <a href="users.php?delete=1&id=<?php echo $user['user_id']; ?>"
                                                             class="btn btn-sm btn-outline-danger rounded"
                                                             onclick="return confirm('Are you sure you want to delete this user?');"
                                                             title="Delete User">
