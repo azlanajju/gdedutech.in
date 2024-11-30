@@ -265,6 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../adminPanel/css/style.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -279,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../index.php" class="nav-link text-primary">
+                            <a href="../index.php" class="nav-link ">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
@@ -471,7 +472,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    <a href="courses.php" class="btn btn-link">Cancel</a>
+                                    <a href="../Courses/index.php" class="btn btn-link">Cancel</a>
                                 </div>
                             </form>
                         </div>

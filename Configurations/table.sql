@@ -227,4 +227,22 @@ CREATE TABLE AdminSettings (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE FAQs (
+    faq_id INT PRIMARY KEY AUTO_INCREMENT,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ActivityLog (
+    activity_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    activity_type ENUM('course_created', 'course_enrolled', 'quiz_completed', 'payment_made', 'faq_added', 'user_registered'),
+    activity_description TEXT,
+    related_id INT,  -- This could be course_id, quiz_id, etc.
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL
+);
+
 

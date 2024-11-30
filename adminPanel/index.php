@@ -267,60 +267,128 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                             <div class="card table-card">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0 color-primary">Recent Activities</h5>
-                                    <a href="" class="btn btn-sm btn-outline-primary">View All</a>
-
                                 </div>
-                                <?php
-                                // config.php (Database Connection)
-                                require_once 'config.php';
-
-                                // Retrieve latest 8 activities
-                                $query = "SELECT 
-            user_name, 
-            activity_type, 
-            activity_description, 
-            activity_status, 
-            activity_timestamp 
-          FROM recent_activities 
-          ORDER BY activity_timestamp DESC 
-          LIMIT 8";
-
-                                $result = $conn->query($query);
-                                ?>
-
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>User</th>
                                                 <th>Activity</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
+                                                <th>Type</th>
+                                                <th>Time</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if ($result->num_rows === 0): ?>
-                                                <tr>
-                                                    <td colspan="4" class="text-center">No recent activities found.</td>
-                                                </tr>
-                                            <?php else: ?>
-                                                <?php while ($activity = $result->fetch_assoc()): ?>
+                                            <?php
+                                            // Fetch recent activities with user details
+                                            $activity_query = "
+                                                SELECT 
+                                                    a.*,
+                                                    u.username,
+                                                    u.first_name,
+                                                    u.last_name,
+                                                    u.profile_image
+                                                FROM ActivityLog a
+                                                LEFT JOIN Users u ON a.user_id = u.user_id
+                                                ORDER BY a.created_at DESC
+                                                LIMIT 8
+                                            ";
+                                            
+                                            $activity_result = mysqli_query($conn, $activity_query);
+                                            
+                                            if ($activity_result && mysqli_num_rows($activity_result) > 0):
+                                                while ($activity = mysqli_fetch_assoc($activity_result)): 
+                                                    // Determine badge color based on activity type
+                                                    $badge_class = '';
+                                                    $icon_class = '';
+                                                    switch ($activity['activity_type']) {
+                                                        case 'course_created':
+                                                            $badge_class = 'bg-success';
+                                                            $icon_class = 'bi-book';
+                                                            break;
+                                                        case 'course_enrolled':
+                                                            $badge_class = 'bg-primary';
+                                                            $icon_class = 'bi-person-check';
+                                                            break;
+                                                        case 'quiz_completed':
+                                                            $badge_class = 'bg-info';
+                                                            $icon_class = 'bi-check-circle';
+                                                            break;
+                                                        case 'payment_made':
+                                                            $badge_class = 'bg-warning';
+                                                            $icon_class = 'bi-credit-card';
+                                                            break;
+                                                        case 'faq_added':
+                                                            $badge_class = 'bg-secondary';
+                                                            $icon_class = 'bi-question-circle';
+                                                            break;
+                                                        case 'user_registered':
+                                                            $badge_class = 'bg-primary';
+                                                            $icon_class = 'bi-person-plus';
+                                                            break;
+                                                        default:
+                                                            $badge_class = 'bg-secondary';
+                                                            $icon_class = 'bi-clock';
+                                                    }
+                                            ?>
                                                     <tr>
-                                                        <td><?php echo $activity['user_name']; ?></td>
-                                                        <td><?php echo $activity['activity_description']; ?></td>
-                                                        <td><?php echo $activity['activity_timestamp']; ?></td>
-                                                        <td><?php echo $activity['activity_status']; ?></td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <?php if ($activity['profile_image']): ?>
+                                                                    <img src="uploads/profile_images/<?php echo htmlspecialchars($activity['profile_image']); ?>" 
+                                                                         class="rounded-circle me-2" 
+                                                                         width="32" 
+                                                                         height="32" 
+                                                                         alt="Profile">
+                                                                <?php else: ?>
+                                                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" 
+                                                                         style="width: 32px; height: 32px;">
+                                                                        <i class="bi bi-person"></i>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                                <div>
+                                                                    <span class="fw-bold">
+                                                                        <?php echo htmlspecialchars($activity['username']); ?>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><?php echo htmlspecialchars($activity['activity_description']); ?></td>
+                                                        <td>
+                                                            <span class="badge <?php echo $badge_class; ?>">
+                                                                <i class="bi <?php echo $icon_class; ?> me-1"></i>
+                                                                <?php echo str_replace('_', ' ', ucfirst($activity['activity_type'])); ?>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <?php 
+                                                            $time_ago = time() - strtotime($activity['created_at']);
+                                                            if ($time_ago < 60) {
+                                                                echo 'Just now';
+                                                            } elseif ($time_ago < 3600) {
+                                                                echo floor($time_ago/60) . 'm ago';
+                                                            } elseif ($time_ago < 86400) {
+                                                                echo floor($time_ago/3600) . 'h ago';
+                                                            } else {
+                                                                echo date('M d, Y', strtotime($activity['created_at']));
+                                                            }
+                                                            ?>
+                                                        </td>
                                                     </tr>
-                                                <?php endwhile; ?>
+                                            <?php 
+                                                endwhile;
+                                            else: 
+                                            ?>
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-4">
+                                                        <i class="bi bi-clock-history fs-1 text-muted"></i>
+                                                        <p class="text-muted mt-2 mb-0">No recent activities found</p>
+                                                    </td>
+                                                </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
-
-                                <?php
-                                // Close the connection
-                                // $conn->close();
-                                ?>
                             </div>
                         </div>
 

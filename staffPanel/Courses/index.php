@@ -65,6 +65,8 @@ $staff_name = $_SESSION['first_name'] ?? 'Staff';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="./course.css">
+    <link rel="stylesheet" href="../../adminPanel/css/style.css">
+
 
     <style>
         .empty-state {
@@ -100,7 +102,7 @@ $staff_name = $_SESSION['first_name'] ?? 'Staff';
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="../index.php" class="nav-link text-primary">
+                            <a href="../index.php" class="nav-link">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>

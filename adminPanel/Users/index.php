@@ -130,72 +130,153 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                     <?php endif; ?>
 
                     <!-- Users Table -->
-                    <!-- Replace the existing table section with this code -->
                     <div class="card shadow-sm">
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover mb-0">
-                                    <thead class="bg-primary text-white">
-                                        <tr>
-                                            <th class="py-3 px-4 fw-bold">ID</th>
-                                            <th class="py-3 px-4 fw-bold">Username</th>
-                                            <th class="py-3 px-4 fw-bold">Email</th>
-                                            <th class="py-3 px-4 fw-bold">First Name</th>
-                                            <th class="py-3 px-4 fw-bold">Last Name</th>
-                                            <th class="py-3 px-4 fw-bold">Role</th>
-                                            <th class="py-3 px-4 fw-bold">Status</th>
-                                            <th class="py-3 px-4 fw-bold">Date Joined</th>
-                                            <th class="py-3 px-4 fw-bold text-center">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($user = mysqli_fetch_assoc($result)): ?>
-                                            <tr class="align-middle">
-                                                <td class="px-4"><?php echo htmlspecialchars($user['user_id']); ?></td>
-                                                <td class="px-4">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                            <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
-                                                        </div>
-                                                        <?php echo htmlspecialchars($user['username']); ?>
-                                                    </div>
-                                                </td>
-                                                <td class="px-4"><?php echo htmlspecialchars($user['email']); ?></td>
-                                                <td class="px-4"><?php echo htmlspecialchars($user['first_name']); ?></td>
-                                                <td class="px-4"><?php echo htmlspecialchars($user['last_name']); ?></td>
-                                                <td class="px-4">
-                                                    <span class="badge bg-secondary text-white">
-                                                        <?php echo htmlspecialchars($user['role']); ?>
-                                                    </span>
-                                                </td>
-                                                <td class="px-4">
-                                                    <span class="badge 
-                            <?php
-                                            echo $user['status'] == 'active' ? 'bg-success' : ($user['status'] == 'inactive' ? 'bg-warning' : 'bg-danger');
-                            ?> text-white">
-                                                        <?php echo htmlspecialchars($user['status']); ?>
-                                                    </span>
-                                                </td>
-                                                <td class="px-4"><?php echo date('Y-m-d', strtotime($user['date_joined'])); ?></td>
-                                                <td class="px-4 text-center">
-                                                    <div class="btn-group" role="group">
-                                                        <a href="edit_user.php?php echo $user['user_id']; ?>"
-                                                            class="btn btn-sm btn-outline-primary rounded me-1"
-                                                            title="Edit User">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </a>
-                                                        <a href="users.php?delete=1&id=<?php echo $user['user_id']; ?>"
-                                                            class="btn btn-sm btn-outline-danger rounded"
-                                                            onclick="return confirm('Are you sure you want to delete this user?');"
-                                                            title="Delete User">
-                                                            <i class="bi bi-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endwhile; ?>
-                                    </tbody>
-                                </table>
+                        <div class="card-body">
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs mb-4" id="userTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button" role="tab">
+                                        <i class="bi bi-mortarboard me-2"></i>Students
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button" role="tab">
+                                        <i class="bi bi-person-badge me-2"></i>Staff
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="userTabsContent">
+                                <!-- Students Tab -->
+                                <div class="tab-pane fade show active" id="students" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th class="py-3 px-4 fw-bold">ID</th>
+                                                    <th class="py-3 px-4 fw-bold">Username</th>
+                                                    <th class="py-3 px-4 fw-bold">Email</th>
+                                                    <th class="py-3 px-4 fw-bold">First Name</th>
+                                                    <th class="py-3 px-4 fw-bold">Last Name</th>
+                                                    <th class="py-3 px-4 fw-bold">Status</th>
+                                                    <th class="py-3 px-4 fw-bold">Date Joined</th>
+                                                    <th class="py-3 px-4 fw-bold text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                // Modify the query to fetch only students
+                                                $students_query = "SELECT * FROM Users WHERE role = 'Student' ORDER BY date_joined DESC LIMIT $limit OFFSET $offset";
+                                                $students_result = mysqli_query($conn, $students_query);
+                                                
+                                                while ($user = mysqli_fetch_assoc($students_result)): 
+                                                ?>
+                                                    <tr class="align-middle">
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['user_id']); ?></td>
+                                                        <td class="px-4">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                                    <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
+                                                                </div>
+                                                                <?php echo htmlspecialchars($user['username']); ?>
+                                                            </div>
+                                                        </td>
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['email']); ?></td>
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['first_name']); ?></td>
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['last_name']); ?></td>
+                                                        <td class="px-4">
+                                                            <span class="badge <?php echo $user['status'] == 'active' ? 'bg-success' : ($user['status'] == 'inactive' ? 'bg-warning' : 'bg-danger'); ?> text-white">
+                                                                <?php echo htmlspecialchars($user['status']); ?>
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-4"><?php echo date('Y-m-d', strtotime($user['date_joined'])); ?></td>
+                                                        <td class="px-4 text-center">
+                                                            <div class="btn-group" role="group">
+                                                                <a href="edit_user.php?id=<?php echo $user['user_id']; ?>" 
+                                                                   class="btn btn-sm btn-outline-primary rounded me-1" 
+                                                                   title="Edit User">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </a>
+                                                                <a href="?delete=1&id=<?php echo $user['user_id']; ?>" 
+                                                                   class="btn btn-sm btn-outline-danger rounded" 
+                                                                   onclick="return confirm('Are you sure you want to delete this user?');" 
+                                                                   title="Delete User">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Staff Tab -->
+                                <div class="tab-pane fade" id="staff" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th class="py-3 px-4 fw-bold">ID</th>
+                                                    <th class="py-3 px-4 fw-bold">Username</th>
+                                                    <th class="py-3 px-4 fw-bold">Email</th>
+                                                    <th class="py-3 px-4 fw-bold">First Name</th>
+                                                    <th class="py-3 px-4 fw-bold">Last Name</th>
+                                                    <th class="py-3 px-4 fw-bold">Status</th>
+                                                    <th class="py-3 px-4 fw-bold">Date Joined</th>
+                                                    <th class="py-3 px-4 fw-bold text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                // Modify the query to fetch only staff
+                                                $staff_query = "SELECT * FROM Users WHERE role = 'Staff' ORDER BY date_joined DESC LIMIT $limit OFFSET $offset";
+                                                $staff_result = mysqli_query($conn, $staff_query);
+                                                
+                                                while ($user = mysqli_fetch_assoc($staff_result)): 
+                                                ?>
+                                                    <tr class="align-middle">
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['user_id']); ?></td>
+                                                        <td class="px-4">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                                    <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
+                                                                </div>
+                                                                <?php echo htmlspecialchars($user['username']); ?>
+                                                            </div>
+                                                        </td>
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['email']); ?></td>
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['first_name']); ?></td>
+                                                        <td class="px-4"><?php echo htmlspecialchars($user['last_name']); ?></td>
+                                                        <td class="px-4">
+                                                            <span class="badge <?php echo $user['status'] == 'active' ? 'bg-success' : ($user['status'] == 'inactive' ? 'bg-warning' : 'bg-danger'); ?> text-white">
+                                                                <?php echo htmlspecialchars($user['status']); ?>
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-4"><?php echo date('Y-m-d', strtotime($user['date_joined'])); ?></td>
+                                                        <td class="px-4 text-center">
+                                                            <div class="btn-group" role="group">
+                                                                <a href="edit_user.php?id=<?php echo $user['user_id']; ?>" 
+                                                                   class="btn btn-sm btn-outline-primary rounded me-1" 
+                                                                   title="Edit User">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </a>
+                                                                <a href="?delete=1&id=<?php echo $user['user_id']; ?>" 
+                                                                   class="btn btn-sm btn-outline-danger rounded" 
+                                                                   onclick="return confirm('Are you sure you want to delete this user?');" 
+                                                                   title="Delete User">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -9,80 +9,86 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 require_once '../config.php';
 
-// Handle FAQ deletion
-if (isset($_GET['delete']) && isset($_GET['id'])) {
+// Get FAQ details
+if (isset($_GET['id'])) {
     $faq_id = intval($_GET['id']);
-    $delete_query = "DELETE FROM FAQs WHERE faq_id = ?";
-    $stmt = mysqli_prepare($conn, $delete_query);
+    $query = "SELECT * FROM FAQs WHERE faq_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'i', $faq_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $faq = mysqli_fetch_assoc($result);
 
-    if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['message'] = "FAQ deleted successfully.";
-        $_SESSION['message_type'] = "success";
-    } else {
-        $_SESSION['message'] = "Error deleting FAQ.";
+    if (!$faq) {
+        $_SESSION['message'] = "FAQ not found.";
         $_SESSION['message_type'] = "danger";
+        header("Location: ./");
+        exit();
     }
-
+} else {
     header("Location: ./");
     exit();
 }
 
-// Fetch all FAQs
-$query = "SELECT * FROM FAQs ORDER BY created_at DESC";
-$result = mysqli_query($conn, $query);
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $question = trim($_POST['question']);
+    $answer = trim($_POST['answer']);
+    
+    if (empty($question) || empty($answer)) {
+        $_SESSION['message'] = "Both question and answer are required.";
+        $_SESSION['message_type'] = "danger";
+    } else {
+        $update_query = "UPDATE FAQs SET question = ?, answer = ? WHERE faq_id = ?";
+        $stmt = mysqli_prepare($conn, $update_query);
+        mysqli_stmt_bind_param($stmt, 'ssi', $question, $answer, $faq_id);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            $_SESSION['message'] = "FAQ updated successfully.";
+            $_SESSION['message_type'] = "success";
+            header("Location: ./");
+            exit();
+        } else {
+            $_SESSION['message'] = "Error updating FAQ.";
+            $_SESSION['message_type'] = "danger";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ Management - GD Edu Tech</title>
+    <title>Edit FAQ - GD Edu Tech</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        .faq-card {
+        .form-card {
             background: #fff;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
-
-        .faq-card:hover {
-            transform: translateY(-5px);
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
         }
-
-        .question-header {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 15px 15px 0 0;
-            border-bottom: 1px solid #dee2e6;
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #0d6efd;
         }
-
-        .answer-body {
-            padding: 20px;
-        }
-
         .btn-action {
-            width: 35px;
-            height: 35px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 0.5rem 1.5rem;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
-
         .btn-action:hover {
-            transform: scale(1.1);
+            transform: translateY(-2px);
         }
     </style>
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -139,13 +145,8 @@ $result = mysqli_query($conn, $query);
                 <div class="container">
                     <div class="row mb-4">
                         <div class="col">
-                            <h2>FAQ Management</h2>
-                            <p class="text-muted">Manage frequently asked questions for your platform.</p>
-                        </div>
-                        <div class="col-auto">
-                            <a href="add_faq.php" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-2"></i>Add New FAQ
-                            </a>
+                            <h2>Edit FAQ</h2>
+                            <p class="text-muted">Update the frequently asked question details.</p>
                         </div>
                     </div>
 
@@ -153,7 +154,7 @@ $result = mysqli_query($conn, $query);
                     <?php if (isset($_SESSION['message'])): ?>
                         <div class="alert alert-<?php echo $_SESSION['message_type']; ?> alert-dismissible fade show" role="alert">
                             <i class="bi bi-<?php echo $_SESSION['message_type'] == 'success' ? 'check-circle' : 'exclamation-circle'; ?>-fill me-2"></i>
-                            <?php
+                            <?php 
                             echo $_SESSION['message'];
                             unset($_SESSION['message']);
                             unset($_SESSION['message_type']);
@@ -162,39 +163,44 @@ $result = mysqli_query($conn, $query);
                         </div>
                     <?php endif; ?>
 
-                    <!-- FAQs Grid -->
-                    <div class="row">
-                        <?php while ($faq = mysqli_fetch_assoc($result)): ?>
-                            <div class="col-12 mb-4">
-                                <div class="faq-card">
-                                    <div class="question-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h5 class="mb-0"><?php echo htmlspecialchars($faq['question']); ?></h5>
-                                            <div class="btn-group">
-                                                <a href="edit_faq.php?id=<?php echo $faq['faq_id']; ?>"
-                                                    class="btn btn-action btn-outline-primary me-2"
-                                                    title="Edit FAQ">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                                <a href="?delete=1&id=<?php echo $faq['faq_id']; ?>"
-                                                    class="btn btn-action btn-outline-danger"
-                                                    onclick="return confirm('Are you sure you want to delete this FAQ?');"
-                                                    title="Delete FAQ">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="form-card">
+                                <div class="card-body p-4">
+                                    <form method="POST">
+                                        <div class="mb-4">
+                                            <label for="question" class="form-label">
+                                                <i class="bi bi-question-circle me-2"></i>Question
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="question" 
+                                                   name="question" 
+                                                   value="<?php echo htmlspecialchars($faq['question']); ?>"
+                                                   required>
                                         </div>
-                                    </div>
-                                    <div class="answer-body">
-                                        <p class="mb-3"><?php echo nl2br(htmlspecialchars($faq['answer'])); ?></p>
-                                        <small class="text-muted">
-                                            <i class="bi bi-clock me-1"></i>
-                                            Last updated: <?php echo date('M d, Y', strtotime($faq['updated_at'])); ?>
-                                        </small>
-                                    </div>
+                                        <div class="mb-4">
+                                            <label for="answer" class="form-label">
+                                                <i class="bi bi-chat-left-text me-2"></i>Answer
+                                            </label>
+                                            <textarea class="form-control" 
+                                                      id="answer" 
+                                                      name="answer" 
+                                                      rows="5" 
+                                                      required><?php echo htmlspecialchars($faq['answer']); ?></textarea>
+                                        </div>
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a href="./" class="btn btn-secondary btn-action">
+                                                <i class="bi bi-x-circle me-2"></i>Cancel
+                                            </a>
+                                            <button type="submit" class="btn btn-primary btn-action">
+                                                <i class="bi bi-check-circle me-2"></i>Update FAQ
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        <?php endwhile; ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -203,5 +209,4 @@ $result = mysqli_query($conn, $query);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

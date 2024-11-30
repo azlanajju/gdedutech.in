@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php'; // Adjust the path according to your directory structure
+require_once '../Configurations/config.php'; // Adjust the path according to your directory structure
 
 // Check if user is logged in and is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {

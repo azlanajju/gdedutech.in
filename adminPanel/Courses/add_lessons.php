@@ -220,7 +220,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                         <div class="videos-container">
                                             <div class="video-section" data-video-index="0">
-                                                <h5>Video 1</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5>Video 1</h5>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-video-btn">Remove Video</button>
+                                                </div>
                                                 <div class="mb-3">
                                                     <label>Video Title</label>
                                                     <input type="text" name="video_titles[0][]" class="form-control">
@@ -255,6 +258,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         document.addEventListener('DOMContentLoaded', function() {
             let lessonIndex = 1;
 
+            // Setup initial video buttons for the first lesson
+            setupVideoButtons(document.querySelector('.lesson-section'));
+
             document.getElementById('addLessonBtn').addEventListener('click', function() {
                 lessonIndex++;
                 const lessonsContainer = document.getElementById('lessons-container');
@@ -268,59 +274,90 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Reset video section
                 const videosContainer = newLesson.querySelector('.videos-container');
                 videosContainer.innerHTML = `
-            <div class="video-section" data-video-index="0">
-                <h5>Video 1</h5>
-                <div class="mb-3">
-                    <label>Video Title</label>
-                    <input type="text" name="video_titles[${lessonIndex-1}][]" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label>Video Description</label>
-                    <textarea name="video_descriptions[${lessonIndex-1}][]" class="form-control" rows="2"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label>Video File</label>
-                    <input type="file" name="lesson_videos[${lessonIndex-1}][]" class="form-control" accept="video/*">
-                </div>
-            </div>
-        `;
+                    <div class="video-section" data-video-index="0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Video 1</h5>
+                            <button type="button" class="btn btn-danger btn-sm remove-video-btn">Remove Video</button>
+                        </div>
+                        <div class="mb-3">
+                            <label>Video Title</label>
+                            <input type="text" name="video_titles[${lessonIndex-1}][]" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label>Video Description</label>
+                            <textarea name="video_descriptions[${lessonIndex-1}][]" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Video File</label>
+                            <input type="file" name="lesson_videos[${lessonIndex-1}][]" class="form-control" accept="video/*">
+                        </div>
+                    </div>
+                `;
 
                 newLesson.setAttribute('data-lesson-index', lessonIndex - 1);
                 lessonsContainer.appendChild(newLesson);
 
+                // Setup video buttons for the new lesson
                 setupVideoButtons(newLesson);
             });
 
             function setupVideoButtons(lessonContainer) {
-                lessonContainer.querySelector('.add-video-btn').addEventListener('click', function() {
+                // Remove existing event listeners
+                const addVideoBtn = lessonContainer.querySelector('.add-video-btn');
+                const newAddVideoBtn = addVideoBtn.cloneNode(true);
+                addVideoBtn.parentNode.replaceChild(newAddVideoBtn, addVideoBtn);
+
+                // Add new event listener
+                newAddVideoBtn.addEventListener('click', function() {
                     const videosContainer = lessonContainer.querySelector('.videos-container');
                     const lessonIndex = lessonContainer.getAttribute('data-lesson-index');
                     const currentVideoCount = videosContainer.children.length;
 
                     const newVideo = document.createElement('div');
                     newVideo.className = 'video-section';
+                    newVideo.setAttribute('data-video-index', currentVideoCount);
                     newVideo.innerHTML = `
-                <h5>Video ${currentVideoCount + 1}</h5>
-                <div class="mb-3">
-                    <label>Video Title</label>
-                    <input type="text" name="video_titles[${lessonIndex}][]" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label>Video Description</label>
-                    <textarea name="video_descriptions[${lessonIndex}][]" class="form-control" rows="2"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label>Video File</label>
-                    <input type="file" name="lesson_videos[${lessonIndex}][]" class="form-control" accept="video/*">
-                </div>
-            `;
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Video ${currentVideoCount + 1}</h5>
+                            <button type="button" class="btn btn-danger btn-sm remove-video-btn">Remove Video</button>
+                        </div>
+                        <div class="mb-3">
+                            <label>Video Title</label>
+                            <input type="text" name="video_titles[${lessonIndex}][]" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label>Video Description</label>
+                            <textarea name="video_descriptions[${lessonIndex}][]" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Video File</label>
+                            <input type="file" name="lesson_videos[${lessonIndex}][]" class="form-control" accept="video/*">
+                        </div>
+                    `;
 
                     videosContainer.appendChild(newVideo);
+                    setupRemoveVideoButton(newVideo);
+                });
+
+                // Setup remove buttons for existing videos
+                lessonContainer.querySelectorAll('.video-section').forEach(videoSection => {
+                    setupRemoveVideoButton(videoSection);
                 });
             }
 
-            // Setup video buttons for initial lesson
-            setupVideoButtons(document.querySelector('.lesson-section'));
+            function setupRemoveVideoButton(videoSection) {
+                const removeBtn = videoSection.querySelector('.remove-video-btn');
+                removeBtn.addEventListener('click', function() {
+                    const videosContainer = videoSection.parentElement;
+                    videoSection.remove();
+
+                    // Update video numbers for remaining videos
+                    const remainingVideos = videosContainer.querySelectorAll('.video-section');
+                    remainingVideos.forEach((video, index) => {
+                        video.querySelector('h5').textContent = `Video ${index + 1}`;
+                    });
+                });
+            }
         });
     </script>
 </body>

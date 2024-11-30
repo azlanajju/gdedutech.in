@@ -69,6 +69,7 @@ $courses_result = mysqli_query($conn, $courses_query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../adminPanel/css/style.css">
 </head>
 <body>
     <div class="container-fluid">
