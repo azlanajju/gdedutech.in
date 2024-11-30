@@ -269,13 +269,13 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                     <h5 class="card-title mb-0 color-primary">Recent Activities</h5>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table align-middle">
                                         <thead>
                                             <tr>
-                                                <th>User</th>
+                                                <th class="d-none d-md-table-cell">User</th>
                                                 <th>Activity</th>
-                                                <th>Type</th>
-                                                <th>Time</th>
+                                                <th class="d-none d-lg-table-cell">Type</th>
+                                                <th class="d-none d-sm-table-cell">Time</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -332,7 +332,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                     }
                                             ?>
                                                     <tr>
-                                                        <td>
+                                                        <td class="d-none d-md-table-cell">
                                                             <div class="d-flex align-items-center">
                                                                 <?php if ($activity['profile_image']): ?>
                                                                     <img src="uploads/profile_images/<?php echo htmlspecialchars($activity['profile_image']); ?>" 
@@ -353,14 +353,46 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><?php echo htmlspecialchars($activity['activity_description']); ?></td>
                                                         <td>
+                                                            <!-- Show username on mobile -->
+                                                            <div class="d-md-none mb-1">
+                                                                <small class="fw-bold text-muted">
+                                                                    <?php echo htmlspecialchars($activity['username']); ?>
+                                                                </small>
+                                                            </div>
+                                                            <?php echo htmlspecialchars($activity['activity_description']); ?>
+                                                            <!-- Show badge on mobile -->
+                                                            <div class="d-lg-none mt-1">
+                                                                <span class="badge <?php echo $badge_class; ?> badge-sm">
+                                                                    <i class="bi <?php echo $icon_class; ?> me-1"></i>
+                                                                    <?php echo str_replace('_', ' ', ucfirst($activity['activity_type'])); ?>
+                                                                </span>
+                                                            </div>
+                                                            <!-- Show time on mobile -->
+                                                            <div class="d-sm-none mt-1">
+                                                                <small class="text-muted">
+                                                                    <?php 
+                                                                    $time_ago = time() - strtotime($activity['created_at']);
+                                                                    if ($time_ago < 60) {
+                                                                        echo 'Just now';
+                                                                    } elseif ($time_ago < 3600) {
+                                                                        echo floor($time_ago/60) . 'm ago';
+                                                                    } elseif ($time_ago < 86400) {
+                                                                        echo floor($time_ago/3600) . 'h ago';
+                                                                    } else {
+                                                                        echo date('M d, Y', strtotime($activity['created_at']));
+                                                                    }
+                                                                    ?>
+                                                                </small>
+                                                            </div>
+                                                        </td>
+                                                        <td class="d-none d-lg-table-cell">
                                                             <span class="badge <?php echo $badge_class; ?>">
                                                                 <i class="bi <?php echo $icon_class; ?> me-1"></i>
                                                                 <?php echo str_replace('_', ' ', ucfirst($activity['activity_type'])); ?>
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="d-none d-sm-table-cell text-muted">
                                                             <?php 
                                                             $time_ago = time() - strtotime($activity['created_at']);
                                                             if ($time_ago < 60) {
@@ -561,6 +593,48 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        /* Add these styles to your CSS */
+        @media (max-width: 767.98px) {
+            .table-responsive {
+                border: 0;
+            }
+            
+            .table td {
+                padding: 0.75rem;
+            }
+            
+            .badge-sm {
+                font-size: 0.75em;
+            }
+        }
+
+        /* Improve table readability on all devices */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table td, .table th {
+            white-space: normal;
+            vertical-align: middle;
+        }
+
+        /* Add hover effect */
+        .table tbody tr:hover {
+            background-color: rgba(0,0,0,.02);
+        }
+
+        /* Improve badge appearance */
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.75em;
+        }
+
+        /* Add smooth transitions */
+        .table tr {
+            transition: background-color 0.2s ease;
+        }
+    </style>
 </body>
 
 </html>
