@@ -177,13 +177,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                         SELECT 
                                             q.*,
                                             u.username as asker_name,
-                                            a.content as answer_content,
+                                            sa.content as answer_content,
                                             au.username as answerer_name,
                                             au.role as answerer_role
-                                        FROM Questions q
+                                        FROM StudentQuestions q
                                         LEFT JOIN Users u ON q.user_id = u.user_id
-                                        LEFT JOIN Answers a ON q.question_id = a.question_id
-                                        LEFT JOIN Users au ON a.user_id = au.user_id
+                                        LEFT JOIN StudentAnswers sa ON q.question_id = sa.question_id
+                                        LEFT JOIN Users au ON sa.user_id = au.user_id
                                         ORDER BY q.created_at DESC
                                     ";
                                     $questions_result = mysqli_query($conn, $questions_query);

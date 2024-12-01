@@ -127,6 +127,11 @@ $result = mysqli_query($conn, $query);
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                         </li>
+                        <li class="w-100">
+                            <a href="../Messages/index.php" class="nav-link">
+                                <i class="bi bi-chat-dots me-2"></i> Messages
+                            </a>
+                        </li>
                         <li class="w-100 mt-auto">
                             <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout

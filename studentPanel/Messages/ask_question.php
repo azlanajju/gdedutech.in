@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
     if (empty($title) || empty($content)) {
         $_SESSION['error'] = "Both title and content are required.";
     } else {
-        $query = "INSERT INTO Questions (title, content, user_id) VALUES (?, ?, ?)";
+        $query = "INSERT INTO StudentQuestions (title, content, user_id) VALUES (?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, 'ssi', $title, $content, $user_id);
         

@@ -23,7 +23,7 @@ $stats_query = "SELECT
     (SELECT COUNT(*) FROM Enrollments WHERE student_id = ?) as total_courses,
     (SELECT COUNT(*) FROM Enrollments WHERE student_id = ? AND completion_status = 'completed') as completed_courses,
     (SELECT COUNT(*) FROM Certificates WHERE student_id = ?) as earned_certificates,
-    (SELECT AVG(rating) FROM Reviews WHERE student_id = ?) as avg_rating,
+    (SELECT COALESCE(AVG(rating), 0) FROM Reviews WHERE student_id = ?) as avg_rating,
     (SELECT SUM(progress) FROM Enrollments WHERE student_id = ?) as total_progress";
 $stats_stmt = $conn->prepare($stats_query);
 $stats_stmt->bind_param("iiiii", $user_id, $user_id, $user_id, $user_id, $user_id);
@@ -275,7 +275,7 @@ $courses_result = $courses_stmt->get_result();
                             <div class="stats-card">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="bi bi-star me-2" style="font-size: 1.5rem; color: #9C27B0;"></i>
-                                    <h3><?php echo number_format($stats['avg_rating'], 1); ?></h3>
+                                    <h3><?php echo number_format($stats['avg_rating'] ?? 0, 1); ?></h3>
                                 </div>
                                 <p class="text-muted mb-0">Average Rating</p>
                             </div>

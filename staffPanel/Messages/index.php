@@ -51,11 +51,7 @@ require_once '../../Configurations/config.php';
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="../Categories/" class="nav-link">
-                                <i class="bi bi-grid me-2"></i> Categories
-                            </a>
-                        </li>
+                       
                         <li class="w-100">
                             <a href="../Courses/" class="nav-link">
                                 <i class="bi bi-book me-2"></i> Courses
@@ -72,16 +68,7 @@ require_once '../../Configurations/config.php';
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="../FAQ/" class="nav-link">
-                                <i class="bi bi-question-circle me-2"></i> FAQ
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../Users/" class="nav-link">
-                                <i class="bi bi-people me-2"></i> Users
-                            </a>
-                        </li>
+                       
                         
                         <li class="w-100 mt-auto">
                             <a href="../logout.php" class="nav-link text-danger">
@@ -182,13 +169,14 @@ require_once '../../Configurations/config.php';
                                         SELECT 
                                             q.*,
                                             u.username as asker_name,
-                                            a.content as answer_content,
+                                            sa.content as answer_content,
                                             au.username as answerer_name,
                                             au.role as answerer_role
-                                        FROM Questions q
+                                        FROM StudentQuestions q
                                         LEFT JOIN Users u ON q.user_id = u.user_id
-                                        LEFT JOIN Answers a ON q.question_id = a.question_id
-                                        LEFT JOIN Users au ON a.user_id = au.user_id
+                                        LEFT JOIN StudentAnswers sa ON q.question_id = sa.question_id
+                                        LEFT JOIN Users au ON sa.user_id = au.user_id
+                                        WHERE q.status = 'open'
                                         ORDER BY q.created_at DESC
                                     ";
                                     $questions_result = mysqli_query($conn, $questions_query);
@@ -210,16 +198,7 @@ require_once '../../Configurations/config.php';
                                             </small>
                                             
                                             <?php if ($qa['answer_content']): ?>
-                                                <div class="answer-box mt-2 p-3 bg-light rounded">
-                                                    <p class="mb-2">
-                                                        <i class="bi bi-reply me-2"></i>
-                                                        <?php echo nl2br(htmlspecialchars($qa['answer_content'])); ?>
-                                                    </p>
-                                                    <small class="text-primary">
-                                                        Answered by <?php echo htmlspecialchars($qa['answerer_name']); ?> 
-                                                        (<?php echo ucfirst($qa['answerer_role']); ?>)
-                                                    </small>
-                                                </div>
+                                                <!-- Remove this entire block since we don't want to show answered questions -->
                                             <?php else: ?>
                                                 <button class="btn btn-primary btn-sm mt-2" 
                                                         onclick="showAnswerModal(<?php echo $qa['question_id']; ?>)">

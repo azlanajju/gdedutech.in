@@ -294,3 +294,12 @@ CREATE TABLE meeting_schedules (
     FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (staff_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
+CREATE TABLE StudentAnswers (
+    answer_id INT PRIMARY KEY AUTO_INCREMENT,
+    question_id INT NOT NULL,
+    content TEXT NOT NULL,
+    user_id INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (question_id) REFERENCES StudentQuestions(question_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);

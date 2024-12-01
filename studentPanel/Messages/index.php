@@ -121,7 +121,7 @@ $user_name = $_SESSION['username'] ?? 'Student';
 
                     <div class="row">
                         <!-- Messages Section -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-12 mb-4">
                             <div class="card h-100">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">
@@ -168,7 +168,7 @@ $user_name = $_SESSION['username'] ?? 'Student';
                         </div>
 
                         <!-- Q&A Section -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-12 mb-4">
                             <div class="card h-100">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">
@@ -182,16 +182,16 @@ $user_name = $_SESSION['username'] ?? 'Student';
                                     <?php
                                     $questions_query = "
                                         SELECT 
-                                            q.*,
+                                            sq.*,
                                             u.username as asker_name,
-                                            a.content as answer_content,
+                                            sa.content as answer_content,
                                             au.username as answerer_name,
                                             au.role as answerer_role
-                                        FROM Questions q
-                                        LEFT JOIN Users u ON q.user_id = u.user_id
-                                        LEFT JOIN Answers a ON q.question_id = a.question_id
-                                        LEFT JOIN Users au ON a.user_id = au.user_id
-                                        ORDER BY q.created_at DESC
+                                        FROM StudentQuestions sq
+                                        LEFT JOIN Users u ON sq.user_id = u.user_id
+                                        LEFT JOIN StudentAnswers sa ON sq.question_id = sa.question_id
+                                        LEFT JOIN Users au ON sa.user_id = au.user_id
+                                        ORDER BY sq.created_at DESC
                                     ";
                                     $questions_result = mysqli_query($conn, $questions_query);
                                     
@@ -206,13 +206,24 @@ $user_name = $_SESSION['username'] ?? 'Student';
                                                 </span>
                                             </div>
                                             <p class="mb-2"><?php echo nl2br(htmlspecialchars($qa['content'])); ?></p>
-                                            <small class="text-muted d-block mb-2">
-                                                Asked by <?php echo htmlspecialchars($qa['asker_name']); ?> • 
-                                                <?php echo date('M d, Y', strtotime($qa['created_at'])); ?>
-                                            </small>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">
+                                                    Asked by <?php echo htmlspecialchars($qa['asker_name']); ?> • 
+                                                    <?php echo date('M d, Y', strtotime($qa['created_at'])); ?>
+                                                </small>
+                                                <?php if ($qa['user_id'] == $_SESSION['user_id']): ?>
+                                                    <button class="btn btn-danger btn-sm delete-question" 
+                                                            data-question-id="<?php echo $qa['question_id']; ?>">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </button>
+                                                <?php endif; ?>
+                                            </div>
                                             
                                             <?php if ($qa['answer_content']): ?>
-                                                <div class="answer-box mt-2 p-3 bg-light rounded">
+                                                <button class="btn btn-link p-0 text-decoration-none mb-2 toggle-answer" type="button">
+                                                    <i class="bi bi-chevron-down"></i> Show Answer
+                                                </button>
+                                                <div class="answer-box mt-2 p-3 bg-light rounded" style="display: none;">
                                                     <p class="mb-2">
                                                         <i class="bi bi-reply me-2"></i>
                                                         <?php echo nl2br(htmlspecialchars($qa['answer_content'])); ?>
@@ -271,5 +282,53 @@ $user_name = $_SESSION['username'] ?? 'Student';
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.qa-item .toggle-answer');
+        
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const answerBox = this.nextElementSibling;
+                const isHidden = answerBox.style.display === 'none';
+                
+                // Toggle answer visibility
+                answerBox.style.display = isHidden ? 'block' : 'none';
+                
+                // Update button text and icon
+                const icon = this.querySelector('i');
+                icon.className = isHidden ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
+                this.innerHTML = icon.outerHTML + (isHidden ? ' Hide Answer' : ' Show Answer');
+            });
+        });
+
+        // Add delete functionality
+        document.querySelectorAll('.delete-question').forEach(button => {
+            button.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this question?')) {
+                    const questionId = this.dataset.questionId;
+                    fetch('delete_question.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'question_id=' + questionId
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.closest('.qa-item').remove();
+                        } else {
+                            alert('Error deleting question: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while deleting the question');
+                    });
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
