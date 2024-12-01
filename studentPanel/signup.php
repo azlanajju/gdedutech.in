@@ -11,64 +11,95 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $profile_image = $_FILES['profile_image'];
     $registration_success = false;
 
-    // Check for duplicate username or email
-    $checkStmt = $conn->prepare("SELECT user_id FROM Users WHERE username = ? OR email = ?");
-    $checkStmt->bind_param("ss", $username, $email);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
+    // Add error message array
+    $errors = [];
 
-    if ($result->num_rows > 0) {
-        $_SESSION['error_message'] = "Username or Email already exists. Please try another.";
-        $checkStmt->close();
-    } else {
-        $checkStmt->close();
+    // Validate inputs
+    if (empty($username)) $errors[] = "Username is required";
+    if (empty($password)) $errors[] = "Password is required";
+    if (empty($email)) $errors[] = "Email is required";
+    if (empty($first_name)) $errors[] = "First name is required";
+    if (empty($last_name)) $errors[] = "Last name is required";
 
-        // Hash the password
-        $password_hash = password_hash($password, PASSWORD_BCRYPT);
+    // Only proceed if no validation errors
+    if (empty($errors)) {
+        // Check for duplicate username or email
+        $checkStmt = $conn->prepare("SELECT user_id FROM Users WHERE username = ? OR email = ?");
+        $checkStmt->bind_param("ss", $username, $email);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
 
-        // Handle profile image upload
-        $profile_image_path = null;
-        if ($profile_image && $profile_image['error'] == 0) {
-            $profile_image_name = time() . '_' . basename($profile_image['name']);
-            $profile_image_path = UPLOADS_DIR . $profile_image_name;
-
-            // Move the uploaded file
-            if (!move_uploaded_file($profile_image['tmp_name'], $profile_image_path)) {
-                $_SESSION['error_message'] = "Error uploading profile image.";
-                header('Location: signup.php');
-                exit();
-            }
-        }
-
-        // Insert user into the database
-        $stmt = $conn->prepare("
-            INSERT INTO Users (username, password_hash, email, first_name, last_name, profile_image, role, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ");
-        $role = "student"; // Default role
-        $status = "active"; // Default status
-        $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_name, $role, $status);
-
-        if ($stmt->execute()) {
-            $_SESSION['success_message'] = "Registration successful! Please login.";
-            $registration_success = true;
+        if ($result->num_rows > 0) {
+            $_SESSION['error_message'] = "Username or Email already exists. Please try another.";
+            $checkStmt->close();
         } else {
-            $_SESSION['error_message'] = "Error: " . $stmt->error;
+            $checkStmt->close();
+
+            // Hash the password
+            $password_hash = password_hash($password, PASSWORD_BCRYPT);
+
+            // Handle profile image upload
+            $profile_image_name = null;
+            if ($profile_image && $profile_image['error'] == 0) {
+                $profile_image_name = time() . '_' . basename($profile_image['name']);
+                $profile_image_path = UPLOADS_DIR . $profile_image_name;
+
+                // Create uploads directory if it doesn't exist
+                if (!file_exists(UPLOADS_DIR)) {
+                    mkdir(UPLOADS_DIR, 0777, true);
+                }
+
+                // Move the uploaded file
+                if (!move_uploaded_file($profile_image['tmp_name'], $profile_image_path)) {
+                    $_SESSION['error_message'] = "Error uploading profile image.";
+                    header('Location: signup.php');
+                    exit();
+                }
+            }
+
+            // Insert user into the database
+            $stmt = $conn->prepare("
+                INSERT INTO Users (username, password_hash, email, first_name, last_name, profile_image, role, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $role = "student"; // Default role
+            $status = "active"; // Default status
+            $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_name, $role, $status);
+
+            if ($stmt->execute()) {
+                $_SESSION['success_message'] = "Registration successful! Please login.";
+                $registration_success = true;
+            } else {
+                $_SESSION['error_message'] = "Error: " . $stmt->error;
+            }
+
+            $stmt->close();
         }
 
-        $stmt->close();
-    }
+        $conn->close();
 
-    $conn->close();
-
-    // Redirect after processing
-    if ($registration_success) {
-        header('Location: login.php');
-        exit();
+        // Redirect after processing
+        if ($registration_success) {
+            header('Location: login.php');
+            exit();
+        } else {
+            header('Location: signup.php');
+            exit();
+        }
     } else {
-        header('Location: signup.php');
-        exit();
+        // If there are validation errors, store them in session
+        $_SESSION['error_message'] = implode("<br>", $errors);
     }
+}
+
+// Add this at the top of your HTML to display error messages
+if (isset($_SESSION['error_message'])) {
+    echo '<div class="alert alert-danger">' . $_SESSION['error_message'] . '</div>';
+    unset($_SESSION['error_message']);
+}
+if (isset($_SESSION['success_message'])) {
+    echo '<div class="alert alert-success">' . $_SESSION['success_message'] . '</div>';
+    unset($_SESSION['success_message']);
 }
 ?>
 

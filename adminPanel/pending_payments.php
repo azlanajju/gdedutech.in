@@ -4,7 +4,7 @@ require_once '../Configurations/config.php'; // Adjust the path according to you
 
 // Check if user is logged in and is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../login.php");
+    header("Location: ../adminPanel/admin_login.php");
     exit();
 }
 

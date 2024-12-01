@@ -126,6 +126,31 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/student_dashboard.css">
     <link rel="stylesheet" href="../css/customBoorstrap.css">
+    <style>
+        .course-card .card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 4.5em; /* Approximately 3 lines of text */
+        }
+        
+        .course-card {
+            height: 100%;
+            transition: transform 0.2s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .course-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body>

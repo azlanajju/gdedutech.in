@@ -215,7 +215,8 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <div class="card-body">
                                     <h6 class="card-title">Total Revenue</h6>
                                     <h2>₹
-                                        12,845</h2>
+                                        0
+                                </h2>
                                     <p class="mb-0"><i class="bi bi-arrow-up"></i> 8% this month</p>
                                 </div>
                             </div>
