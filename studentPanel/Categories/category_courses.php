@@ -30,7 +30,43 @@ if ($category_result->num_rows === 0) {
 
 $category = $category_result->fetch_assoc();
 
-// Fetch courses in the category
+// Add this after fetching category details and before the courses query
+$where_conditions = ["category_id = ? AND status = 'published'"];
+$params = [$category_id];
+$types = "i";
+
+// Handle filters
+$price_min = isset($_GET['price_min']) ? floatval($_GET['price_min']) : null;
+$price_max = isset($_GET['price_max']) ? floatval($_GET['price_max']) : null;
+$level = isset($_GET['level']) ? $_GET['level'] : '';
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+if ($price_min !== null) {
+    $where_conditions[] = "price >= ?";
+    $params[] = $price_min;
+    $types .= "d";
+}
+
+if ($price_max !== null) {
+    $where_conditions[] = "price <= ?";
+    $params[] = $price_max;
+    $types .= "d";
+}
+
+if ($level) {
+    $where_conditions[] = "level = ?";
+    $params[] = $level;
+    $types .= "s";
+}
+
+if ($search) {
+    $where_conditions[] = "(title LIKE ? OR description LIKE ?)";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+    $types .= "ss";
+}
+
+// Update the courses query with filters
 $courses_query = "
     SELECT 
         course_id,
@@ -40,10 +76,10 @@ $courses_query = "
         price,
         level
     FROM Courses
-    WHERE category_id = ? AND status = 'published'
-";
+    WHERE " . implode(" AND ", $where_conditions);
+
 $courses_stmt = $conn->prepare($courses_query);
-$courses_stmt->bind_param("i", $category_id);
+$courses_stmt->bind_param($types, ...$params);
 $courses_stmt->execute();
 $courses_result = $courses_stmt->get_result();
 ?>
@@ -88,6 +124,28 @@ $courses_result = $courses_stmt->get_result();
             background: linear-gradient(45deg, #0d7298, #0d7298, #1d91bb) !important;
             /* background:#d30043 !important ; */
             border-color: var(--accent-color) !important;
+        }
+
+        .filter-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-section .form-label {
+            font-weight: 500;
+            color: #6c757d;
+        }
+        
+        .filter-section .form-control,
+        .filter-section .form-select {
+            border-radius: 8px;
+        }
+        
+        .filter-section .btn {
+            border-radius: 8px;
+            padding: 8px 15px;
         }
     </style>
 </head>
@@ -149,6 +207,59 @@ $courses_result = $courses_stmt->get_result();
                     <div class="container">
                         <h2><?php echo htmlspecialchars($category['name']); ?> Courses</h2>
                         <p class="text-light mb-0"><?php echo htmlspecialchars($category['description']); ?></p>
+                    </div>
+                </div>
+
+                <!-- Add this before the courses grid -->
+                <div class="container mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="GET" class="row g-3">
+                                <input type="hidden" name="id" value="<?php echo $category_id; ?>">
+                                
+                                <div class="col-md-3">
+                                    <label class="form-label">Search</label>
+                                    <input type="text" class="form-control" name="search" 
+                                           value="<?php echo htmlspecialchars($search); ?>" 
+                                           placeholder="Search courses...">
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <label class="form-label">Min Price</label>
+                                    <input type="number" class="form-control" name="price_min" 
+                                           value="<?php echo $price_min; ?>" 
+                                           placeholder="Min ₹">
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <label class="form-label">Max Price</label>
+                                    <input type="number" class="form-control" name="price_max" 
+                                           value="<?php echo $price_max; ?>" 
+                                           placeholder="Max ₹">
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <label class="form-label">Level</label>
+                                    <select class="form-select" name="level">
+                                        <option value="">All Levels</option>
+                                        <option value="Beginner" <?php echo $level === 'Beginner' ? 'selected' : ''; ?>>Beginner</option>
+                                        <option value="Intermediate" <?php echo $level === 'Intermediate' ? 'selected' : ''; ?>>Intermediate</option>
+                                        <option value="Advanced" <?php echo $level === 'Advanced' ? 'selected' : ''; ?>>Advanced</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <div class="d-grid gap-2 w-100">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-filter"></i> Filter
+                                        </button>
+                                        <a href="?id=<?php echo $category_id; ?>" class="btn btn-outline-secondary">
+                                            <i class="bi bi-x-circle"></i> Clear
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 

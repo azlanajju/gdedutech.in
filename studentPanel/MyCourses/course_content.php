@@ -169,6 +169,25 @@ $lessons_result->data_seek(0);
         .card.bg-light {
             opacity: 0.8;
         }
+        .plyr--video .plyr__controls {
+            padding-bottom: 40px; /* Make room for quality selector */
+        }
+
+        .plyr__menu__container {
+            min-width: 200px;
+        }
+
+        .plyr__menu__container .plyr__control {
+            padding: 8px 12px;
+        }
+
+        .plyr__menu__container [data-plyr='quality'] {
+            font-weight: bold;
+        }
+
+        .plyr--full-ui input[type=range] {
+            color: #3498db;
+        }
     </style>
 </head>
 <body>
@@ -328,8 +347,21 @@ $lessons_result->data_seek(0);
                                                     <video controls crossorigin playsinline
                                                            class="course-video"
                                                            <?php echo !$is_unlocked ? 'disabled' : ''; ?>>
-                                                        <source src="../../uploads/course_uploads/course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" 
-                                                                type="video/mp4">
+                                                        <?php
+                                                        // Add multiple quality sources
+                                                        $video_path = '../../uploads/course_uploads/course_videos/';
+                                                        $video_filename = pathinfo($video['video_url'], PATHINFO_FILENAME);
+                                                        $qualities = ['1080', '720', '480', '360'];
+                                                        
+                                                        foreach ($qualities as $quality) {
+                                                            $quality_file = $video_path . $video_filename . '_' . $quality . 'p.mp4';
+                                                            if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $quality_file)) {
+                                                                echo "<source src=\"$quality_file\" size=\"$quality\" type=\"video/mp4\" />\n";
+                                                            }
+                                                        }
+                                                        // Fallback to original video if no converted qualities exist
+                                                        echo "<source src=\"" . $video_path . $video['video_url'] . "\" type=\"video/mp4\" />\n";
+                                                        ?>
                                                     </video>
                                                     <?php if (isset($user_progress[$lesson['lesson_id']][$video['video_id']]) && 
                                                               $user_progress[$lesson['lesson_id']][$video['video_id']]): ?>
@@ -421,7 +453,27 @@ $lessons_result->data_seek(0);
     <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const players = Plyr.setup('.course-video');
+            const players = Plyr.setup('.course-video', {
+                controls: [
+                    'play-large',
+                    'play',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'settings',
+                    'fullscreen'
+                ],
+                settings: ['quality', 'speed'],
+                quality: {
+                    default: 720,
+                    options: [1080, 720, 480, 360],
+                    forced: true,
+                    onChange: (quality) => {
+                        console.log('Quality changed to:', quality);
+                    }
+                }
+            });
             
             players.forEach(player => {
                 const container = player.elements.container.closest('.video-container');
