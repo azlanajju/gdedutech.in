@@ -122,6 +122,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="../Schedule/" class="nav-link">
+                                <i class="bi bi-calendar-event me-2"></i> Schedule
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../Messages/" class="nav-link">
+                                <i class="bi bi-chat-dots me-2"></i> Messages
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="./" class="nav-link active">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
@@ -129,6 +139,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li class="w-100">
                             <a href="../Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../manage_qr.php" class="nav-link">
+                                <i class="bi bi-qr-code me-2"></i> Payment QR
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../pending_payments.php" class="nav-link">
+                                <i class="bi bi-credit-card me-2"></i> Pending Payments
                             </a>
                         </li>
                         <li class="w-100 mt-auto">

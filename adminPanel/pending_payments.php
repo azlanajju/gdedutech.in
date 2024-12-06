@@ -102,54 +102,23 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./css/style.css">
-    <style>
-        .payment-proof-img {
-            max-width: 100px;
-            cursor: pointer;
-        }
-        .modal-img {
-            max-width: 100%;
-        }
-        .sidebar {
-            background: #fff;
-            min-height: 100vh;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .nav-link {
-            color: #000 !important;
-            border-radius: 8px;
-            margin: 5px 0;
-        }
-        .nav-link:hover, .nav-link.active {
-            background: rgba(0,0,0,0.05);
-            color: white !important;
-        }
-        .nav-link.active {
-            background: #e9ecef;
-            font-weight: 500;
-        }
-        .nav-link.text-danger {
-            color: #dc3545 !important;
-        }
-        .nav-link.text-danger:hover {
-            background: rgba(220, 53, 69, 0.1);
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+           
+           <!-- Sidebar -->
+           <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;">
+                        <span class="fs-5 fw-bolder" style="display: flex; align-items: center; color: black;">
                             <img height="35px" src="./images/edutechLogo.png" alt="">&nbsp; GD Edu Tech
                         </span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
-                            <a href="./" class="nav-link">
+                            <a href="./" class="nav-link ">
                                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
                             </a>
                         </li>
@@ -160,12 +129,22 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
                         </li>
                         <li class="w-100">
                             <a href="./Courses/" class="nav-link">
-                                <i class="bi bi-book me-2"></i> Courses
+                                <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
                         <li class="w-100">
                             <a href="./Quiz/" class="nav-link">
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="./Schedule/index.php" class="nav-link">
+                                <i class="bi bi-calendar-event me-2"></i> Schedule
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="./Messages/index.php" class="nav-link">
+                                <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
                         <li class="w-100">
@@ -176,6 +155,11 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
                         <li class="w-100">
                             <a href="./Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="./manage_qr.php" class="nav-link">
+                                <i class="bi bi-qr-code me-2"></i> Payment QR
                             </a>
                         </li>
                         <li class="w-100">

@@ -240,166 +240,236 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <title>Edit Course</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">    
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-header">Edit Course</div>
-        <div class="card-body">
-            <?php if (!empty($errors)): ?>
-                <div class="alert alert-danger">
-                    <?php foreach ($errors as $error): ?>
-                        <p><?php echo htmlspecialchars($error); ?></p>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-            
-            <form method="POST" enctype="multipart/form-data">
-                <!-- Course Details Section -->
-                <h4>Course Details</h4>
-                <div class="mb-3">
-                    <label>Course Title</label>
-                    <input type="text" name="title" class="form-control" 
-                           value="<?php echo htmlspecialchars($course['title']); ?>" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label>Description</label>
-                    <textarea name="description" class="form-control" rows="4" required><?php 
-                        echo htmlspecialchars($course['description']); 
-                    ?></textarea>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label>Price</label>
-                        <input type="number" name="price" step="0.01" class="form-control" 
-                               value="<?php echo htmlspecialchars($course['price']); ?>" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label>Language</label>
-                        <input type="text" name="language" class="form-control" 
-                               value="<?php echo htmlspecialchars($course['language']); ?>" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label>Level</label>
-                        <select name="level" class="form-select" required>
-                            <option value="beginner" <?php echo $course['level'] == 'beginner' ? 'selected' : ''; ?>>Beginner</option>
-                            <option value="intermediate" <?php echo $course['level'] == 'intermediate' ? 'selected' : ''; ?>>Intermediate</option>
-                            <option value="advanced" <?php echo $course['level'] == 'advanced' ? 'selected' : ''; ?>>Advanced</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label>Category</label>
-                        <select name="category_id" class="form-select" required>
-                            <?php 
-                            mysqli_data_seek($categories_query, 0);
-                            while ($category = mysqli_fetch_assoc($categories_query)): 
-                            ?>
-                                <option value="<?php echo $category['category_id']; ?>" 
-                                    <?php echo $category['category_id'] == $course['category_id'] ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($category['name']); ?>
-                                </option>
-                            <?php endwhile; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label>Course Type</label>
-                        <input type="text" name="course_type" class="form-control" 
-                               value="<?php echo htmlspecialchars($course['course_type']); ?>">
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label>Course Thumbnail</label>
-                    <?php if ($course['thumbnail']): ?>
-                        <div class="mb-2">
-                            <img src="./thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
-                                 alt="Current thumbnail" style="max-width: 200px;">
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
+                <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;"><img height="35px" src="../images/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
+                    <li class="w-100">
+                        <a href="../" class="nav-link">
+                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../Categories/" class="nav-link">
+                            <i class="bi bi-grid me-2"></i> Categories
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../Courses/" class="nav-link active">
+                            <i class="bi bi-book me-2"></i> Courses
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../Quiz/" class="nav-link">
+                            <i class="bi bi-lightbulb me-2"></i> Quiz
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../Schedule/" class="nav-link">
+                            <i class="bi bi-calendar-event me-2"></i> Schedule
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../Messages/" class="nav-link">
+                            <i class="bi bi-chat-dots me-2"></i> Messages
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../FAQ/" class="nav-link">
+                            <i class="bi bi-question-circle me-2"></i> FAQ
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../Users/" class="nav-link">
+                            <i class="bi bi-people me-2"></i> Users
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../manage_qr.php" class="nav-link">
+                            <i class="bi bi-qr-code me-2"></i> Payment QR
+                        </a>
+                    </li>
+                    <li class="w-100">
+                        <a href="../pending_payments.php" class="nav-link">
+                            <i class="bi bi-credit-card me-2"></i> Pending Payments
+                        </a>
+                    </li>
+                    <li class="w-100 mt-auto">
+                        <a href="../logout.php" class="nav-link text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col py-3">
+            <div class="card">
+                <div class="card-header">Edit Course</div>
+                <div class="card-body">
+                    <?php if (!empty($errors)): ?>
+                        <div class="alert alert-danger">
+                            <?php foreach ($errors as $error): ?>
+                                <p><?php echo htmlspecialchars($error); ?></p>
+                            <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
-                    <input type="file" name="thumbnail" class="form-control" accept="image/jpeg,image/png,image/gif">
-                    <small class="form-text text-muted">Leave empty to keep current thumbnail</small>
-                </div>
-                
-                <!-- Lessons Section -->
-                <h4 class="mt-4">Lessons</h4>
-                <div id="lessons-container">
-                    <?php foreach ($lessons as $index => $lesson): ?>
-                        <div class="lesson-section" data-lesson-index="<?php echo $index; ?>">
-                            <hr>
-                            <h5>Lesson <?php echo $index + 1; ?></h5>
-                            <input type="hidden" name="lesson_ids[]" value="<?php echo $lesson['lesson_id']; ?>">
-                            
-                            <div class="mb-3">
-                                <label>Lesson Title</label>
-                                <input type="text" name="lesson_titles[]" class="form-control" 
-                                value="<?php echo htmlspecialchars($lesson['title']); ?>" required>
+                    
+                    <form method="POST" enctype="multipart/form-data">
+                        <!-- Course Details Section -->
+                        <h4>Course Details</h4>
+                        <div class="mb-3">
+                            <label>Course Title</label>
+                            <input type="text" name="title" class="form-control" 
+                                   value="<?php echo htmlspecialchars($course['title']); ?>" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <textarea name="description" class="form-control" rows="4" required><?php 
+                                echo htmlspecialchars($course['description']); 
+                            ?></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label>Price</label>
+                                <input type="number" name="price" step="0.01" class="form-control" 
+                                       value="<?php echo htmlspecialchars($course['price']); ?>" required>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label>Lesson Description</label>
-                                <textarea name="lesson_descriptions[]" class="form-control" rows="3"><?php 
-                                    echo htmlspecialchars($lesson['description']); 
-                                ?></textarea>
+                            <div class="col-md-4 mb-3">
+                                <label>Language</label>
+                                <input type="text" name="language" class="form-control" 
+                                       value="<?php echo htmlspecialchars($course['language']); ?>" required>
                             </div>
-                            
-                            <!-- Existing Videos -->
-                            <?php if (!empty($lesson['videos'])): ?>
-                                <div class="mb-3">
-                                    <h6>Current Videos</h6>
-                                    <?php foreach ($lesson['videos'] as $video): ?>
-                                        <div class="card mb-2">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span><?php echo htmlspecialchars($video['title']); ?></span>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name="videos_to_delete[]" 
-                                                               value="<?php echo $video['video_id']; ?>" 
-                                                               class="form-check-input">
-                                                        <label class="form-check-label">Delete</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
+                            <div class="col-md-4 mb-3">
+                                <label>Level</label>
+                                <select name="level" class="form-select" required>
+                                    <option value="beginner" <?php echo $course['level'] == 'beginner' ? 'selected' : ''; ?>>Beginner</option>
+                                    <option value="intermediate" <?php echo $course['level'] == 'intermediate' ? 'selected' : ''; ?>>Intermediate</option>
+                                    <option value="advanced" <?php echo $course['level'] == 'advanced' ? 'selected' : ''; ?>>Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Category</label>
+                                <select name="category_id" class="form-select" required>
+                                    <?php 
+                                    mysqli_data_seek($categories_query, 0);
+                                    while ($category = mysqli_fetch_assoc($categories_query)): 
+                                    ?>
+                                        <option value="<?php echo $category['category_id']; ?>" 
+                                            <?php echo $category['category_id'] == $course['category_id'] ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Course Type</label>
+                                <input type="text" name="course_type" class="form-control" 
+                                       value="<?php echo htmlspecialchars($course['course_type']); ?>">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Course Thumbnail</label>
+                            <?php if ($course['thumbnail']): ?>
+                                <div class="mb-2">
+                                    <img src="./thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                                         alt="Current thumbnail" style="max-width: 200px;">
                                 </div>
                             <?php endif; ?>
-                            
-                            <!-- New Videos Upload -->
-                            <div class="mb-3">
-                                <label>Add New Videos</label>
-                                <div class="video-uploads">
-                                    <div class="mb-2">
-                                        <input type="file" name="lesson_videos[<?php echo $index; ?>][]" 
-                                               class="form-control" accept="video/*" multiple>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="text" name="video_titles[<?php echo $index; ?>][]" 
-                                               class="form-control" placeholder="Video Title">
-                                    </div>
-                                    <div class="mb-2">
-                                        <textarea name="video_descriptions[<?php echo $index; ?>][]" 
-                                                  class="form-control" placeholder="Video Description" rows="2"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <button type="button" class="btn btn-danger btn-sm remove-lesson">Remove Lesson</button>
+                            <input type="file" name="thumbnail" class="form-control" accept="image/jpeg,image/png,image/gif">
+                            <small class="form-text text-muted">Leave empty to keep current thumbnail</small>
                         </div>
-                    <?php endforeach; ?>
+                        
+                        <!-- Lessons Section -->
+                        <h4 class="mt-4">Lessons</h4>
+                        <div id="lessons-container">
+                            <?php foreach ($lessons as $index => $lesson): ?>
+                                <div class="lesson-section" data-lesson-index="<?php echo $index; ?>">
+                                    <hr>
+                                    <h5>Lesson <?php echo $index + 1; ?></h5>
+                                    <input type="hidden" name="lesson_ids[]" value="<?php echo $lesson['lesson_id']; ?>">
+                                    
+                                    <div class="mb-3">
+                                        <label>Lesson Title</label>
+                                        <input type="text" name="lesson_titles[]" class="form-control" 
+                                        value="<?php echo htmlspecialchars($lesson['title']); ?>" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label>Lesson Description</label>
+                                        <textarea name="lesson_descriptions[]" class="form-control" rows="3"><?php 
+                                            echo htmlspecialchars($lesson['description']); 
+                                        ?></textarea>
+                                    </div>
+                                    
+                                    <!-- Existing Videos -->
+                                    <?php if (!empty($lesson['videos'])): ?>
+                                        <div class="mb-3">
+                                            <h6>Current Videos</h6>
+                                            <?php foreach ($lesson['videos'] as $video): ?>
+                                                <div class="card mb-2">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span><?php echo htmlspecialchars($video['title']); ?></span>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" name="videos_to_delete[]" 
+                                                                       value="<?php echo $video['video_id']; ?>" 
+                                                                       class="form-check-input">
+                                                                <label class="form-check-label">Delete</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                    <!-- New Videos Upload -->
+                                    <div class="mb-3">
+                                        <label>Add New Videos</label>
+                                        <div class="video-uploads">
+                                            <div class="mb-2">
+                                                <input type="file" name="lesson_videos[<?php echo $index; ?>][]" 
+                                                       class="form-control" accept="video/*" multiple>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="text" name="video_titles[<?php echo $index; ?>][]" 
+                                                       class="form-control" placeholder="Video Title">
+                                            </div>
+                                            <div class="mb-2">
+                                                <textarea name="video_descriptions[<?php echo $index; ?>][]" 
+                                                          class="form-control" placeholder="Video Description" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-danger btn-sm remove-lesson">Remove Lesson</button>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <button type="button" class="btn btn-secondary mt-3" id="add-lesson">Add New Lesson</button>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <a href="courses.php" class="btn btn-link">Cancel</a>
+                        </div>
+                    </form>
                 </div>
-                
-                <button type="button" class="btn btn-secondary mt-3" id="add-lesson">Add New Lesson</button>
-                
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="courses.php" class="btn btn-link">Cancel</a>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

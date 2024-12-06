@@ -9,6 +9,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 require_once '../config.php';
 
+function logActivity($conn, $user_id, $action, $description, $faq_id) {
+    $query = "INSERT INTO ActivityLog (user_id, activity_type, activity_description, related_id, created_at) VALUES (?, ?, ?, ?, NOW())";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'issi', $user_id, $action, $description, $faq_id);
+    mysqli_stmt_execute($stmt);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $question = trim($_POST['question']);
     $answer = trim($_POST['answer']);
@@ -102,6 +109,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="../Schedule/" class="nav-link">
+                                <i class="bi bi-calendar-event me-2"></i> Schedule
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../Messages/" class="nav-link">
+                                <i class="bi bi-chat-dots me-2"></i> Messages
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="./" class="nav-link active">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
@@ -109,6 +126,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li class="w-100">
                             <a href="../Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../manage_qr.php" class="nav-link">
+                                <i class="bi bi-qr-code me-2"></i> Payment QR
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../pending_payments.php" class="nav-link">
+                                <i class="bi bi-credit-card me-2"></i> Pending Payments
                             </a>
                         </li>
                         <li class="w-100 mt-auto">

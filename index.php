@@ -58,6 +58,9 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                     <li class="nav-item">
                         <a class="nav-link" href="#about">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="career.php">Career</a>
+                    </li>
                 </ul>
                 <div class="d-flex">
                     <?php if (isset($_SESSION['user_id'])): ?>
