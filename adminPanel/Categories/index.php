@@ -14,7 +14,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 <?php
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle category deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {
