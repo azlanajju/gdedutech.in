@@ -43,13 +43,16 @@ $query = "
         c.title AS course_title, 
         e.course_id, 
         e.completion_status, 
-        e.assessment_status
+        e.assessment_status,
+        cert.certificate_url
     FROM 
         Enrollments e
     JOIN 
         Users u ON e.student_id = u.user_id
     JOIN 
         Courses c ON e.course_id = c.course_id
+    LEFT JOIN
+        Certificates cert ON cert.student_id = u.user_id AND cert.course_id = e.course_id
     WHERE 
         e.completion_status = 'completed' 
         AND e.assessment_status = 'completed'
@@ -64,6 +67,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,6 +76,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -172,18 +177,11 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                         <td><?php echo htmlspecialchars($row['completion_status']); ?></td>
                                         <td><?php echo htmlspecialchars($row['assessment_status']); ?></td>
                                         <td>
-                                            <?php
-                                            // Check if the user has already uploaded a certificate
-                                            $certificateQuery = "SELECT certificate_url FROM Certificates WHERE student_id = ? AND course_id = ?";
-                                            $certificateStmt = mysqli_prepare($conn, $certificateQuery);
-                                            mysqli_stmt_bind_param($certificateStmt, 'ii', $row['user_id'], $row['course_id']);
-                                            mysqli_stmt_execute($certificateStmt);
-                                            mysqli_stmt_bind_result($certificateStmt, $existingCertificate);
-                                            mysqli_stmt_fetch($certificateStmt);
-                                            mysqli_stmt_close($certificateStmt);
-                                            ?>
-                                            <?php if ($existingCertificate): ?>
+                                            <?php if ($row['certificate_url']): ?>
                                                 <span class="text-success"><i class="bi bi-check-circle-fill"></i> Completed</span>
+                                                <a href="<?php echo htmlspecialchars($row['certificate_url']); ?>" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">
+                                                    <i class="bi bi-eye"></i> View
+                                                </a>
                                             <?php else: ?>
                                                 <form action="certificates.php" method="post" enctype="multipart/form-data">
                                                     <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
@@ -207,4 +205,5 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
