@@ -178,10 +178,21 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                         <td><?php echo htmlspecialchars($row['assessment_status']); ?></td>
                                         <td>
                                             <?php if ($row['certificate_url']): ?>
-                                                <span class="text-success"><i class="bi bi-check-circle-fill"></i> Completed</span>
-                                                <a href="<?php echo htmlspecialchars($row['certificate_url']); ?>" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">
-                                                    <i class="bi bi-eye"></i> View
-                                                </a>
+                                                <div class="btn-group">
+                                                    <span class="btn btn-sm btn-success">
+                                                        <i class="bi bi-check-circle-fill"></i> Completed
+                                                    </span>
+                                                    <a href="<?php echo htmlspecialchars($row['certificate_url']); ?>" 
+                                                       class="btn btn-sm btn-primary"
+                                                       target="_blank">
+                                                        <i class="bi bi-eye"></i> View
+                                                    </a>
+                                                    <a href="<?php echo htmlspecialchars($row['certificate_url']); ?>" 
+                                                       class="btn btn-sm btn-info"
+                                                       download>
+                                                        <i class="bi bi-download"></i> Download
+                                                    </a>
+                                                </div>
                                             <?php else: ?>
                                                 <form action="certificates.php" method="post" enctype="multipart/form-data">
                                                     <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
