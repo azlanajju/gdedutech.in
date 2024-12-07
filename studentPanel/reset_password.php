@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../Configurations/config.php';
 
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
