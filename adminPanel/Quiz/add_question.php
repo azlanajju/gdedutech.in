@@ -25,12 +25,12 @@ if (mysqli_num_rows($quiz_query) == 0) {
 // Handle form submission for adding a question
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = [];
-    $content = trim($_POST['content']);
-    $option_a = trim($_POST['option_a']);
-    $option_b = trim($_POST['option_b']);
-    $option_c = trim($_POST['option_c']);
-    $option_d = trim($_POST['option_d']);
-    $correct_option = $_POST['correct_option'];
+    $content = mysqli_real_escape_string($conn, trim($_POST['content']));
+    $option_a = mysqli_real_escape_string($conn, trim($_POST['option_a']));
+    $option_b = mysqli_real_escape_string($conn, trim($_POST['option_b']));
+    $option_c = mysqli_real_escape_string($conn, trim($_POST['option_c']));
+    $option_d = mysqli_real_escape_string($conn, trim($_POST['option_d']));
+    $correct_option = mysqli_real_escape_string($conn, $_POST['correct_option']);
 
     // Validate inputs
     if (empty($content)) $errors[] = "Question content is required.";
@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
