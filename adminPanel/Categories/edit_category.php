@@ -13,7 +13,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 <?php
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Check if category ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {

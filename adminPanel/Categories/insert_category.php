@@ -13,7 +13,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 <?php
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
