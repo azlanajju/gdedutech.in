@@ -403,13 +403,15 @@ $lessons_result->data_seek(0);
                                             </p>
                                         <?php else: ?>
                                             <?php
-                                            // Fetch quiz details
+                                            // Fetch quiz details and enrollment status
                                             $quiz_query = "SELECT q.*, 
-                                                         (SELECT COUNT(*) FROM Questions WHERE quiz_id = q.quiz_id) as question_count
+                                                         (SELECT COUNT(*) FROM Questions WHERE quiz_id = q.quiz_id) as question_count,
+                                                         e.assessment_status
                                                          FROM Quizzes q 
-                                                         WHERE q.course_id = ?";
+                                                         JOIN Enrollments e ON q.course_id = e.course_id
+                                                         WHERE q.course_id = ? AND e.student_id = ?";
                                             $quiz_stmt = $conn->prepare($quiz_query);
-                                            $quiz_stmt->bind_param('i', $course_id);
+                                            $quiz_stmt->bind_param('ii', $course_id, $user_id);
                                             $quiz_stmt->execute();
                                             $quiz_result = $quiz_stmt->get_result();
                                             ?>
@@ -428,11 +430,23 @@ $lessons_result->data_seek(0);
                                                                 <i class="bi bi-award me-1"></i>
                                                                 <?php echo $quiz['total_marks']; ?> Marks
                                                             </span>
+                                                            <?php if ($quiz['assessment_status'] === 'completed'): ?>
+                                                                <span class="badge bg-success">
+                                                                    <i class="bi bi-check-circle me-1"></i>Completed
+                                                                </span>
+                                                            <?php endif; ?>
                                                         </div>
-                                                        <a href="take_quiz.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
-                                                           class="btn btn-primary mt-3">
-                                                            <i class="bi bi-pencil-square me-2"></i>Start Assessment
-                                                        </a>
+                                                        <?php if ($quiz['assessment_status'] === 'completed'): ?>
+                                                            <a href="view_certificate.php?course_id=<?php echo $course_id; ?>" 
+                                                               class="btn btn-success mt-3">
+                                                                <i class="bi bi-award me-2"></i>View Certificate
+                                                            </a>
+                                                        <?php else: ?>
+                                                            <a href="take_quiz.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
+                                                               class="btn btn-primary mt-3">
+                                                                <i class="bi bi-pencil-square me-2"></i>Start Assessment
+                                                            </a>
+                                                        <?php endif; ?>
                                                     </div>
                                                 <?php endwhile; ?>
                                             <?php else: ?>

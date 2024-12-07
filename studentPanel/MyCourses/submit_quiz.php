@@ -17,7 +17,7 @@ $quiz_id = intval($_POST['quiz_id']);
 $user_id = $_SESSION['user_id'];
 $answers = $_POST['answers'];
 
-// Fetch quiz details and course info
+// Fetch quiz, course info, and questions
 $quiz_query = "SELECT q.*, c.course_id, c.title as course_title 
                FROM Quizzes q 
                JOIN Courses c ON q.course_id = c.course_id 
@@ -26,37 +26,40 @@ $quiz_stmt = $conn->prepare($quiz_query);
 $quiz_stmt->bind_param('i', $quiz_id);
 $quiz_stmt->execute();
 $quiz = $quiz_stmt->get_result()->fetch_assoc();
+$course_id = $quiz['course_id'];
 
-if (!$quiz) {
-    header("Location: my_course.php");
-    exit();
-}
-
-// Calculate score
+// Calculate score and store question details
 $total_questions = 0;
 $correct_answers = 0;
-$question_details = [];
+$question_details = array();
 
 foreach ($answers as $question_id => $selected_answer) {
-    $question_query = "SELECT content, correct_option FROM Questions WHERE question_id = ?";
+    $question_query = "SELECT question_id, content, option_a, option_b, option_c, option_d, correct_option 
+                      FROM Questions WHERE question_id = ?";
     $question_stmt = $conn->prepare($question_query);
     $question_stmt->bind_param('i', $question_id);
     $question_stmt->execute();
     $question = $question_stmt->get_result()->fetch_assoc();
-    
+
     if ($question) {
         $total_questions++;
         $is_correct = ($selected_answer === $question['correct_option']);
         if ($is_correct) {
             $correct_answers++;
         }
-        
-        $question_details[] = [
+
+        // Store question details without correct answer
+        $question_details[] = array(
             'question' => $question['content'],
             'selected' => $selected_answer,
-            'correct' => $question['correct_option'],
-            'is_correct' => $is_correct
-        ];
+            'is_correct' => $is_correct,
+            'options' => array(
+                'A' => $question['option_a'],
+                'B' => $question['option_b'],
+                'C' => $question['option_c'],
+                'D' => $question['option_d']
+            )
+        );
     }
 }
 
@@ -64,11 +67,30 @@ $score_percentage = ($correct_answers / $total_questions) * 100;
 $pass_threshold = 70; // 70% to pass
 $passed = $score_percentage >= $pass_threshold;
 
-// Store quiz result in database
-$conn->begin_transaction();
-
-
+// If passed, update enrollment assessment status
+if ($passed) {
+    $update_query = "UPDATE Enrollments 
+                     SET assessment_status = 'completed' 
+                     WHERE student_id = ? AND course_id = ?";
+    $update_stmt = $conn->prepare($update_query);
+    $update_stmt->bind_param('ii', $user_id, $course_id);
+    $update_stmt->execute();
     
+    // Log the successful completion
+    error_log("Assessment completed - User: $user_id, Course: $course_id, Score: $score_percentage%");
+}
+
+// Check if certificate exists
+$certificate_exists = false;
+if ($passed) {
+    $cert_query = "SELECT certificate_id FROM Certificates 
+                   WHERE student_id = ? AND course_id = ?";
+    $cert_stmt = $conn->prepare($cert_query);
+    $cert_stmt->bind_param('ii', $user_id, $course_id);
+    $cert_stmt->execute();
+    $certificate_exists = ($cert_stmt->get_result()->num_rows > 0);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -159,12 +181,6 @@ $conn->begin_transaction();
                             Option <?php echo htmlspecialchars($detail['selected']); ?>
                         </span>
                     </p>
-                    <?php if (!$detail['is_correct']): ?>
-                        <p class="correct">
-                            <i class="bi bi-check-circle-fill me-1"></i>
-                            Correct Answer: Option <?php echo htmlspecialchars($detail['correct']); ?>
-                        </p>
-                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
 
