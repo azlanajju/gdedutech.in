@@ -79,6 +79,7 @@ CREATE TABLE Enrollments (
     progress DECIMAL(5, 2) DEFAULT 0.00 CHECK (progress >= 0 AND progress <= 100),
     access_status ENUM('active', 'expired', 'canceled') DEFAULT 'active',
     completion_status ENUM('pending', 'completed') DEFAULT 'pending',
+    assessment_status ENUM('pending', 'completed') DEFAULT 'pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
