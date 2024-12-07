@@ -42,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $profile_image_name = null;
             if ($profile_image && $profile_image['error'] == 0) {
                 $profile_image_name = time() . '_' . basename($profile_image['name']);
-                $profile_image_path = "./Profile/student_profile/" . $profile_image_name;
+                $profile_image_path = "./profile/profile_images/" . $profile_image_name;
 
                 // Create uploads directory if it doesn't exist
-                if (!file_exists("./Profile/student_profile/")) {
-                    mkdir("./Profile/student_profile/", 0777, true);
+                if (!file_exists("./profile/profile_images/")) {
+                    mkdir("UPLOADS_DIR", 0777, true);
                 }
 
                 // Move the uploaded file
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ");
             $role = "student"; // Default role
             $status = "active"; // Default status
-            $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name,"student_profile/". $profile_image_name, $role, $status);
+            $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_name, $role, $status);
 
             if ($stmt->execute()) {
                 $_SESSION['success_message'] = "Registration successful! Please login.";
