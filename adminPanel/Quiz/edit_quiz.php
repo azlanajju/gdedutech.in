@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Check if quiz ID is provided
 if (!isset($_GET['id'])) {
