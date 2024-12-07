@@ -1,9 +1,6 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-require '../vendor/autoload.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 $message = '';
 $messageType = '';
@@ -26,13 +23,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("iss", $user['user_id'], $token, $expiry);
         $stmt->execute();
 
-        $mail = new PHPMailer(true); 
-        try {
-            // Your existing PHPMailer configuration...
-            $mail->send();
+        $to = $email;
+        $subject = "Password Reset Request - GD Edu Tech";
+        $reset_link = "https://gdedutech.com/studentPanel/reset_password.php?token=" . $token;
+        
+        $message_body = "Hello " . $user['username'] . ",\n\n";
+        $message_body .= "You have requested to reset your password. Please click the link below to reset your password:\n\n";
+        $message_body .= $reset_link . "\n\n";
+        $message_body .= "This link will expire in 1 hour.\n\n";
+        $message_body .= "If you didn't request this, please ignore this email.\n\n";
+        $message_body .= "Best regards,\nGD Edu Tech Team";
+
+        $headers = "From: noreply@gdedutech.com\r\n";
+        $headers .= "Reply-To: support@gdedutech.com\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion();
+
+        if(mail($to, $subject, $message_body, $headers)) {
             $messageType = 'success';
             $message = "Password reset link has been sent to your email address.";
-        } catch (Exception $e) {
+        } else {
             $messageType = 'danger';
             $message = "Failed to send reset link. Please try again later.";
         }
@@ -120,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <div class="status-container">
             <div class="logo">
-                <img src="./assets/images/logo.png" alt="GD Edu Tech">
+                <img src="../Images/Logos/GD_Only_logo.png" alt="GD Edu Tech">
             </div>
             <h2 class="status-title">Password Reset</h2>
             
