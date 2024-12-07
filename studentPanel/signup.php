@@ -42,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $profile_image_name = null;
             if ($profile_image && $profile_image['error'] == 0) {
                 $profile_image_name = time() . '_' . basename($profile_image['name']);
-                $profile_image_path = "./profile/profile_images/" . $profile_image_name;
+                $profile_image_path = "./Profile/student_profile/" . $profile_image_name;
 
                 // Create uploads directory if it doesn't exist
-                if (!file_exists("./profile/profile_images/")) {
-                    mkdir("./profile/profile_images/", 0777, true);
+                if (!file_exists("./Profile/student_profile/")) {
+                    mkdir("./Profile/student_profile/", 0777, true);
                 }
 
                 // Move the uploaded file
