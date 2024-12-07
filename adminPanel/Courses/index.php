@@ -24,7 +24,7 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
         $_SESSION['message'] = "Error deleting course: " . mysqli_error($conn);
         $_SESSION['message_type'] = "danger";
     }
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
