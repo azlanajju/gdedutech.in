@@ -8,13 +8,13 @@ $redirect_url = 'index.php';
 if (isset($_SESSION['role'])) {
     switch(strtolower($_SESSION['role'])) {
         case 'admin':
-            $redirect_url = './adminPanel/';
+            $redirect_url = '/adminPanel/';
             break;
         case 'staff':
-            $redirect_url = './staffPanel/';
+            $redirect_url = '/staffPanel/';
             break;
         case 'student':
-            $redirect_url = './studentPanel/';
+            $redirect_url = '/studentPanel/';
             break;
     }
 }
