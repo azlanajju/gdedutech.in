@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle course deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {

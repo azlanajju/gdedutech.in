@@ -13,7 +13,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 
 <?php
 // update_progress.php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
