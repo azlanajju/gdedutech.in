@@ -62,7 +62,7 @@ require_once './Configurations/config.php';
                     </p>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
-                    <img src="./Images/Others/career_illustration.gif" alt="Career Illustration" class="img-fluid hero-image">
+                    <img src="./assets/images/Online-resume-2--unscreen.gif" alt="Career Illustration" class="img-fluid hero-image">
                 </div>
             </div>
         </div>
