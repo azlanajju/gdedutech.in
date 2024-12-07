@@ -208,7 +208,7 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
                                                 <td>₹<?php echo number_format($payment['amount'], 2); ?></td>
                                                 <td><?php echo date('Y-m-d H:i', strtotime($payment['payment_date'])); ?></td>
                                                 <td>
-                                                    <img src="../uploads/payment_proofs/<?php echo htmlspecialchars($payment['payment_proof']); ?>" 
+                                                    <img height="50px" src="../uploads/payment_proofs/<?php echo htmlspecialchars($payment['payment_proof']); ?>" 
                                                          class="payment-proof-img"
                                                          data-bs-toggle="modal"
                                                          data-bs-target="#proofModal"
