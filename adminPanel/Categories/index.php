@@ -169,7 +169,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 <table class="table table-hover mb-0">
                                     <thead class="bg-primary text-white">
                                         <tr>
-                                            <th class="py-3 px-4 fw-bold">ID</th>
+                                            <!-- <th class="py-3 px-4 fw-bold">ID</th> -->
                                             <th class="py-3 px-4 fw-bold">Name</th>
                                             <th class="py-3 px-4 fw-bold">Description</th>
                                             <th class="py-3 px-4 fw-bold">Created At</th>
@@ -180,7 +180,6 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                     <tbody>
                                         <?php while ($category = mysqli_fetch_assoc($result)): ?>
                                             <tr class="align-middle">
-                                                <td class="px-4"><?php echo htmlspecialchars($category['category_id']); ?></td>
                                                 <td class="px-4">
                                                     <div class="d-flex align-items-center">
                                                         <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
