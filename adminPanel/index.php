@@ -108,7 +108,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         <div class="col-md-3">
                             <?php
                             // Include the database configuration file
-                            require_once 'config.php';
+                            require_once '../Configurations/config.php';
 
                             // Query to fetch the total number of users and new users for the current month
                             $totalUsersQuery = "
@@ -170,7 +170,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         <div class="col-md-3">
                             <?php
                             // Include the database configuration file
-                            require_once 'config.php';
+                            require_once '../Configurations/config.php';
 
                             // Query to fetch total active courses and new courses added in the last 7 days
                             $activeCoursesQuery = "
@@ -223,7 +223,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         </div>
                         <?php
                         // Include the config file for database connection
-                        include 'config.php';
+                        include '../Configurations/config.php';
 
                         // Initialize variables for course completion
                         $courseCompletion = 0;
@@ -496,7 +496,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <?php
                                 // Include the database configuration file
-                                require_once 'config.php';
+                                require_once '../Configurations/config.php';
 
                                 // Fetch the 10 most recent users
                                 $query = "SELECT username, role FROM Users ORDER BY date_joined DESC LIMIT 10";
@@ -552,7 +552,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <?php
                                 // Include the database configuration file
-                                require_once 'config.php';
+                                require_once '../Configurations/config.php';
 
                                 // Fetch only popular courses
                                 $query = "SELECT title FROM Courses WHERE isPopular = 'yes'";
