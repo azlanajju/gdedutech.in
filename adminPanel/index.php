@@ -346,7 +346,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                         <td class="d-none d-md-table-cell">
                                                             <div class="d-flex align-items-center">
                                                                 <?php if ($activity['profile_image']): ?>
-                                                                    <img src="../studentPanel/profile/student_profile/<?php echo htmlspecialchars($activity['profile_image']); ?>"
+                                                                    <img src="../studentPanel/profile/<?php echo htmlspecialchars($activity['profile_image']); ?>"
                                                                         class="rounded-circle me-2"
                                                                         width="32"
                                                                         height="32"
