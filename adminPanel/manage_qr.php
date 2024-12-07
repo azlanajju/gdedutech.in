@@ -217,7 +217,7 @@ if ($qr_result->num_rows > 0) {
                                         </div>
                                     <?php endif; ?>
 
-                                    <form action="" method="POST" enctype="multipart/form-data">
+                                    <form action="" method="POST" enctype="multipart/form-data" style="text-align: center;">
                                         <label for="qr_code" class="custom-file-upload">
                                             <i class="bi bi-cloud-upload fs-3 mb-2"></i>
                                             <h5>Upload New QR Code</h5>

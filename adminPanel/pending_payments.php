@@ -246,7 +246,7 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img style="width: 100%;" id="proofImage" src="" class="modal-img" alt="Payment Proof">
+                    <img style="max-width: 100%;" id="proofImage" src="" class="modal-img" alt="Payment Proof">
                 </div>
             </div>
         </div>
