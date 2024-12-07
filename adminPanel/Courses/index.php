@@ -145,6 +145,9 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                             <a href="./add_course.php" class="btn btn-primary">
                                 <i class="bi bi-plus-circle me-2"></i>Add New Course
                             </a>
+                            <a href="./certificates.php" class="btn btn-primary ms-2">
+                                <i class="bi bi-award me-2"></i>Certificates
+                            </a>
                         </div>
                     </div>
 
