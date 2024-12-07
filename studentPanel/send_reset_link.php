@@ -10,7 +10,7 @@ $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
-    require_once 'config.php';
+    require_once '../Configurations/config.php';
 
     $stmt = $conn->prepare("SELECT user_id, username FROM Users WHERE email = ?");
     $stmt->bind_param("s", $email);
