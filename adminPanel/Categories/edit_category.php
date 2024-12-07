@@ -19,7 +19,7 @@ require_once '../../Configurations/config.php';
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['message'] = "Invalid category ID.";
     $_SESSION['message_type'] = "danger";
-    header("Location: categories.php");
+    header("Location: ./");
     exit();
 }
 
@@ -35,7 +35,7 @@ $result = $stmt->get_result();
 if ($result->num_rows === 0) {
     $_SESSION['message'] = "Category not found.";
     $_SESSION['message_type'] = "danger";
-    header("Location: categories.php");
+    header("Location: ./");
     exit();
 }
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->execute()) {
                 $_SESSION['message'] = "Category updated successfully.";
                 $_SESSION['message_type'] = "success";
-                header("Location: categories.php");
+                header("Location: ./");
                 exit();
             } else {
                 // Check for duplicate entry

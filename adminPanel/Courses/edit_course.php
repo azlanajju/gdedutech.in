@@ -22,7 +22,7 @@ require_once '../../Configurations/config.php';
 // Get course ID from URL
 $course_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if (!$course_id) {
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
@@ -37,7 +37,7 @@ mysqli_stmt_execute($stmt);
 $course = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
 if (!$course) {
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         mysqli_commit($conn);
-        header("Location: courses.php");
+        header("Location: ./");
         exit();
         
     } catch (Exception $e) {
@@ -465,7 +465,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         
                         <div class="mt-4">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <a href="courses.php" class="btn btn-link">Cancel</a>
+                            <a href="./" class="btn btn-link">Cancel</a>
                         </div>
                     </form>
                 </div>
