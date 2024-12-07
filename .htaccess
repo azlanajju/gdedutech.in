@@ -1,18 +1,1 @@
-# Enable CORS
-Header set Access-Control-Allow-Origin "*"
-Header set Access-Control-Allow-Headers "origin, x-requested-with, content-type"
-Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-
-# Set MIME types for HLS streaming
-AddType application/x-mpegURL .m3u8
-AddType video/MP2T .ts
-
-# Enable mod_headers if not already enabled
-<IfModule !mod_headers.c>
-    LoadModule headers_module modules/mod_headers.so
-</IfModule>
-
-php_value upload_max_filesize 2048M
-php_value post_max_size 2048M
-php_value max_execution_time 300
-php_value memory_limit 512M
+ErrorDocument 404 /404.html

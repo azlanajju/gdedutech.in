@@ -92,7 +92,7 @@
     <div class="container">
         <div class="forgot-container">
             <div class="logo">
-                <img src="./assets/images/logo.png" alt="GD Edu Tech">
+                <img src="../Images/Logos/GD_Only_logo.png" alt="GD Edu Tech">
             </div>
             <h2 class="forgot-title">Forgot Password?</h2>
             <p class="forgot-subtitle">Enter your email address and we'll send you a link to reset your password.</p>
