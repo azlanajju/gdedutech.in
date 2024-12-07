@@ -262,7 +262,7 @@ mysqli_data_seek($lessons_result, 0);
                                             <video controls crossorigin playsinline
                                                    class="course-video"
                                                    <?php echo !$is_unlocked ? 'disabled' : ''; ?>>
-                                                <source src="./course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" type="video/mp4">
+                                                <source src="../../../uploads/course_uploads/course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" type="video/mp4">
                                             </video>
                                         </div>
                                         <?php endwhile; ?>
