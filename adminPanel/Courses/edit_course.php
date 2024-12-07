@@ -385,7 +385,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label>Course Thumbnail</label>
                             <?php if ($course['thumbnail']): ?>
                                 <div class="mb-2">
-                                    <img src="./thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                                    <img src="../../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
                                          alt="Current thumbnail" style="max-width: 200px;">
                                 </div>
                             <?php endif; ?>
