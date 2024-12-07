@@ -1,6 +1,6 @@
 <?php
 require_once '../Configurations/config.php'; // Include database configuration
-require_once __DIR__ . '../vendor/autoload.php'; // Load Composer dependencies (including JWT)
+require_once __DIR__ . '/../vendor/autoload.php'; // Load Composer dependencies (including JWT)
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
