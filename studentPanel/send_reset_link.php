@@ -7,50 +7,82 @@ $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
-    require_once '../Configurations/config.php';
-
-    $stmt = $conn->prepare("SELECT user_id, username FROM Users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        $token = bin2hex(random_bytes(50));
-        $expiry = time() + 3600;
-
-        $stmt = $conn->prepare("INSERT INTO password_resets (user_id, token, expiry) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $user['user_id'], $token, $expiry);
-        $stmt->execute();
-
-        $to = $email;
-        $subject = "Password Reset Request - GD Edu Tech";
-        $reset_link = "https://gdedutech.com/studentPanel/reset_password.php?token=" . $token;
-        
-        $message_body = "Hello " . $user['username'] . ",\n\n";
-        $message_body .= "You have requested to reset your password. Please click the link below to reset your password:\n\n";
-        $message_body .= $reset_link . "\n\n";
-        $message_body .= "This link will expire in 1 hour.\n\n";
-        $message_body .= "If you didn't request this, please ignore this email.\n\n";
-        $message_body .= "Best regards,\nGD Edu Tech Team";
-
-        $headers = "From: noreply@gdedutech.com\r\n";
-        $headers .= "Reply-To: support@gdedutech.com\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion();
-
-        if(mail($to, $subject, $message_body, $headers)) {
-            $messageType = 'success';
-            $message = "Password reset link has been sent to your email address.";
-        } else {
-            $messageType = 'danger';
-            $message = "Failed to send reset link. Please try again later.";
-        }
+    
+    // Basic email validation
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $messageType = 'danger';
+        $message = "Please enter a valid email address.";
     } else {
-        $messageType = 'warning';
-        $message = "No account found with that email address.";
+        require_once '../Configurations/config.php';
+
+        // First check if email exists and account is active
+        $stmt = $conn->prepare("SELECT user_id, username, status FROM Users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            
+            // Check if account is active
+            if ($user['status'] !== 'active') {
+                $messageType = 'warning';
+                $message = "This account is not active. Please contact support.";
+            } else {
+                // Check if there's an existing valid reset link
+                $current_time = time();
+                $check_existing = $conn->prepare("SELECT token FROM password_resets WHERE user_id = ? AND expiry > ?");
+                $check_existing->bind_param("ii", $user['user_id'], $current_time);
+                $check_existing->execute();
+                $existing_result = $check_existing->get_result();
+
+                if ($existing_result->num_rows > 0) {
+                    $messageType = 'info';
+                    $message = "A reset link has already been sent to your email. Please check your inbox or spam folder.";
+                } else {
+                    // Generate and send new reset link
+                    $token = bin2hex(random_bytes(50));
+                    $expiry = time() + 3600; // 1 hour expiry
+
+                    $stmt = $conn->prepare("INSERT INTO password_resets (user_id, token, expiry) VALUES (?, ?, ?)");
+                    $stmt->bind_param("iss", $user['user_id'], $token, $expiry);
+                    
+                    if ($stmt->execute()) {
+                        $to = $email;
+                        $subject = "Password Reset Request - GD Edu Tech";
+                        $reset_link = "https://gdedutech.com/studentPanel/reset_password.php?token=" . $token;
+                        
+                        $message_body = "Hello " . $user['username'] . ",\n\n";
+                        $message_body .= "You have requested to reset your password. Please click the link below to reset your password:\n\n";
+                        $message_body .= $reset_link . "\n\n";
+                        $message_body .= "This link will expire in 1 hour.\n\n";
+                        $message_body .= "If you didn't request this, please ignore this email.\n\n";
+                        $message_body .= "Best regards,\nGD Edu Tech Team";
+
+                        $headers = "From: noreply@gdedutech.com\r\n";
+                        $headers .= "Reply-To: support@gdedutech.com\r\n";
+                        $headers .= "X-Mailer: PHP/" . phpversion();
+
+                        if(mail($to, $subject, $message_body, $headers)) {
+                            $messageType = 'success';
+                            $message = "Password reset link has been sent to your email address.";
+                        } else {
+                            $messageType = 'danger';
+                            $message = "Failed to send reset link. Please try again later.";
+                        }
+                    } else {
+                        $messageType = 'danger';
+                        $message = "An error occurred. Please try again later.";
+                    }
+                }
+            }
+        } else {
+            $messageType = 'warning';
+            $message = "No account found with that email address.";
+        }
+        $stmt->close();
+        $conn->close();
     }
-    $stmt->close();
-    $conn->close();
 }
 ?>
 
