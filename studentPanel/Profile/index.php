@@ -177,7 +177,7 @@ $courses_result = $courses_stmt->get_result();
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./" class="nav-link  text-white">
+                            <a href="../MyCourses/" class="nav-link  text-white">
                                 <i class="bi bi-book me-2"></i> My Courses
                             </a>
                         </li>
