@@ -20,7 +20,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 // }
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Check if user ID is provided
 if (!isset($_GET['id']) || empty($_GET['id'])) {

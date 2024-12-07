@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle FAQ deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {

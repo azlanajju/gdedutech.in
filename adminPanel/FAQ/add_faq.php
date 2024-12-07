@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 function logActivity($conn, $user_id, $action, $description, $faq_id) {
     $query = "INSERT INTO ActivityLog (user_id, activity_type, activity_description, related_id, created_at) VALUES (?, ?, ?, ?, NOW())";

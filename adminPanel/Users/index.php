@@ -2,7 +2,7 @@
 session_start();
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle user deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {
