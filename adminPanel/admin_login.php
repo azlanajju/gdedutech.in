@@ -1,4 +1,11 @@
 <?php
+$host = $_SERVER['HTTP_HOST'];
+
+if (strpos($host, 'admin.gdedutech.com') !== false) {
+    header("Location: https://gdedutech.com/adminPanel/admin_login.php");
+}
+?>
+<?php
 require_once '../Configurations/config.php'; // Include database configuration
 require_once __DIR__ . '/../vendor/autoload.php'; // Load Composer dependencies (including JWT)
 
