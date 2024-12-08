@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $enrollment_stmt->execute();
             
             // Fetch student details for email notification
-            $user_query = "SELECT first_name, last_name FROM users WHERE user_id = ?";
+            $user_query = "SELECT first_name, last_name FROM Users WHERE user_id = ?";
             $user_stmt = $conn->prepare($user_query);
             $user_stmt->bind_param("i", $user_id);
             $user_stmt->execute();
