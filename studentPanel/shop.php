@@ -82,7 +82,7 @@ $accessories_result = mysqli_query($conn, $accessories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Shop/shop.php" class="nav-link text-white">
+                            <a href="./Shop/shop.php" class="nav-link text-white active">
                                 <i class="bi bi-shop me-2"></i> Shop
                             </a>
                         </li>
