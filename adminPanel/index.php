@@ -454,14 +454,14 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-primary">
-                                            <i class="bi bi-plus-circle me-2"></i>Add New Course
+                                        <button onclick='window.location.href="./Users/Messages.php"'  class="btn btn-primary">
+                                            <i class="bi bi-plus-circle me-2"></i>Add new Announcement
                                         </button>
-                                        <button class="btn btn-outline-primary">
+                                        <button onclick='window.location.href="./Users/add_user.php"' class="btn btn-outline-primary">
                                             <i class="bi bi-person-plus me-2"></i>Create User
                                         </button>
-                                        <button class="btn btn-outline-primary">
-                                            <i class="bi bi-file-text me-2"></i>Generate Report
+                                        <button onclick='window.location.href="./pending_payments.php"' class="btn btn-outline-primary">
+                                            <i class="bi bi-file-text me-2"></i>Pending Payments
                                         </button>
                                     </div>
                                 </div>
