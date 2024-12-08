@@ -1,7 +1,7 @@
 <?php
 $host = $_SERVER['HTTP_HOST'];
 
-if (strpos($host, 'admin.gdedutech.com') !== false) {
+if (strpos($host, 'admin.gdedutech.com/') !== false) {
     header("Location: https://gdedutech.com/adminPanel");
 }
 ?>
