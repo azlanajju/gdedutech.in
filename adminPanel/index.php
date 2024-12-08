@@ -468,7 +468,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                             </div>
 
                             <!-- System Status -->
-                            <div class="card mt-4">
+                            <!-- <div class="card mt-4">
                                 <div class="card-header bg-white">
                                     <h5 class="card-title mb-0">System Status</h5>
                                 </div>
@@ -492,7 +492,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
