@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ");
                 $role = "student"; // Default role
                 $status = "active"; // Default status
-                $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_name, $role, $status);
+                $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name,`"./Profile/student_profile/". $profile_image_name`, $role, $status);
 
                 if ($stmt->execute()) {
                     $_SESSION['success_message'] = "Registration successful! You will be redirected to the login page in 5 seconds.";
