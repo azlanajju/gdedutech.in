@@ -55,7 +55,7 @@ if (!isset($_SESSION['last_regeneration']) || (time() - $_SESSION['last_regenera
 }
 
 // Fetch student details from the users table
-$user_query = "SELECT email, first_name, last_name FROM users WHERE user_id = ?";
+$user_query = "SELECT email, first_name, last_name FROM Users WHERE user_id = ?";
 $user_stmt = $conn->prepare($user_query);
 $user_stmt->bind_param("i", $user_id);
 $user_stmt->execute();
