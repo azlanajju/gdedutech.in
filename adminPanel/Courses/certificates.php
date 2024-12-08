@@ -22,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['certificate'])) {
     // Move the uploaded file to the specified directory
     if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
         // File is successfully uploaded
-        // Add code here to update the database
+        // Update the database with the new certificate URL
         $query = "INSERT INTO Certificates (student_id, course_id, certificate_url) VALUES (?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, 'iis', $user_id, $course_id, $uploadFile);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+        mysqli_stmt_close(statement: $stmt);
         
         // Redirect to the same page to prevent re-submission
         header('Location: certificates.php');
@@ -79,6 +79,12 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
+    <script>
+        // Function to hide the certificate upload form dynamically
+        function hideForm(formId) {
+            document.getElementById(formId).style.display = 'none';
+        }
+    </script>
 </head>
 
 <body>
@@ -189,7 +195,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                                 </div>
                                             <?php else: ?>
                                                 <!-- Upload form will be hidden after successful upload -->
-                                                <form action="certificates.php" method="post" enctype="multipart/form-data">
+                                                <form id="upload-form-<?php echo $row['user_id']; ?>" action="certificates.php" method="post" enctype="multipart/form-data">
                                                     <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
                                                     <input type="hidden" name="course_id" value="<?php echo $row['course_id']; ?>">
                                                     <div class="input-group mb-3">
