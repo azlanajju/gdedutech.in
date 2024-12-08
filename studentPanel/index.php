@@ -133,19 +133,20 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 4.5em; /* Approximately 3 lines of text */
+            min-height: 4.5em;
+            /* Approximately 3 lines of text */
         }
-        
+
         .course-card {
             height: 100%;
             transition: transform 0.2s;
         }
-        
+
         .course-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .course-card .card-img-top {
             height: 200px;
             object-fit: cover;
@@ -154,13 +155,13 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
 </head>
 
 <body>
-    <div  class="container-fluid">
-        <div  class="row">
+    <div class="container-fluid">
+        <div class="row">
             <!-- side bar  -->
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
+                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
@@ -193,7 +194,11 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                 <i class="bi bi-person me-2"></i> Profile
                             </a>
                         </li>
-                        
+                        <li class="w-100">
+                            <a href="./shop.php" class="nav-link text-white">
+                                <i class="bi bi-shop me-2"></i> Shop
+                            </a>
+                        </li>
                         <li class="w-100 mt-auto">
                             <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
@@ -265,9 +270,9 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                         <?php while ($course = $ongoing_courses_result->fetch_assoc()): ?>
                                             <div class="col-md-6">
                                                 <div class="d-flex align-items-center mb-3">
-                                                    <img src="../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
-                                                         class="rounded me-3" style="width: 80px; height: 80px; object-fit: cover;" 
-                                                         alt="Course">
+                                                    <img src="../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>"
+                                                        class="rounded me-3" style="width: 80px; height: 80px; object-fit: cover;"
+                                                        alt="Course">
                                                     <div>
                                                         <h6 class="mb-1"><?php echo htmlspecialchars($course['title']); ?></h6>
                                                         <p class="text-muted mb-0">
@@ -276,18 +281,18 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                                     </div>
                                                 </div>
                                                 <div class="progress mb-3">
-                                                    <div class="progress-bar bg-success" 
-                                                         style="width: <?php
-                                                            $progress = $course['total_videos'] > 0 ? 
-                                                                ($course['completed_videos'] / $course['total_videos']) * 100 : 0;
-                                                            echo number_format($progress, 0);
-                                                         ?>%">
+                                                    <div class="progress-bar bg-success"
+                                                        style="width: <?php
+                                                                        $progress = $course['total_videos'] > 0 ?
+                                                                            ($course['completed_videos'] / $course['total_videos']) * 100 : 0;
+                                                                        echo number_format($progress, 0);
+                                                                        ?>%">
                                                         <?php echo number_format($progress, 0); ?>%
                                                     </div>
                                                 </div>
                                                 <div class="mt-2">
-                                                    <a href="./MyCourses/course_content.php?id=<?php echo $course['course_id']; ?>" 
-                                                       class="btn btn-primary btn-sm">Continue Learning</a>
+                                                    <a href="./MyCourses/course_content.php?id=<?php echo $course['course_id']; ?>"
+                                                        class="btn btn-primary btn-sm">Continue Learning</a>
                                                 </div>
                                             </div>
                                         <?php endwhile; ?>
@@ -312,7 +317,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                         <p class="card-text text-muted"><?php echo htmlspecialchars($course['description']); ?></p>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span><i class="bi bi-clock"></i> Course Type: <?php echo htmlspecialchars($course['course_type'] ?: 'Undefined'); ?></span>
-                                            <a href="./MyCourses/course.php?id=<?php echo $course['course_id']."&".rand(10000000, 99999999).chr(rand(65, 90)); ?>" class="btn btn-primary">Enroll Now</a>
+                                            <a href="./MyCourses/course.php?id=<?php echo $course['course_id'] . "&" . rand(10000000, 99999999) . chr(rand(65, 90)); ?>" class="btn btn-primary">Enroll Now</a>
                                         </div>
                                     </div>
                                 </div>

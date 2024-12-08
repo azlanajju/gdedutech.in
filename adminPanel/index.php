@@ -55,10 +55,14 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="./Quiz/" class="nav-link">
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="./Quiz/home.php">Home</a></li>
+                                <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
                             <a href="./Schedule/index.php" class="nav-link">
