@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Redirect based on user role
             if ($user['role'] === 'admin') {
                 header("Location: ../adminPanel/");
-            } elseif ($user['role'] === 'staff') {
+            } elseif ($user['role'] === 'Staff') {
                 header("Location: ../staffPanel");
             } else {
                 header("Location: ./");
