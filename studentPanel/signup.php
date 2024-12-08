@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (in_array($profile_image['type'], $allowed_types) && $profile_image['size'] <= 2000000) { // 2MB limit
                     $profile_image_name = time() . '_' . basename($profile_image['name']);
                     $profile_image_path = "./Profile/student_profile/" . $profile_image_name;
-                    $uploading_image_path = "./student_profile/" . $profile_image_name;
+                    $uploading_image_path = "student_profile/" . $profile_image_name;
 
                     
                     // Move the uploaded file
