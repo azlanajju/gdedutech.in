@@ -82,6 +82,7 @@ $conn->close();
             min-height: 100vh;
             display: flex;
             align-items: center;
+            flex-direction: column !important;
         }
         .login-container {
             max-width: 450px;

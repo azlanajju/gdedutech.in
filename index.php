@@ -30,6 +30,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,16 +38,17 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-color);">
         <div class="container">
-            <a class="navbar-brand" href="#"><img style="height: 60px;" src="./Images/logos/GD_Full_logo.png" alt=""></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <a class="navbar-brand" href="#"><img style="height: 40px;" src="./Images/logos/GD_Full_logo.png" alt=""></a>
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-dark"></span>
+                <img src="./Images/Others/menu.png" style="height:35px;" alt=""> </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -80,7 +82,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
             <div class="row align-items-center">
                 <div class="col-lg-6 text-lg-start">
                     <h1 class="display-4 fw-bold mb-4 text-white">
-                        Transform Your Future with 
+                        Transform Your Future with
                         <span class="gradient-text">GD Edu Tech</span>
                     </h1>
                     <p class="lead mb-5 text-white opacity-90">
@@ -249,9 +251,9 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                 <?php foreach ($popular_courses as $course): ?>
                     <div class="col-md-4">
                         <div class="course-card card h-100">
-                            <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
-                                 class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
-                                 style="height: 200px; object-fit: cover;">
+                            <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>"
+                                class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
+                                style="height: 200px; object-fit: cover;">
                             <div class="card-body">
                                 <span class="badge bg-primary mb-2">
                                     <?php echo htmlspecialchars($course['category_name']); ?>
@@ -264,8 +266,8 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                                     <span class="text-muted">
                                         <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
                                     </span>
-                                    <a href="course.php?id=<?php echo $course['course_id']; ?>" 
-                                       class="btn btn-primary">Learn More</a>
+                                    <a href="course.php?id=<?php echo $course['course_id']; ?>"
+                                        class="btn btn-primary">Learn More</a>
                                 </div>
                             </div>
                         </div>
@@ -288,8 +290,8 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                                 <p class="card-text text-muted">
                                     <?php echo $category['course_count']; ?> courses
                                 </p>
-                                <a href="category.php?id=<?php echo $category['category_id']; ?>" 
-                                   class="stretched-link"></a>
+                                <a href="category.php?id=<?php echo $category['category_id']; ?>"
+                                    class="stretched-link"></a>
                             </div>
                         </div>
                     </div>
@@ -333,51 +335,51 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
             </div>
         </div>
     </section>
-   <!-- Image Slider Section -->
-   <!-- Gallery Section -->
-<section class="py-5 bg-light" id="gallery">
-    <div class="container">
-        <h2 class="text-center mb-5 display-6 fw-bold">Our Learning Journey</h2>
-        <div id="galleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
-            <div class="carousel-inner rounded shadow-lg overflow-hidden">
-                <?php
-                $images = glob('./images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-                $chunks = array_chunk($images, 4); // Split images into chunks of 4
-                foreach ($chunks as $index => $chunk): ?>
-                    <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                        <div class="row g-3">
-                            <?php foreach ($chunk as $image): ?>
-                                <div class="col-md-3">
-                                    <div class="gallery-item position-relative overflow-hidden">
-                                        <img src="<?php echo $image; ?>" 
-                                             class="d-block w-100 gallery-image" 
-                                             alt="Gallery Image" 
-                                             style="height: 250px; object-fit: cover; transition: transform 0.3s ease;">
-                                        <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                                            <div class="overlay-content text-center text-white">
-                                                <i class="bi bi-zoom-in fs-3"></i>
+    <!-- Image Slider Section -->
+    <!-- Gallery Section -->
+    <section class="py-5 bg-light" id="gallery">
+        <div class="container">
+            <h2 class="text-center mb-5 display-6 fw-bold">Our Learning Journey</h2>
+            <div id="galleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner rounded shadow-lg overflow-hidden">
+                    <?php
+                    $images = glob('./images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+                    $chunks = array_chunk($images, 4); // Split images into chunks of 4
+                    foreach ($chunks as $index => $chunk): ?>
+                        <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                            <div class="row g-3">
+                                <?php foreach ($chunk as $image): ?>
+                                    <div class="col-md-3">
+                                        <div class="gallery-item position-relative overflow-hidden">
+                                            <img src="<?php echo $image; ?>"
+                                                class="d-block w-100 gallery-image"
+                                                alt="Gallery Image"
+                                                style="height: 250px; object-fit: cover; transition: transform 0.3s ease;">
+                                            <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                                                <div class="overlay-content text-center text-white">
+                                                    <i class="bi bi-zoom-in fs-3"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
-    </div>
-</section>
+    </section>
 
- 
+
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-5">
@@ -423,7 +425,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                 document.querySelector('.navbar').classList.remove('scrolled');
             }
         });
-        
     </script>
 </body>
+
 </html>

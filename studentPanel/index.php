@@ -351,7 +351,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                 <i class="bi bi-shop me-2"></i> Shop
                             </a>
                         </li>
-                        <li class="w-100 mt-auto"></li>
+                        <li class="w-100 mt-auto">
                             <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
@@ -368,7 +368,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col">
-                        <h2>Welcome back, <?php echo htmlspecialchars( $_SESSION['first_name']. " ". $_SESSION['last_name']); ?>! 👋</h2>
+                        <h2>Welcome back, <?php echo htmlspecialchars( $_SESSION['first_name']." ". $_SESSION['last_name']); ?>! 👋</h2>
                         <p class="text-muted">Here's what's happening with your learning journey.</p>
                     </div>
                 </div>
@@ -493,13 +493,15 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                 sidebarToggle.addEventListener('click', function() {
                     sidebar.classList.toggle('show');
                     sidebarOverlay.classList.toggle('show');
-                    document.querySelector('.container-fluid').classList.toggle('shifted'); // Shift content
+                    // Prevent content from shifting
+                    document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : 'auto';
                 });
 
                 sidebarOverlay.addEventListener('click', function() {
                     sidebar.classList.remove('show');
                     sidebarOverlay.classList.remove('show');
-                    document.querySelector('.container-fluid').classList.remove('shifted'); // Shift content back
+                    // Reset body overflow
+                    document.body.style.overflow = 'auto';
                 });
 
                 // Close sidebar when a menu item is clicked
@@ -508,7 +510,8 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                     item.addEventListener('click', function() {
                         sidebar.classList.remove('show');
                         sidebarOverlay.classList.remove('show');
-                        document.querySelector('.container-fluid').classList.remove('shifted'); // Shift content back
+                        // Reset body overflow
+                        document.body.style.overflow = 'auto';
                     });
                 });
             }
