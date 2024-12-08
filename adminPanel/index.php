@@ -1,4 +1,11 @@
 <?php
+$host = $_SERVER['HTTP_HOST'];
+
+if (strpos($host, 'admin.gdedutech.com') !== false) {
+    header("Location: https://gdedutech.com/adminPanel");
+}
+?>
+<?php
 session_start();
 
 // Check if user is logged in and is admin
