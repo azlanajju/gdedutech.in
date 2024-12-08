@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['certificate'])) {
 
     // Move the uploaded file to the specified directory
     if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-        // File is successfully uploaded
+       // File is successfully uploaded
         // Update the database with the new certificate URL
-        $query = "INSERT INTO Certificates (student_id, course_id, certificate_url) VALUES (?, ?, ?)";
+        $query = "UPDATE Certificates SET certificate_url = ? WHERE student_id = ? AND course_id = ?";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, 'iis', $user_id, $course_id, $uploadFile);
+        mysqli_stmt_bind_param($stmt, 'sis', $uploadFile, $user_id, $course_id);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_close(statement: $stmt);
-        
+        mysqli_stmt_close($stmt);
+
         // Redirect to the same page to prevent re-submission
         header('Location: certificates.php');
         exit();
