@@ -28,6 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['certificate'])) {
         mysqli_stmt_bind_param($stmt, 'iis', $user_id, $course_id, $uploadFile);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        
+        // Redirect to the same page to prevent re-submission
+        header('Location: certificates.php');
+        exit();
     } else {
         // Handle the error
         echo "Error uploading the file.";
