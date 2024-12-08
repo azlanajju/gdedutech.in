@@ -1,6 +1,3 @@
-
-
-
 <?php
 session_start();
 
@@ -224,6 +221,11 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                                title="Delete Course">
                                                 <i class="bi bi-trash"></i>
                                             </a>
+                                            <?php if ($course['isPopular']): ?>
+                                                <a href="mark_unpopular.php?id=<?php echo $course['course_id']; ?>" class="btn btn-sm btn-danger">Unpopular</a>
+                                            <?php else: ?>
+                                                <a href="mark_popular.php?id=<?php echo $course['course_id']; ?>" class="btn btn-sm btn-success">Popular</a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>

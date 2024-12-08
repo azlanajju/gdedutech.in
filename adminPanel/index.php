@@ -60,7 +60,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <i class="bi bi-lightbulb me-2"></i> Quiz
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="quizDropdown">
-                                <li><a class="dropdown-item" href="./Quiz/home.php">Home</a></li>
+                                <li><a class="dropdown-item" href="../index.php">Home</a></li>
                                 <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
                             </ul>
                         </li>
