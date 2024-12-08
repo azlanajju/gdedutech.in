@@ -44,8 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
                 if (in_array($profile_image['type'], $allowed_types) && $profile_image['size'] <= 2000000) { // 2MB limit
                     $profile_image_name = time() . '_' . basename($profile_image['name']);
-                    $profile_image_path = "./student_profile/" . $profile_image_name;
+                    $profile_image_path = "./Profile/student_profile/" . $profile_image_name;
+                    $uploading_image_path = "./student_profile/" . $profile_image_name;
 
+                    
                     // Move the uploaded file
                     if (!move_uploaded_file($profile_image['tmp_name'], $profile_image_path)) {
                         $errors[] = "Error uploading profile image.";
@@ -63,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ");
                 $role = "student"; // Default role
                 $status = "active"; // Default status
-                $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_path, $role, $status);
+                $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $uploading_image_path, $role, $status);
 
                 if ($stmt->execute()) {
                     $_SESSION['success_message'] = "Registration successful! You will be redirected to the login page in 5 seconds.";
