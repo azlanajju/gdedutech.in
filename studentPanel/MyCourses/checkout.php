@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $last_name = $user_data['last_name'];
 
                 // Prepare email details
-                $to = "muhammedazlan11@gmail.com"; // Admin's email
+                $to = $adminMail; // Admin's email
                 $subject = "New Enrollment Notification for " . $first_name . " " . $last_name;
                 $message = "Dear Admin,\n\n";
                 $message .= $first_name . " " . $last_name . " has made an enrollment to the course: " . $course['title'] . ".\n";

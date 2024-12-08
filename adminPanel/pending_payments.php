@@ -18,6 +18,7 @@ $pending_query = "
         t.student_id,
         t.course_id,
         u.username,
+        u.email,
         c.title as course_title
     FROM Transactions t
     JOIN Users u ON t.student_id = u.user_id
@@ -57,6 +58,17 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
             $get_ids->execute();
             $ids_result = $get_ids->get_result()->fetch_assoc();
 
+            // Fetch student's email
+            $student_query = $conn->prepare("
+                SELECT email 
+                FROM Users 
+                WHERE user_id = ?
+            ");
+            $student_query->bind_param("i", $ids_result['student_id']);
+            $student_query->execute();
+            $student_result = $student_query->get_result()->fetch_assoc();
+            $student_email = $student_result['email'];
+
             // Update enrollment status
             $update_enrollment = $conn->prepare("
                 UPDATE Enrollments 
@@ -68,8 +80,19 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
             $update_enrollment->bind_param("ii", $ids_result['student_id'], $ids_result['course_id']);
             $update_enrollment->execute();
 
+            // Send email notification to the student
+            $subject = "Payment Approved - Course Enrollment";
+            $message = "Dear Student,\n\n";
+            $message .= "Your payment for the course has been approved. You can now access the course.\n";
+            $message .= "Thank you for your payment!\n\n";
+            $message .= "Best regards,\n";
+            $message .= "The Admin Team";
+
+            $headers = "From: gd-updates@gdedutech.com"; // Replace with a valid sender email
+            mail($student_email, $subject, $message, $headers);
+
             $conn->commit();
-            echo json_encode(['status' => 'success', 'message' => 'Payment approved']);
+            echo json_encode(['status' => 'success', 'message' => 'Payment approved and notification sent']);
         } catch (Exception $e) {
             $conn->rollback();
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
