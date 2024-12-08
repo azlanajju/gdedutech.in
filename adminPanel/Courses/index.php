@@ -1,7 +1,7 @@
 <?php
 $host = $_SERVER['HTTP_HOST'];
 
-if (strpos($host, 'admin.gdedutech.com/') !== false) {
+if (strpos($host, 'admin.gdedutech.com') !== false) {
     header("Location: https://gdedutech.com/adminPanel");
 }
 ?>
@@ -11,10 +11,10 @@ if (strpos($host, 'admin.gdedutech.com/') !== false) {
 session_start();
 
 // Check if user is logged in and is admin
-// if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-//     header('Location: ../admin_login.php');
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../admin_login.php');
+    exit();
+}
 
 // Get admin details from session
 $admin_name = $_SESSION['username'] ?? 'Admin';
