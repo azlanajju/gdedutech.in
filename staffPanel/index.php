@@ -208,10 +208,10 @@ require_once '../Configurations/config.php';
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <a href="./add_lesson.php" class="btn btn-primary">
-                                            <i class="bi bi-plus-circle me-2"></i>Add New Lesson
+                                        <a href="./Courses/add_course.php" class="btn btn-primary">
+                                            <i class="bi bi-plus-circle me-2"></i>Add New Course
                                         </a>
-                                        <a href="./create_quiz.php" class="btn btn-outline-primary">
+                                        <a href="./Quiz/add_quiz.php" class="btn btn-outline-primary">
                                             <i class="bi bi-question-circle me-2"></i>Create Quiz
                                         </a>
                                         <a href="./view_progress.php" class="btn btn-outline-primary">
