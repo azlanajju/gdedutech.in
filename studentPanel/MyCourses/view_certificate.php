@@ -38,7 +38,7 @@ error_log("Course data: " . print_r($course, true));
 // Get admin contact details from settings
 $contact_query = "SELECT value FROM AdminSettings WHERE setting_key = 'support_email'";
 $contact_result = $conn->query($contact_query);
-$support_email = $contact_result->fetch_assoc()['value'] ?? 'support@gdedutech.in';
+$support_email = $contact_result->fetch_assoc()['value'] ?? 'support@gdedutech.com';
 ?>
 
 <!DOCTYPE html>
