@@ -17,7 +17,7 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
         $_SESSION['message_type'] = "danger";
     }
 
-    header("Location: users.php");
+    header("Location: ./");
     exit();
 }
 
