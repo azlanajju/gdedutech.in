@@ -67,6 +67,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $enrollment_stmt->bind_param("ii", $user_id, $course_id);
             $enrollment_stmt->execute();
             
+            // Fetch student details for email notification
+            $user_query = "SELECT first_name, last_name FROM users WHERE user_id = ?";
+            $user_stmt = $conn->prepare($user_query);
+            $user_stmt->bind_param("i", $user_id);
+            $user_stmt->execute();
+            $user_result = $user_stmt->get_result();
+
+            if ($user_result->num_rows > 0) {
+                $user_data = $user_result->fetch_assoc();
+                $first_name = $user_data['first_name'];
+                $last_name = $user_data['last_name'];
+
+                // Prepare email details
+                $to = "muhammedazlan11@gmail.com"; // Admin's email
+                $subject = "New Enrollment Notification for " . $first_name . " " . $last_name;
+                $message = "Dear Admin,\n\n";
+                $message .= $first_name . " " . $last_name . " has made an enrollment to the course: " . $course['title'] . ".\n";
+                $message .= "Payment has been completed. Please verify and approve the payment to allow the student to access the course.\n\n";
+                $message .= "Best regards,\n";
+                $message .= "The System";
+
+                // Send the email
+                $headers = "From: gd-updates@gdedutech.com"; // Replace with a valid sender email
+                if (mail($to, $subject, $message, $headers)) {
+                    // Email sent successfully
+                    error_log("Email sent to admin regarding enrollment for " . $first_name . " " . $last_name);
+                } else {
+                    // Handle email sending failure
+                    error_log("Failed to send email to admin regarding enrollment for " . $first_name . " " . $last_name);
+                }
+            }
+
             header("Location: payment_confirmation.php");
             exit();
         }

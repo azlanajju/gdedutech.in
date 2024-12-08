@@ -75,7 +75,7 @@ if ($passed) {
     $update_stmt = $conn->prepare($update_query);
     $update_stmt->bind_param('ii', $user_id, $course_id);
     $update_stmt->execute();
-    
+
     // Log the successful completion
     error_log("Assessment completed - User: $user_id, Course: $course_id, Score: $score_percentage%");
 
@@ -114,6 +114,7 @@ if ($passed) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,20 +127,23 @@ if ($passed) {
             min-height: 100vh;
             padding: 40px 0;
         }
+
         .result-container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             padding: 30px;
         }
+
         .result-header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid #edf2f7;
         }
+
         .score-card {
             text-align: center;
             padding: 20px;
@@ -147,20 +151,24 @@ if ($passed) {
             border-radius: 15px;
             background: <?php echo $passed ? '#d4edda' : '#f8d7da'; ?>;
         }
+
         .question-review {
             background: #f8f9fa;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 15px;
         }
+
         .correct {
             color: #28a745;
         }
+
         .incorrect {
             color: #dc3545;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="result-container">
@@ -194,7 +202,7 @@ if ($passed) {
                         <?php echo htmlspecialchars($detail['question']); ?>
                     </h5>
                     <p>
-                        Your Answer: 
+                        Your Answer:
                         <span class="<?php echo $detail['is_correct'] ? 'correct' : 'incorrect'; ?>">
                             <i class="bi bi-<?php echo $detail['is_correct'] ? 'check' : 'x'; ?>-circle-fill me-1"></i>
                             Option <?php echo htmlspecialchars($detail['selected']); ?>
@@ -205,18 +213,18 @@ if ($passed) {
 
             <div class="mt-4 d-flex gap-3 justify-content-center">
                 <?php if ($passed): ?>
-                    <a href="view_certificate.php?course_id=<?php echo $quiz['course_id']; ?>" 
-                       class="btn btn-success">
+                    <a href="view_certificate.php?course_id=<?php echo $quiz['course_id']; ?>"
+                        class="btn btn-success">
                         <i class="bi bi-award me-2"></i>View Certificate
                     </a>
                 <?php else: ?>
-                    <a href="take_quiz.php?quiz_id=<?php echo $quiz_id; ?>" 
-                       class="btn btn-primary">
+                    <a href="take_quiz.php?quiz_id=<?php echo $quiz_id; ?>"
+                        class="btn btn-primary">
                         <i class="bi bi-arrow-repeat me-2"></i>Retry Quiz
                     </a>
                 <?php endif; ?>
-                <a href="course_content.php?id=<?php echo $quiz['course_id']; ?>" 
-                   class="btn btn-secondary">
+                <a href="course_content.php?id=<?php echo $quiz['course_id']; ?>"
+                    class="btn btn-secondary">
                     <i class="bi bi-arrow-left me-2"></i>Back to Course
                 </a>
             </div>
@@ -225,4 +233,5 @@ if ($passed) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+
+</html>
