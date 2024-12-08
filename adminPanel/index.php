@@ -223,7 +223,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                     <h6 class="card-title">Total Revenue</h6>
                                     <h2>₹
                                         0
-                                </h2>
+                                    </h2>
                                     <p class="mb-0"><i class="bi bi-arrow-up"></i> 8% this month</p>
                                 </div>
                             </div>
@@ -353,11 +353,15 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                         <td class="d-none d-md-table-cell">
                                                             <div class="d-flex align-items-center">
                                                                 <?php if ($activity['profile_image']): ?>
-                                                                    <img src="../studentPanel/Profile/<?php echo htmlspecialchars($activity['profile_image']); ?>"
+                                                                    <img
+                                                                        src="<?php echo !empty($activity['profile_image']) && file_exists('../studentPanel/Profile/' . $activity['profile_image'])
+                                                                                    ? '../studentPanel/Profile/' . htmlspecialchars($activity['profile_image'])
+                                                                                    : '../assets/images/default-avatar.png'; ?>"
                                                                         class="rounded-circle me-2"
                                                                         width="32"
                                                                         height="32"
                                                                         alt="Profile">
+
                                                                 <?php else: ?>
                                                                     <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
                                                                         style="width: 32px; height: 32px;">
