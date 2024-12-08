@@ -454,8 +454,8 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <button onclick='window.location.href="./Users/Messages.php"'  class="btn btn-primary">
-                                            <i class="bi bi-plus-circle me-2"></i>Add new Announcement
+                                        <button onclick='window.location.href="./Users/Messages"'  class="btn btn-primary">
+                                            <i class="bi bi-plus-circle me-2"></i>Add an Announcement
                                         </button>
                                         <button onclick='window.location.href="./Users/add_user.php"' class="btn btn-outline-primary">
                                             <i class="bi bi-person-plus me-2"></i>Create User
