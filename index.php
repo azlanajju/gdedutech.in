@@ -333,6 +333,51 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
             </div>
         </div>
     </section>
+   <!-- Image Slider Section -->
+   <!-- Gallery Section -->
+<section class="py-5 bg-light" id="gallery">
+    <div class="container">
+        <h2 class="text-center mb-5 display-6 fw-bold">Our Learning Journey</h2>
+        <div id="galleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner rounded shadow-lg overflow-hidden">
+                <?php
+                $images = glob('./images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+                $chunks = array_chunk($images, 4); // Split images into chunks of 4
+                foreach ($chunks as $index => $chunk): ?>
+                    <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                        <div class="row g-3">
+                            <?php foreach ($chunk as $image): ?>
+                                <div class="col-md-3">
+                                    <div class="gallery-item position-relative overflow-hidden">
+                                        <img src="<?php echo $image; ?>" 
+                                             class="d-block w-100 gallery-image" 
+                                             alt="Gallery Image" 
+                                             style="height: 250px; object-fit: cover; transition: transform 0.3s ease;">
+                                        <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                                            <div class="overlay-content text-center text-white">
+                                                <i class="bi bi-zoom-in fs-3"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+ 
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-5">
