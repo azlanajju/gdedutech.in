@@ -80,7 +80,7 @@ if ($passed) {
     error_log("Assessment completed - User: $user_id, Course: $course_id, Score: $score_percentage%");
 
     // Prepare email details
-    $to = "muhammedazlan11@gmail.com"; // Admin's email
+    $to = $adminMail;// Admin's email
     $subject = "Certificate Issuance Request for " . $_SESSION['first_name'] . " " . $_SESSION['last_name'];
     $message = "Dear Admin,\n\n";
     $message .= $_SESSION['first_name'] . " " . $_SESSION['last_name'] . " has completed the quiz for the course: " . $quiz['title'] . ".\n";
@@ -89,7 +89,7 @@ if ($passed) {
     $message .= "The System";
 
     // Send the email
-    $headers = "From: updates@gdedutech.com"; // Replace with a valid sender email
+    $headers = "From: gd-updates@gdedutech.com"; // Replace with a valid sender email
     if (mail($to, $subject, $message, $headers)) {
         // Email sent successfully
         error_log("Email sent to admin regarding certificate issuance for " . $_SESSION['first_name'] . " " . $_SESSION['last_name']);

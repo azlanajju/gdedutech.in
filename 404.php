@@ -136,7 +136,7 @@ if (isset($_SESSION['role'])) {
 </head>
 <body>
     <div class="error-container">
-        <img src="./Images/Others/404.png" 
+        <img src="/Images/Others/404.png" 
              alt="Lost Astronaut" 
              class="lost-astronaut">
         <h2 class="error-message">Houston, We Have a Problem!</h2>

@@ -57,10 +57,10 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         </li>
                         <li class="w-100 dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                                <i class="bi bi-lightbulb me-2"></i> Home contents
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="quizDropdown">
-                                <li><a class="dropdown-item" href="../index.php">Home</a></li>
+                                <li><a class="dropdown-item" href="../index.php">Career portal</a></li>
                                 <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
                             </ul>
                         </li>
