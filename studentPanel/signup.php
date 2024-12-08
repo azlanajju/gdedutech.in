@@ -77,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 <?php if (isset($registration_success) && $registration_success): ?>
                     <div>
-                        <p><?php echo $_SESSION['success_message']; ?></p>
                         <script>
                             setTimeout(() => {
                                 window.location.href = "./login.php"; // Redirect to the login page
@@ -121,6 +120,7 @@ if (isset($_SESSION['success_message'])) {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             padding: 40px 0;
         }
