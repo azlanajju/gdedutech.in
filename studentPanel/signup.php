@@ -65,12 +65,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $status = "active"; // Default status
                 $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_name, $role, $status);
 
+                
                 if ($stmt->execute()) {
                     $_SESSION['success_message'] = "Registration successful! Please login.";
                     $registration_success = true;
                 } else {
                     $errors[] = "Error: " . $stmt->error;
                 }
+                ?>
+                
+                <?php if (isset($registration_success) && $registration_success): ?>
+                    <div>
+                        <p>Registration successful! You will be redirected to the login page in 5 seconds...</p>
+                        <script>
+                            setTimeout(() => {
+                                window.location.href = "./login.php"; // Redirect to the login page
+                            }, 5000); // 5000 milliseconds = 5 seconds
+                        </script>
+                    </div>
+                <?php endif; 
+                
 
                 $stmt->close();
             }
