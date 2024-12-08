@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $uploading_image_path, $role, $status);
 
                 if ($stmt->execute()) {
-                    $_SESSION['success_message'] = "Registration successful! You will be redirected to the login page in 5 seconds.";
+                    $_SESSION['success_message'] = "Registration successful! You will be redirected to the login page.";
                     $registration_success = true;
                 } else {
                     $errors[] = "Error: " . $stmt->error;

@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($user['role'] === 'admin') {
                 header("Location: ../adminPanel/");
             } elseif ($user['role'] === 'staff') {
-                header("Location: staff_dashboard.php");
+                header("Location: ./staffPanel");
             } else {
                 header("Location: ./");
             }
