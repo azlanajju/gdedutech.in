@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
                 if (in_array($profile_image['type'], $allowed_types) && $profile_image['size'] <= 2000000) { // 2MB limit
                     $profile_image_name = time() . '_' . basename($profile_image['name']);
-                    $profile_image_path = "./profile/profile_images/" . $profile_image_name;
+                    $profile_image_path = "./Profile/student_profile/" . $profile_image_name;
 
                     // Move the uploaded file
                     if (!move_uploaded_file($profile_image['tmp_name'], $profile_image_path)) {
