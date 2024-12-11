@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $message .= "The System";
 
                 // Send the email
-                $headers = "From: gd-updates@gdedutech.com"; // Replace with a valid sender email
+                $headers = "From: payment-alerts@gdedutech.com"; // Replace with a valid sender email
                 if (mail($to, $subject, $message, $headers)) {
                     // Email sent successfully
                     error_log("Email sent to admin regarding enrollment for " . $first_name . " " . $last_name);
