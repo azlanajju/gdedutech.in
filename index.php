@@ -386,6 +386,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
+                    <img height="50px" src="./Images/Logos/gd_edutech_logo.png" alt="">
                     <h5>About GD Edu Tech</h5>
                     <p>Transforming education through technology. Learn, grow, and succeed with our platform.</p>
                 </div>
