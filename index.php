@@ -45,7 +45,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-color);">
         <div class="container">
-            <a class="navbar-brand" href="#"><img style="height: 40px;" src="./Images/logos/GD_Full_logo.png" alt=""></a>
+            <a class="navbar-brand" href="#"><img style="height: 40px;" src="./Images/Logos/GD_Full_logo.png" alt=""></a>
             <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon text-dark"></span>
                 <img src="./Images/Others/menu.png" style="height:35px;" alt=""> </button>
@@ -343,7 +343,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
             <div id="galleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
                 <div class="carousel-inner rounded shadow-lg overflow-hidden">
                     <?php
-                    $images = glob('./images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+                    $images = glob('./Images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
                     $chunks = array_chunk($images, 4); // Split images into chunks of 4
                     foreach ($chunks as $index => $chunk): ?>
                         <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
