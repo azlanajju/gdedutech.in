@@ -95,14 +95,52 @@ if (isset($_SESSION['success'])) {
             border-color: #3498DB;
             box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
         }
+
+        @media (max-width: 768px) {
+
+
+            /* Styles for the fixed sidebar (mobile only) */
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 70vw;
+                /* Sidebar width */
+                height: 100vh;
+                /* Full height */
+                background-color: #2c3e50;
+                /* Sidebar background color */
+                z-index: 1000;
+                /* Ensure sidebar is above other content */
+                transform: translateX(-100%);
+                /* Initially hidden */
+                transition: transform 0.3s ease;
+                /* Smooth transition */
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+                /* Show sidebar */
+            }
+
+            .main-content.hidden {
+                display: none;
+                /* Hide main content when sidebar is open */
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <!-- Sidebar for mobile -->
+            <div class="col-auto d-md-none">
+                <button class="btn btn-primary" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <div class="col-auto sidebar" id="sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 fw-bolder" style="display: flex;align-items:center;">
@@ -155,7 +193,7 @@ if (isset($_SESSION['success'])) {
             </div>
 
             <!-- Main Content -->
-            <div class="col py-3">
+            <div class="col py-3 mainContent">
                 <div class="container">
                     <?php echo $alert; ?>
 
@@ -309,6 +347,21 @@ if (isset($_SESSION['success'])) {
             if (selectedDateTime < now) {
                 e.preventDefault();
                 alert('Please select a future date and time for the meeting.');
+            }
+        });
+
+        // Sidebar toggle functionality for mobile
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.getElementById('sidebarToggle');
+
+        toggleButton.addEventListener('click', function() {
+            sidebar.classList.toggle('show'); // Toggle sidebar visibility
+        });
+
+        // Close sidebar when clicking outside of it
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !toggleButton.contains(event.target) && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show'); // Hide sidebar
             }
         });
     </script>

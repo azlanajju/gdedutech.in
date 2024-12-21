@@ -34,7 +34,6 @@ $categories_result = $conn->query($categories_query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
-    <link rel="stylesheet" href="../../css/customBootstrap.css">
 
 
     <style>
@@ -116,19 +115,24 @@ $categories_result = $conn->query($categories_query);
             }
 
         }
+
+
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <!-- Sidebar for mobile -->
+            <div class="col-auto d-md-none">
+                <button class="btn btn-primary" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <div class="col-auto sidebar" id="sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;">
-                            <img height="35px" src="../../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech
-                        </span>
+                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
@@ -142,17 +146,17 @@ $categories_result = $conn->query($categories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./" class="nav-link active">
+                            <a href="../Categories/" class="nav-link active">
                                 <i class="bi bi-grid me-2"></i> Categories
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../Schedule/" class="nav-link text-white">
+                            <a href="../Schedule" class="nav-link text-white">
                                 <i class="bi bi-calendar-event me-2"></i> Schedule
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../Messages/" class="nav-link text-white">
+                            <a href="../Messages" class="nav-link text-white">
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
@@ -176,58 +180,67 @@ $categories_result = $conn->query($categories_query);
             </div>
 
             <!-- Main Content -->
-            <div class="col py-3">
-                <h3 class="mb-4">Course Categories</h3>
-                <!-- Existing content for categories -->
-                <div class="row g-4">
-                    <?php while ($category = $categories_result->fetch_assoc()): ?>
-                        <div class="col-md-4">
-                            <div class="card category-card">
-                                <div class="card-body text-center position-relative">
-                                    <span class="category-count">
-                                        <?php echo $category['course_count']; ?> Courses
-                                    </span>
-                                    <div class="category-icon">
-                                        <?php
-                                        // Assign different icons based on category name
-                                        $icon = 'bi-book'; // default icon
-                                        switch (strtolower($category['name'])) {
-                                            case 'programming':
-                                                $icon = 'bi-code-square';
-                                                break;
-                                            case 'design':
-                                                $icon = 'bi-palette';
-                                                break;
-                                            case 'business':
-                                                $icon = 'bi-briefcase';
-                                                break;
-                                            case 'marketing':
-                                                $icon = 'bi-graph-up';
-                                                break;
-                                            case 'music':
-                                                $icon = 'bi-music-note-beamed';
-                                                break;
-                                            case 'photography':
-                                                $icon = 'bi-camera';
-                                                break;
-                                        }
-                                        ?>
-                                        <i class="bi <?php echo $icon; ?>"></i>
+            <div class="col py-3 mainContent">
+                <!-- Category Header -->
+                <div class="category-header mb-4">
+                    <div class="container">
+                        <h2><i class="bi bi-grid me-2"></i>Course Categories</h2>
+                        <p class="text-light mb-0">Explore our wide range of course categories</p>
+                    </div>
+                </div>
+
+                <!-- Categories Grid -->
+                <div class="container">
+                    <div class="row g-4">
+                        <?php while ($category = $categories_result->fetch_assoc()): ?>
+                            <div class="col-md-4">
+                                <div class="card category-card">
+                                    <div class="card-body text-center position-relative">
+                                        <span class="category-count">
+                                            <?php echo $category['course_count']; ?> Courses
+                                        </span>
+                                        <div class="category-icon">
+                                            <?php
+                                            // Assign different icons based on category name
+                                            $icon = 'bi-book'; // default icon
+                                            switch (strtolower($category['name'])) {
+                                                case 'programming':
+                                                    $icon = 'bi-code-square';
+                                                    break;
+                                                case 'design':
+                                                    $icon = 'bi-palette';
+                                                    break;
+                                                case 'business':
+                                                    $icon = 'bi-briefcase';
+                                                    break;
+                                                case 'marketing':
+                                                    $icon = 'bi-graph-up';
+                                                    break;
+                                                case 'music':
+                                                    $icon = 'bi-music-note-beamed';
+                                                    break;
+                                                case 'photography':
+                                                    $icon = 'bi-camera';
+                                                    break;
+                                            }
+                                            ?>
+                                            <i class="bi <?php echo $icon; ?>"></i>
+                                        </div>
+                                        <h4 class="card-title">
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </h4>
+                                        <p class="card-text text-muted">
+                                            <?php echo htmlspecialchars($category['description']); ?>
+                                        </p>
+                                        <a href="category_courses.php?id=<?php echo $category['category_id']; ?>"
+                                            class="btn btn-primary">
+                                            Explore Courses
+                                        </a>
                                     </div>
-                                    <h4 class="card-title">
-                                        <?php echo htmlspecialchars($category['name']); ?>
-                                    </h4>
-                                    <p class="card-text text-muted">
-                                        <?php echo htmlspecialchars($category['description']); ?>
-                                    </p>
-                                    <a href="category_courses.php?id=<?php echo $category['category_id']; ?>"
-                                        class="btn btn-primary">
-                                        Explore Courses
-                                    </a>
                                 </div>
                             </div>
-                        </div>
-                    <?php endwhile; ?>
+                        <?php endwhile; ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -236,7 +249,6 @@ $categories_result = $conn->query($categories_query);
     $path = "../../";
     include("../../footer.php");
     ?>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebar = document.getElementById('sidebar');

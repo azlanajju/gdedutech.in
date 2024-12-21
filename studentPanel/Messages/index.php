@@ -22,7 +22,7 @@ $user_name = $_SESSION['username'] ?? 'Student';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
-    <link rel="stylesheet" href="../../css/customBoorstrap.css">
+    <link rel="stylesheet" href="../../css/customBootstrap.css">
 
     <style>
         .sidebar {
@@ -41,6 +41,39 @@ $user_name = $_SESSION['username'] ?? 'Student';
 
         .sidebar .nav-link.active {
             background-color: #34495e;
+        }
+
+        @media (max-width: 768px) {
+
+            /* Styles for the fixed sidebar (mobile only) */
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 70vw;
+                /* Sidebar width */
+                height: 100vh;
+                /* Full height */
+                background-color: #2c3e50;
+                /* Sidebar background color */
+                z-index: 1000;
+                /* Ensure sidebar is above other content */
+                transform: translateX(-100%);
+                /* Initially hidden */
+                transition: transform 0.3s ease;
+                /* Smooth transition */
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+                /* Show sidebar */
+            }
+
+            .main-content.hidden {
+                display: none;
+                /* Hide main content when sidebar is open */
+            }
+
         }
 
         .message-item,
@@ -73,8 +106,13 @@ $user_name = $_SESSION['username'] ?? 'Student';
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <!-- Sidebar for mobile -->
+            <div class="col-auto d-md-none">
+                <button class="btn btn-primary" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <div class="col-auto sidebar" id="sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 fw-bolder" style="display: flex;align-items:center;">
@@ -127,7 +165,7 @@ $user_name = $_SESSION['username'] ?? 'Student';
             </div>
 
             <!-- Main Content -->
-            <div class="col py-3">
+            <div class="col py-3 mainContent">
                 <div class="container-fluid">
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb" class="mb-4">
@@ -177,7 +215,7 @@ $user_name = $_SESSION['username'] ?? 'Student';
                                     else:
                                         ?>
                                         <div class="text-center py-5">
-                                            <i class="bi bi-chat-square-text fs-1 text-muted"></i>
+                                            <i class="bi bi-chat-square-dots fs-1 text-muted"></i>
                                             <p class="text-muted mt-2">No messages found</p>
                                         </div>
                                     <?php endif; ?>
@@ -298,12 +336,29 @@ $user_name = $_SESSION['username'] ?? 'Student';
             </div>
         </div>
     </div>
+
     <?php
     $path = "../../";
     include("../../footer.php");
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Sidebar toggle functionality for mobile
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.getElementById('sidebarToggle');
+
+        toggleButton.addEventListener('click', function() {
+            sidebar.classList.toggle('show'); // Toggle sidebar visibility
+        });
+
+        // Close sidebar when clicking outside of it
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !toggleButton.contains(event.target) && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show'); // Hide sidebar
+            }
+        });
+
+        // Toggle answer visibility
         document.addEventListener('DOMContentLoaded', function() {
             const toggleButtons = document.querySelectorAll('.qa-item .toggle-answer');
 
@@ -319,34 +374,6 @@ $user_name = $_SESSION['username'] ?? 'Student';
                     const icon = this.querySelector('i');
                     icon.className = isHidden ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
                     this.innerHTML = icon.outerHTML + (isHidden ? ' Hide Answer' : ' Show Answer');
-                });
-            });
-
-            // Add delete functionality
-            document.querySelectorAll('.delete-question').forEach(button => {
-                button.addEventListener('click', function() {
-                    if (confirm('Are you sure you want to delete this question?')) {
-                        const questionId = this.dataset.questionId;
-                        fetch('delete_question.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                },
-                                body: 'question_id=' + questionId
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    this.closest('.qa-item').remove();
-                                } else {
-                                    alert('Error deleting question: ' + data.message);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                alert('An error occurred while deleting the question');
-                            });
-                    }
                 });
             });
         });

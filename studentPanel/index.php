@@ -395,7 +395,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
 
                 <!-- Statistics Cards -->
                 <div class="row g-4 mb-4">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card stats-card">
                             <div class="card-body">
                                 <h5 class="card-title">Enrolled Courses</h5>
@@ -404,16 +404,8 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Hours Learned</h5>
-                                <h2><?php echo number_format($stats_result['total_learning_hours'] / 100, 1); ?></h2>
-                                <p class="mb-0"><i class="bi bi-arrow-up"></i> Hours this week</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
+
+                    <div class="col-md-4">
                         <div class="card stats-card">
                             <div class="card-body">
                                 <h5 class="card-title">Assignments</h5>
@@ -422,7 +414,8 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+
+                    <div class="col-md-4">
                         <div class="card stats-card">
                             <div class="card-body">
                                 <h5 class="card-title">Certificates</h5>

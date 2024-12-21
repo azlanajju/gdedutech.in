@@ -26,11 +26,8 @@ $accessories_result = mysqli_query($conn, $accessories_query);
     <style>
         .img-square {
             width: 100%;
-            /* Make the image take the full width of the card */
             height: 300px;
-            /* Set a fixed height */
             object-fit: cover;
-            /* Cover the area while maintaining aspect ratio */
         }
 
         .course-card {
@@ -41,6 +38,40 @@ $accessories_result = mysqli_query($conn, $accessories_query);
             transform: translateY(-5px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+        @media (max-width: 768px) {
+
+        /* Sidebar styles */
+        .sidebar {
+            transition: transform 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2c3e50;
+            z-index: 1000;
+            transform: translateX(-100%);
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+    }
     </style>
 </head>
 
@@ -51,7 +82,9 @@ $accessories_result = mysqli_query($conn, $accessories_query);
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
+                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;">
+                            <img height="35px" src="../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech
+                        </span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
@@ -70,12 +103,12 @@ $accessories_result = mysqli_query($conn, $accessories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Schedule" class="nav-link text-white">
+                            <a href="./Schedule/" class="nav-link text-white">
                                 <i class="bi bi-calendar-event me-2"></i> Schedule
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Messages" class="nav-link text-white">
+                            <a href="./Messages/" class="nav-link text-white">
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
@@ -85,7 +118,7 @@ $accessories_result = mysqli_query($conn, $accessories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Shop/shop.php" class="nav-link text-white active">
+                            <a href="./shop.php" class="nav-link text-white active">
                                 <i class="bi bi-shop me-2"></i> Shop
                             </a>
                         </li>
@@ -99,7 +132,10 @@ $accessories_result = mysqli_query($conn, $accessories_query);
             </div>
 
             <!-- Main Content -->
-            <div class="col py-3">
+            <div class="col py-3     d-md-none">
+                <button id="sidebarToggle" class="btn btn- ">
+                    <i class="bi bi-list"></i> 
+                </button>
                 <div class="container-fluid">
                     <div class="row mb-4">
                         <div class="col">
@@ -133,7 +169,38 @@ $accessories_result = mysqli_query($conn, $accessories_query);
         </div>
     </div>
 
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                sidebarOverlay.classList.toggle('show');
+                document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : 'auto';
+            });
+
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Close sidebar when a menu item is clicked
+            const menuItems = document.querySelectorAll('.sidebar-menu .nav-link');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
