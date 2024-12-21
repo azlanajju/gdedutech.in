@@ -65,4 +65,25 @@ body {
         position: static;
         min-height: auto;
     }
+
+
+    .d-md-none {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white;
+        padding: 10px 0px;
+        width: 100vw;
+        padding-left: 10px;
+        z-index: 100;
+    }
+    
+    .d-md-none button{
+    margin-left: 10px;
+    }
+    
+    .mainContent{
+        margin-top: 50px;
+    }
 }
+

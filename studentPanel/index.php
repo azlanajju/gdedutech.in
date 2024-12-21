@@ -187,38 +187,58 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
 
         @media (max-width: 768px) {
             .sidebar {
-                position: fixed; /* Keep sidebar fixed */
-                top: 0; /* Align to the top */
-                left: -250px; /* Hide sidebar off-screen */
-                width: 250px; /* Fixed width for sidebar */
-                height: 100vh; /* Full height */
-                z-index: 1050; /* Ensure it overlays content */
-                background-color: #343a40; /* Dark background for sidebar */
-                transition: left 0.3s ease; /* Smooth transition */
+                position: fixed;
+                /* Keep sidebar fixed */
+                top: 0;
+                /* Align to the top */
+                left: -250px;
+                /* Hide sidebar off-screen */
+                width: 250px;
+                /* Fixed width for sidebar */
+                height: 100vh;
+                /* Full height */
+                z-index: 1050;
+                /* Ensure it overlays content */
+                background-color: #343a40;
+                /* Dark background for sidebar */
+                transition: left 0.3s ease;
+                /* Smooth transition */
             }
 
             .sidebar.show {
-                left: 0; /* Show sidebar */
+                left: 0;
+                /* Show sidebar */
             }
 
             .sidebar-overlay {
-                display: none; /* Initially hidden */
-                position: fixed; /* Fixed position for overlay */
-                top: 0; /* Align to the top */
-                left: 0; /* Align to the left */
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
-                background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-                z-index: 1040; /* Ensure it overlays content */
+                display: none;
+                /* Initially hidden */
+                position: fixed;
+                /* Fixed position for overlay */
+                top: 0;
+                /* Align to the top */
+                left: 0;
+                /* Align to the left */
+                width: 100%;
+                /* Full width */
+                height: 100%;
+                /* Full height */
+                background: rgba(0, 0, 0, 0.5);
+                /* Semi-transparent background */
+                z-index: 1040;
+                /* Ensure it overlays content */
             }
 
             .sidebar-overlay.show {
-                display: block; /* Show overlay when sidebar is open */
+                display: block;
+                /* Show overlay when sidebar is open */
             }
 
             .content {
-                margin-left: 0; /* Reset margin for mobile */
-                transition: margin-left 0.3s ease; /* Smooth transition for margin */
+                margin-left: 0;
+                /* Reset margin for mobile */
+                transition: margin-left 0.3s ease;
+                /* Smooth transition for margin */
             }
         }
 
@@ -368,7 +388,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col">
-                        <h2>Welcome back, <?php echo htmlspecialchars( $_SESSION['first_name']." ". $_SESSION['last_name']); ?>! 👋</h2>
+                        <h2>Welcome back, <?php echo htmlspecialchars($_SESSION['first_name'] . " " . $_SESSION['last_name']); ?>! 👋</h2>
                         <p class="text-muted">Here's what's happening with your learning journey.</p>
                     </div>
                 </div>
@@ -479,7 +499,14 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                 </div>
             </div>
         </div>
+
+
     </div>
+
+    <?php
+    $path = "../";
+    include("../footer.php"); 
+    ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>

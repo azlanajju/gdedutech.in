@@ -4,7 +4,7 @@ require_once '../../Configurations/config.php';
 
 // Check if user is logged in and is a student
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header('Location: ../login.php');
+    header('Location: Location: ../../login.php');
     exit();
 }
 
@@ -172,43 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
-                    <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-decoration-none">
-                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;color:black;">
-                            <img height="35px" src="../../Images/Logos/GD_Only_logo.png" alt="">&nbsp; GD Edu Tech
-                        </span>
-                    </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
-                        <li class="w-100">
-                            <a href="../" class="nav-link">
-                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../Courses/" class="nav-link">
-                                <i class="bi bi-book me-2"></i> My Courses
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a href="../Profile/" class="nav-link active">
-                                <i class="bi bi-person me-2"></i> Profile
-                            </a>
-                        </li>
-                        <li class="w-100 mt-auto">
-                            <a href="../logout.php" class="nav-link text-danger">
-                                <i class="bi bi-box-arrow-right me-2"></i> Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            
 
             <!-- Main Content -->
             <div class="col py-3">

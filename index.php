@@ -16,7 +16,7 @@ $popular_courses_query = "
     JOIN Users u ON c.created_by = u.user_id
     LEFT JOIN Categories cat ON c.category_id = cat.category_id
     WHERE c.status = 'published' AND c.isPopular = 'yes'
-    LIMIT 6";
+    LIMIT 3";
 $popular_courses = $conn->query($popular_courses_query)->fetch_all(MYSQLI_ASSOC);
 
 // Fetch categories
@@ -39,6 +39,44 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* Mobile responsiveness */
+        @media (max-width: 576px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+                /* Adjusted font size for smaller screens */
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+                /* Adjusted font size for smaller screens */
+            }
+
+            .stats-highlight {
+                flex-direction: column;
+                /* Stack stats vertically */
+                align-items: center;
+                /* Center align items */
+            }
+
+            .stats-highlight div {
+                margin-bottom: 1rem;
+                /* Add spacing between stats */
+            }
+
+            .navbar .btn {
+                width: 100%;
+                /* Full width buttons on mobile */
+                margin: 5px 0;
+                /* Spacing between buttons */
+            }
+
+            .carousel-item img {
+                height: auto;
+                /* Maintain aspect ratio for images */
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -88,11 +126,11 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                     <p class="lead mb-5 text-white opacity-90">
                         Access world-class education from anywhere. Learn at your own pace with expert-led courses.
                     </p>
-                    <div class="d-flex gap-3">
-                        <a href="./studentPanel/signup.php" class="btn btn-light btn-lg px-5 rounded-pill">
+                    <div class="d-flex gap-3 home-btns-container">
+                        <a href="./studentPanel/signup.php" class="btn btn-light btn-lg px-5 rounded-pill home-btns">
                             <i class="bi bi-rocket-takeoff me-2"></i>Start Learning Today
                         </a>
-                        <a href="#courses" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                        <a href="#courses" class="btn btn-outline-light btn-lg px-5 rounded-pill home-btns">
                             <i class="bi bi-play-circle me-2"></i>Explore Courses
                         </a>
                     </div>
@@ -266,7 +304,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                                     <span class="text-muted">
                                         <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
                                     </span>
-                                    <a href="course.php?id=<?php echo $course['course_id']; ?>"
+                                    <a href="./studentPanel/MyCourses/course.php?id=<?php echo $course['course_id']; ?>"
                                         class="btn btn-primary">Learn More</a>
                                 </div>
                             </div>

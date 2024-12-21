@@ -4,7 +4,7 @@ require_once '../../Configurations/config.php';
 
 // Check if user is logged in and is a student
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -80,14 +80,56 @@ $categories_result = $conn->query($categories_query);
             /* background:#d30043 !important ; */
             border-color: var(--accent-color) !important;
         }
+
+        @media (max-width: 768px) {
+
+
+
+            /* Styles for the fixed sidebar */
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 70vw;
+                /* Sidebar width */
+                height: 100vh;
+                /* Full height */
+                background-color: #2c3e50;
+                /* Sidebar background color */
+                z-index: 1000;
+                /* Ensure sidebar is above other content */
+                transform: translateX(-100%);
+                /* Initially hidden */
+                transition: transform 0.3s ease;
+                /* Smooth transition */
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+                /* Show sidebar */
+            }
+
+            .main-content.hidden {
+                display: none;
+                /* Hide main content when sidebar is open */
+            }
+
+        }
+
+
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- side bar  -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <!-- Sidebar for mobile -->
+            <div class="col-auto d-md-none">
+                <button class="btn btn-primary" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <div class="col-auto sidebar" id="sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
@@ -99,7 +141,7 @@ $categories_result = $conn->query($categories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../MyCourses/" class="nav-link  text-white">
+                            <a href="../MyCourses/" class="nav-link text-white">
                                 <i class="bi bi-book me-2"></i> My Courses
                             </a>
                         </li>
@@ -123,7 +165,6 @@ $categories_result = $conn->query($categories_query);
                                 <i class="bi bi-person me-2"></i> Profile
                             </a>
                         </li>
-
                         <li class="w-100 mt-auto">
                             <a href="../../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
@@ -133,9 +174,8 @@ $categories_result = $conn->query($categories_query);
                 </div>
             </div>
 
-
             <!-- Main Content -->
-            <div class="col py-3">
+            <div class="col py-3 mainContent">
                 <!-- Category Header -->
                 <div class="category-header mb-4">
                     <div class="container">
@@ -200,8 +240,26 @@ $categories_result = $conn->query($categories_query);
             </div>
         </div>
     </div>
-
+    <?php
+    $path = "../../";
+    include("../../footer.php");
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.getElementById('sidebarToggle');
+
+        toggleButton.addEventListener('click', function() {
+            sidebar.classList.toggle('show'); // Toggle sidebar visibility
+        });
+
+        // Close sidebar when clicking outside of it
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !toggleButton.contains(event.target) && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show'); // Hide sidebar
+            }
+        });
+    </script>
 </body>
 
 </html>
