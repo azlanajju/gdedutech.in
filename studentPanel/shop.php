@@ -25,9 +25,12 @@ $accessories_result = mysqli_query($conn, $accessories_query);
     <link rel="stylesheet" href="../assets/css/student_dashboard.css">
     <style>
         .img-square {
-            width: 100%; /* Make the image take the full width of the card */
-            height: 300px; /* Set a fixed height */
-            object-fit: cover; /* Cover the area while maintaining aspect ratio */
+            width: 100%;
+            /* Make the image take the full width of the card */
+            height: 300px;
+            /* Set a fixed height */
+            object-fit: cover;
+            /* Cover the area while maintaining aspect ratio */
         }
 
         .course-card {
@@ -116,7 +119,7 @@ $accessories_result = mysqli_query($conn, $accessories_query);
                                         <p class="card-text"><?php echo htmlspecialchars($accessory['description']); ?></p>
                                         <p class="card-text"><strong>Price: ₹<?php echo number_format($accessory['price'], 2); ?></strong></p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a href="purchase.php?id=<?php echo $accessory['id']; ?>" class="btn btn-success me-2">
+                                            <a href="https://wa.me/8867575821?text=I%20am%20interested%20in%20the%20product%20<?php echo urlencode($accessory['name']); ?>.%20Details:%20<?php echo urlencode($accessory['description']); ?>%20Price:%20₹<?php echo number_format($accessory['price'], 2); ?>" class="btn btn-success me-2" target="_blank">
                                                 <i class="bi bi-whatsapp me-1"></i> Buy Now
                                             </a>
                                         </div>

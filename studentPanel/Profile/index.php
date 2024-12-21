@@ -79,6 +79,7 @@ $courses_result = $courses_stmt->get_result();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,51 +93,102 @@ $courses_result = $courses_stmt->get_result();
         .profile-container {
             padding: 30px;
         }
+
         .stats-card {
             background: white;
             border-radius: 10px;
             padding: 20px;
             height: 100%;
             transition: transform 0.3s;
-        }
-    
-        @media (max-width: 768px) {
-
-        /* Styles for the fixed sidebar (mobile only) */
-        #sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 70vw; /* Sidebar width */
-            height: 100vh; /* Full height */
-            background-color: #2c3e50; /* Sidebar background color */
-            z-index: 1000; /* Ensure sidebar is above other content */
-            transform: translateX(-100%); /* Initially hidden */
-            transition: transform 0.3s ease; /* Smooth transition */
-        }
-        #sidebar.show {
-            transform: translateX(0); /* Show sidebar */
+            border-left: 4px solid;
         }
 
-    }
+        .stats-card:nth-child(1),
+        .stats-card:nth-child(1) h3 {
+            border-color: #0d7298;
+            color: #0d7298;
+        }
+
+        .stats-card:nth-child(2),
+        .stats-card:nth-child(2) h3 {
+            border-color: #0d7298;
+            color: #1565C0;
+        }
+
+        .stats-card:nth-child(3),
+        .stats-card:nth-child(3) h3 {
+            border-color: #0d7298;
+            color: #EF6C00;
+        }
+
+        .stats-card:nth-child(4),
+        .stats-card:nth-child(4) h3 {
+            border-color: #0d7298;
+            color: #6A1B9A;
+        }
+
+        .stats-card h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .course-progress {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0d7298;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .certificate-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+            border-left: 4px solid #FF9800;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+
+        .activity-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        .progress-bar {
+            background-color: #0d7298;
+        }
+
+        .badge.bg-success {
+            background-color: #4CAF50 !important;
+        }
+
+        .badge.bg-primary {
+            background-color: #2196F3 !important;
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar for mobile -->
-            <div class="col-auto d-md-none">
-                <button class="btn btn-primary" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
-            </div>
-            <div class="col-auto sidebar" id="sidebar">
+            <!-- side bar  -->
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;">
-                            <img height="35px" src="../../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech
-                        </span>
+                        <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="w-100">
@@ -145,7 +197,7 @@ $courses_result = $courses_stmt->get_result();
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../MyCourses/" class="nav-link text-white">
+                            <a href="../MyCourses/" class="nav-link  text-white">
                                 <i class="bi bi-book me-2"></i> My Courses
                             </a>
                         </li>
@@ -155,20 +207,26 @@ $courses_result = $courses_stmt->get_result();
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../Schedule/" class="nav-link text-white">
+                            <a href="../Schedule" class="nav-link text-white">
                                 <i class="bi bi-calendar-event me-2"></i> Schedule
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="../Messages/" class="nav-link text-white">
+                            <a href="../Messages" class="nav-link text-white">
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./" class="nav-link active">
+                            <a href="../Profile/" class="nav-link active">
                                 <i class="bi bi-person me-2"></i> Profile
                             </a>
                         </li>
+                        <li class="w-100">
+                            <a href="../shop.php" class="nav-link text-white">
+                                <i class="bi bi-shop me-2"></i> Shop
+                            </a>
+                        </li>
+
                         <li class="w-100 mt-auto">
                             <a href="../../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
@@ -186,10 +244,10 @@ $courses_result = $courses_stmt->get_result();
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <img src="<?php echo $user['profile_image'] ?: '../../assets/images/default-avatar.png'; ?>" 
-                                         alt="Profile" 
-                                         class="rounded-circle"
-                                         style="width: 100px; height: 100px; object-fit: cover;">
+                                    <img src="<?php echo $user['profile_image'] ?: '../../assets/images/default-avatar.png'; ?>"
+                                        alt="Profile"
+                                        class="rounded-circle"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
                                 </div>
                                 <div class="col">
                                     <h2><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></h2>
@@ -264,12 +322,12 @@ $courses_result = $courses_stmt->get_result();
                                                 </span>
                                             </div>
                                             <div class="progress mb-3">
-                                                <div class="progress-bar" 
-                                                     role="progressbar" 
-                                                     style="width: <?php echo $course['progress']; ?>%"
-                                                     aria-valuenow="<?php echo $course['progress']; ?>" 
-                                                     aria-valuemin="0" 
-                                                     aria-valuemax="100">
+                                                <div class="progress-bar"
+                                                    role="progressbar"
+                                                    style="width: <?php echo $course['progress']; ?>%"
+                                                    aria-valuenow="<?php echo $course['progress']; ?>"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
                                                     <?php echo $course['progress']; ?>%
                                                 </div>
                                             </div>
@@ -298,9 +356,9 @@ $courses_result = $courses_stmt->get_result();
                                                         Issued on <?php echo date('M d, Y', strtotime($cert['issue_date'])); ?>
                                                     </p>
                                                 </div>
-                                                <a href="<?php echo htmlspecialchars($cert['certificate_url']); ?>" 
-                                                   class="btn btn-sm btn-outline-primary"
-                                                   target="_blank">
+                                                <a href="<?php echo htmlspecialchars($cert['certificate_url']); ?>"
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    target="_blank">
                                                     <i class="bi bi-download"></i>
                                                 </a>
                                             </div>
@@ -316,9 +374,9 @@ $courses_result = $courses_stmt->get_result();
                                     <?php while ($activity = $activities_result->fetch_assoc()): ?>
                                         <div class="activity-item">
                                             <div class="d-flex align-items-center">
-                                                <i class="bi bi-circle-fill me-2 text-<?php 
-                                                    echo $activity['activity_status'] === 'completed' ? 'success' : 'primary'; 
-                                                ?>" style="font-size: 8px;"></i>
+                                                <i class="bi bi-circle-fill me-2 text-<?php
+                                                                                        echo $activity['activity_status'] === 'completed' ? 'success' : 'primary';
+                                                                                        ?>" style="font-size: 8px;"></i>
                                                 <div>
                                                     <p class="mb-0"><?php echo htmlspecialchars($activity['activity_description']); ?></p>
                                                     <small class="text-muted">
@@ -336,27 +394,11 @@ $courses_result = $courses_stmt->get_result();
             </div>
         </div>
     </div>
-
     <?php
     $path = "../../";
     include("../../footer.php");
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Sidebar toggle functionality for mobile
-        const sidebar = document.getElementById('sidebar');
-        const toggleButton = document.getElementById('sidebarToggle');
-
-        toggleButton.addEventListener('click', function() {
-            sidebar.classList.toggle('show'); // Toggle sidebar visibility
-        });
-
-        // Close sidebar when clicking outside of it
-        document.addEventListener('click', function(event) {
-            if (!sidebar.contains(event.target) && !toggleButton.contains(event.target) && sidebar.classList.contains('show')) {
-                sidebar.classList.remove('show'); // Hide sidebar
-            }
-        });
-    </script>
 </body>
+
 </html>

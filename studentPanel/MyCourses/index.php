@@ -101,7 +101,8 @@ $courses_result = $courses_stmt->get_result();
             left: 0;
             height: 100%;
             width: 250px;
-            background-color: #2c3e50; /* Sidebar background color */
+            background-color: #2c3e50;
+            /* Sidebar background color */
             /* Dark background */
             z-index: 1000;
         }
@@ -153,7 +154,7 @@ $courses_result = $courses_stmt->get_result();
 </head>
 
 <body>
-    
+
     <div class="container-fluid">
         <div class="row">
             <!-- Hamburger Button -->
@@ -201,6 +202,11 @@ $courses_result = $courses_stmt->get_result();
                         <li class="w-100">
                             <a href="../Profile/" class="nav-link text-white">
                                 <i class="bi bi-person me-2"></i> Profile
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../shop.php" class="nav-link text-white">
+                                <i class="bi bi-shop me-2"></i> Shop
                             </a>
                         </li>
                         <li class="w-100 mt-auto">

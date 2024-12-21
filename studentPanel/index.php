@@ -367,7 +367,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Shop/shop.php" class="nav-link text-white">
+                            <a href="./shop.php" class="nav-link text-white">
                                 <i class="bi bi-shop me-2"></i> Shop
                             </a>
                         </li>
