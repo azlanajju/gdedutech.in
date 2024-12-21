@@ -62,6 +62,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                             <ul class="dropdown-menu" aria-labelledby="quizDropdown">
                                 <li><a class="dropdown-item" href="../index.php">Career portal</a></li>
                                 <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
+                                <li><a class="dropdown-item" href="./resources/index.php">Resources</a></li>
                             </ul>
                         </li>
                         <li class="w-100">

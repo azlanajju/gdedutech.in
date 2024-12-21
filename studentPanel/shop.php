@@ -118,6 +118,11 @@ $accessories_result = mysqli_query($conn, $accessories_query);
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="./Resources/index.php" class="nav-link text-white">
+                                <i class="bi bi-file-earmark-text me-2"></i> Resources
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="./shop.php" class="nav-link text-white active">
                                 <i class="bi bi-shop me-2"></i> Shop
                             </a>
@@ -132,10 +137,11 @@ $accessories_result = mysqli_query($conn, $accessories_query);
             </div>
 
             <!-- Main Content -->
-            <div class="col py-3     d-md-none">
+            <div class="col py-3 ">
+                <div class="d-md-none">
                 <button id="sidebarToggle" class="btn btn- ">
                     <i class="bi bi-list"></i> 
-                </button>
+                </button></div>
                 <div class="container-fluid">
                     <div class="row mb-4">
                         <div class="col">

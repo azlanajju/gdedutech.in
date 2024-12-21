@@ -325,3 +325,22 @@ CREATE TABLE Documents (
     upload_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
+CREATE TABLE question_papers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    pdf VARCHAR(255) NOT NULL,
+    status ENUM('locked', 'open') NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE -- Correct reference to Users table
+);
+
+CREATE TABLE access_requests ( -- forr question papers
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paper_id INT NOT NULL,
+    user_id INT NOT NULL,
+    request_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'granted') DEFAULT 'pending',
+    FOREIGN KEY (paper_id) REFERENCES question_papers(id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);

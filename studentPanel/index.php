@@ -367,10 +367,16 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                             </a>
                         </li>
                         <li class="w-100">
+                            <a href="./Resources/index.php" class="nav-link text-white">
+                                <i class="bi bi-file-earmark-text me-2"></i> Resources
+                            </a>
+                        </li>
+                        <li class="w-100">
                             <a href="./shop.php" class="nav-link text-white">
                                 <i class="bi bi-shop me-2"></i> Shop
                             </a>
                         </li>
+                        
                         <li class="w-100 mt-auto">
                             <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
