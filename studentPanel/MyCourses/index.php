@@ -101,7 +101,7 @@ $courses_result = $courses_stmt->get_result();
             left: 0;
             height: 100%;
             width: 250px;
-            background-color: #343a40;
+            background-color: #2c3e50; /* Sidebar background color */
             /* Dark background */
             z-index: 1000;
         }

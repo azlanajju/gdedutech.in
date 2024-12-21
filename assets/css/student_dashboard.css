@@ -80,6 +80,9 @@ body {
     
     .d-md-none button{
     margin-left: 10px;
+    background: white !important;
+    color: black !important;
+    border-color: black !important;
     }
     
     .mainContent{
