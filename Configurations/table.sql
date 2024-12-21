@@ -325,7 +325,6 @@ CREATE TABLE Documents (
     upload_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
-<<<<<<< Updated upstream
 CREATE TABLE question_papers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -344,7 +343,6 @@ CREATE TABLE access_requests ( -- forr question papers
     status ENUM('pending', 'granted') DEFAULT 'pending',
     FOREIGN KEY (paper_id) REFERENCES question_papers(id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
-=======
 
 CREATE TABLE Careers (
     job_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -374,5 +372,4 @@ CREATE TABLE job_applications (
     application_date DATETIME NOT NULL,
     status ENUM('Pending', 'Reviewed', 'Shortlisted', 'Rejected') NOT NULL DEFAULT 'Pending',
     FOREIGN KEY (job_id) REFERENCES Careers(job_id)
->>>>>>> Stashed changes
 );
