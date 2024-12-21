@@ -17,7 +17,7 @@ require_once './Configurations/config.php';
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-color);">
         <div class="container">
-            <a class="navbar-brand" href="index.php"><img style="height: 60px;" src="./Images/logos/GD_Full_logo.png" alt=""></a>
+            <a class="navbar-brand" href="index.php"><img style="height: 60px;" src="./Images/Logos/GD_Full_logo.png" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -73,39 +73,41 @@ require_once './Configurations/config.php';
         <div class="container">
             <h2 class="text-center mb-5">Current Openings</h2>
             <div class="row g-4">
-                <!-- Job Card 1 -->
-                <div class="col-md-6">
-                    <div class="card h-100 feature-card">
-                        <div class="card-body">
-                            <h3 class="card-title">Senior Course Instructor</h3>
-                            <span class="badge bg-primary mb-3">Full Time</span>
-                            <p class="card-text">We're looking for experienced instructors to create and deliver high-quality courses in web development, data science, and AI.</p>
-                            <ul class="list-unstyled mb-4">
-                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>5+ years of teaching experience</li>
-                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Strong expertise in relevant technologies</li>
-                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Excellent communication skills</li>
-                            </ul>
-                            <a href="#" class="btn btn-primary">Apply Now</a>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                // Fetch active jobs from the database
+                $sql = "SELECT * FROM Careers WHERE status = 'Active' ORDER BY created_at DESC";
+                $result = $conn->query($sql);
 
-                <!-- Job Card 2 -->
-                <div class="col-md-6">
-                    <div class="card h-100 feature-card">
-                        <div class="card-body">
-                            <h3 class="card-title">Content Developer</h3>
-                            <span class="badge bg-primary mb-3">Remote</span>
-                            <p class="card-text">Join our content team to develop engaging educational materials and learning resources for our platform.</p>
-                            <ul class="list-unstyled mb-4">
-                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>3+ years of content writing experience</li>
-                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Educational content expertise</li>
-                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Strong research skills</li>
-                            </ul>
-                            <a href="#" class="btn btn-primary">Apply Now</a>
+                if ($result->num_rows > 0) {
+                    while ($job = $result->fetch_assoc()) {
+                        ?>
+                        <div class="col-md-6">
+                            <div class="card h-100 feature-card">
+                                <div class="card-body">
+                                    <h3 class="card-title"><?php echo htmlspecialchars($job['job_title']); ?></h3>
+                                    <span class="badge bg-primary mb-3"><?php echo htmlspecialchars($job['job_type']); ?></span>
+                                    <p class="card-text"><?php echo htmlspecialchars($job['job_description']); ?></p>
+                                    <ul class="list-unstyled mb-4">
+                                        <?php
+                                        // Convert requirements string to array and display
+                                        $requirements = explode("\n", $job['requirements']);
+                                        foreach ($requirements as $requirement) {
+                                            if (trim($requirement) != '') {
+                                                echo '<li><i class="bi bi-check-circle-fill text-primary me-2"></i>' . htmlspecialchars(trim($requirement)) . '</li>';
+                                            }
+                                        }
+                                        ?>
+                                    </ul>
+                                    <a href="apply.php?job_id=<?php echo $job['job_id']; ?>" class="btn btn-primary">Apply Now</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <?php
+                    }
+                } else {
+                    echo '<div class="col-12 text-center"><p>No job openings available at the moment.</p></div>';
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -146,39 +148,7 @@ require_once './Configurations/config.php';
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card feature-card">
-                        <div class="card-body">
-                            <h3 class="text-center mb-4">Don't see a perfect fit?</h3>
-                            <p class="text-center mb-4">Send us your resume and we'll keep you in mind for future opportunities.</p>
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Full Name">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="Email Address">
-                                </div>
-                                <div class="mb-3">
-                                    <textarea class="form-control" rows="4" placeholder="Tell us about yourself"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Upload Resume (PDF)</label>
-                                    <input type="file" class="form-control" accept=".pdf">
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Submit Application</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-5">

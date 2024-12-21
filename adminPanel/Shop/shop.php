@@ -22,7 +22,7 @@ $accessories_result = mysqli_query($conn, $accessories_query);
     <title>Shop - GD Edu Tech</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -41,56 +41,56 @@ $accessories_result = mysqli_query($conn, $accessories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Categories/" class="nav-link">
+                            <a href="../Categories/" class="nav-link">
                                 <i class="bi bi-grid me-2"></i> Categories
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Courses/" class="nav-link">
+                            <a href="../Courses/" class="nav-link">
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
                         <li class="w-100 dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="quizDropdown">
-                                <li><a class="dropdown-item" href="./Quiz/home.php">Home</a></li>
-                                <li><a class="dropdown-item" href="./Quiz/shop.php">Shop</a></li>
+                                <li><a class="dropdown-item" href="../Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="../Shop/shop.php">Shop</a></li>
                             </ul>
                         </li>
                         <li class="w-100">
-                            <a href="./Schedule/index.php" class="nav-link">
+                            <a href="../Schedule/" class="nav-link">
                                 <i class="bi bi-calendar-event me-2"></i> Schedule
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Messages/index.php" class="nav-link">
+                            <a href="../Messages/" class="nav-link">
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./FAQ/" class="nav-link">
+                            <a href="../FAQ/" class="nav-link">
                                 <i class="bi bi-question-circle me-2"></i> FAQ
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Users/" class="nav-link">
+                            <a href="../Users/" class="nav-link">
                                 <i class="bi bi-people me-2"></i> Users
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./manage_qr.php" class="nav-link">
+                            <a href="../manage_qr.php" class="nav-link">
                                 <i class="bi bi-qr-code me-2"></i> Payment QR
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./pending_payments.php" class="nav-link">
+                            <a href="../pending_payments.php" class="nav-link">
                                 <i class="bi bi-credit-card me-2"></i> Pending Payments
                             </a>
                         </li>
                         <li class="w-100 mt-auto">
-                            <a href="./logout.php" class="nav-link text-danger">
+                            <a href="../logout.php" class="nav-link text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </li>

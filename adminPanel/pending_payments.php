@@ -155,18 +155,22 @@ if (isset($_POST['action']) && isset($_POST['transaction_id'])) {
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="./Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="./Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
-                            <a href="./Schedule/index.php" class="nav-link">
+                            <a href="./Schedule/" class="nav-link">
                                 <i class="bi bi-calendar-event me-2"></i> Schedule
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Messages/index.php" class="nav-link">
+                            <a href="./Messages/" class="nav-link">
                                 <i class="bi bi-chat-dots me-2"></i> Messages
                             </a>
                         </li>
