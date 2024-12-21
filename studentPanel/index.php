@@ -320,7 +320,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
         <button class="btn btn-outline-secondary sidebar-toggle" id="sidebarToggle">
             <i class="bi bi-list"></i>
         </button>
-        <span class="fw-bold">GD Edu Tech</span>
+        <span class="fw-bold"></span>
     </div>
 
     <div class="layout">
@@ -458,7 +458,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                                             </div>
                                             <div class="mt-2">
                                                 <a href="./MyCourses/course_content.php?id=<?php echo $course['course_id']; ?>"
-                                                    class="btn btn-primary btn-sm">Continue Learning</a>
+                                                    class="btn btn-warning">Continue Learning</a>
                                             </div>
                                         </div>
                                     <?php endwhile; ?>
@@ -474,11 +474,11 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                         <h5 class="mb-4">Recommended Courses</h5>
                     </div>
                     <?php while ($course = $recommended_courses_result->fetch_assoc()): ?>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-4">
                             <div class="card course-card">
                                 <img src="../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail'] ?: './Courses/thumbnails'); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>">
                                 <div class="card-body">
-                                    <span class="badge bg-primary mb-2"><?php echo htmlspecialchars($course['category'] ?: 'General'); ?></span>
+                                    <span class="badge bg-success mb-2"><?php echo htmlspecialchars($course['category'] ?: 'General'); ?></span>
                                     <h5 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h5>
                                     <p class="card-text text-muted"><?php echo htmlspecialchars($course['description']); ?></p>
                                     <div class="d-flex justify-content-between align-items-center">
@@ -490,6 +490,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
                         </div>
                     <?php endwhile; ?>
                 </div>
+                <div class="mb-4 d-md-none"></div>
             </div>
         </div>
 
@@ -498,7 +499,7 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
 
     <?php
     $path = "../";
-    include("../footer.php"); 
+    include("../footer.php");
     ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

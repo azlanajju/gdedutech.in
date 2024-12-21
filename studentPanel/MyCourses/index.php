@@ -162,7 +162,7 @@ $courses_result = $courses_stmt->get_result();
                 <button class="btn btn-outline-secondary sidebar-toggle" id="sidebarToggle">
                     <i class="bi bi-list"></i>
                 </button>
-                <span class="fw-bold">GD Edu Tech</span>
+                <span class="fw-bold"></span>
             </div>
 
             <!-- Sidebar -->
