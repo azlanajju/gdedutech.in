@@ -12,7 +12,7 @@ $popular_courses_query = "
            (SELECT COUNT(*) FROM Enrollments e WHERE e.course_id = c.course_id) as student_count
     FROM Courses c
     LEFT JOIN Categories cat ON c.category_id = cat.category_id
-    WHERE c.isPopular = 'yes'
+    WHERE c.isPopular = '1'
     AND c.status = 'published'
     LIMIT 6";
 $popular_courses = $conn->query($popular_courses_query)->fetch_all(MYSQLI_ASSOC);
