@@ -24,15 +24,97 @@ $papers_result = mysqli_query($conn, $papers_query);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
     <style>
-        /* Add any custom styles here */
+        :root {
+            --primary-color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                width: 80%;
+                max-width: 300px;
+                z-index: 999;
+                background-color: var(--primary-color);
+                transition: 0.3s ease-in-out;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 998;
+                display: none;
+            }
+
+            .sidebar-backdrop.active {
+                display: block;
+            }
+
+            .mobile-nav {
+                display: block !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 997;
+            background-color: var(--primary-color);
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            margin-top: 70px;
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                margin-top: 0;
+                margin-left: 250px;
+            }
+        }
+
+        /* Add styles for sidebar background */
+        .sidebar {
+            background-color: var(--primary-color);
+        }
     </style>
 </head>
 
 <body>
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav d-flex align-items-center">
+        <button class="btn text-white" id="sidebarToggle">
+            <i class="bi bi-list fs-3"></i>
+        </button>
+        <span class="ms-3 fs-4 text-white">GD Edu Tech</span>
+    </div>
+
+    <!-- Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar" id="sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 fw-bolder" style="display: flex;align-items:center;">
@@ -80,7 +162,7 @@ $papers_result = mysqli_query($conn, $papers_query);
             </div>
 
             <!-- Main Content -->
-            <div class="col py-3">
+            <div class="col py-3 main-content">
                 <h3 class="mb-4">Available Question Papers</h3>
                 <div class="row g-4">
                     <?php while ($paper = mysqli_fetch_assoc($papers_result)): ?>
@@ -97,7 +179,7 @@ $papers_result = mysqli_query($conn, $papers_query);
                                     $has_access = mysqli_num_rows($access_result) > 0;
 
                                     if ($paper['status'] === 'open' || $has_access): ?>
-                                        <a href="<?php echo '../../uploads/question_papers/' . htmlspecialchars($paper['pdf']); ?>" class="btn btn-primary" target="_blank">View Paper</a>
+                                        <a href="<?php echo '../uploads/question_papers/' . htmlspecialchars($paper['pdf']); ?>" class="btn btn-primary" target="_blank">View Paper</a>
                                     <?php else: ?>
                                         <a href="https://api.whatsapp.com/send?phone=8867575821&text=Request%20to%20access%20the%20paper%20entitled%20<?php echo urlencode($paper['title']); ?>"
                                             class="btn btn-info"
@@ -117,12 +199,22 @@ $papers_result = mysqli_query($conn, $papers_query);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Sidebar Toggle Functionality
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('sidebarBackdrop').classList.add('active');
+        });
+
+        document.getElementById('sidebarBackdrop').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarBackdrop').classList.remove('active');
+        });
+
+        // Access Request Function
         function requestAccess(paperId) {
-            // Create form data
             var formData = new FormData();
             formData.append('paper_id', paperId);
 
-            // Send AJAX request
             fetch('request_access.php', {
                     method: 'POST',
                     body: formData
