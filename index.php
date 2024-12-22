@@ -326,7 +326,7 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                                 <p class="card-text text-muted">
                                     <?php echo $category['course_count']; ?> courses
                                 </p>
-                                <a href="category.php?id=<?php echo $category['category_id']; ?>"
+                                <a href="./studentPanel/login.php"
                                     class="stretched-link"></a>
                             </div>
                         </div>
