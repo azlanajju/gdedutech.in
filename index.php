@@ -8,15 +8,13 @@ require_once './Configurations/config.php';
 // Fetch popular courses
 $popular_courses_query = "
     SELECT c.*, 
-           u.first_name, 
-           u.last_name,
            cat.name as category_name,
-           (SELECT COUNT(*) FROM Enrollments WHERE course_id = c.course_id) as student_count
+           (SELECT COUNT(*) FROM Enrollments e WHERE e.course_id = c.course_id) as student_count
     FROM Courses c
-    JOIN Users u ON c.created_by = u.user_id
     LEFT JOIN Categories cat ON c.category_id = cat.category_id
-    WHERE c.status = 'published' AND c.isPopular = 'yes'
-    LIMIT 3";
+    WHERE c.isPopular = 'yes'
+    AND c.status = 'published'
+    LIMIT 6";
 $popular_courses = $conn->query($popular_courses_query)->fetch_all(MYSQLI_ASSOC);
 
 // Fetch categories
