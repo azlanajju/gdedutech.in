@@ -180,7 +180,7 @@ $courses_result = $courses_stmt->get_result();
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Resources/index.php" class="nav-link text-white">
+                            <a href="../Resources/index.php" class="nav-link text-white">
                                 <i class="bi bi-file-earmark-text me-2"></i> Resources
                             </a>
                         </li>
