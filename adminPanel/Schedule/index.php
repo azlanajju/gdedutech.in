@@ -4,9 +4,10 @@ require_once '../../Configurations/config.php';
 
 // Verify admin is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../../login.php');
+    header('Location: ../admin_login.php');
     exit();
 }
+
 
 // Check for success/error messages
 $alert = '';

@@ -4,9 +4,10 @@ require_once '../../Configurations/config.php';
 
 // Check if user is logged in and is admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: admin_login.php');
+    header('Location: ../admin_login.php');
     exit();
 }
+
 
 // Fetch accessories from the database
 $accessories_query = "SELECT * FROM Accessories"; // Assuming you have an Accessories table

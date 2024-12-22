@@ -3,6 +3,10 @@ session_start();
 
 // Database connection
 require_once '../../Configurations/config.php';
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../admin_login.php');
+    exit();
+}
 
 // Handle user deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {

@@ -343,6 +343,7 @@ CREATE TABLE access_requests ( -- forr question papers
     status ENUM('pending', 'granted') DEFAULT 'pending',
     FOREIGN KEY (paper_id) REFERENCES question_papers(id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
 
 CREATE TABLE Careers (
     job_id INT PRIMARY KEY AUTO_INCREMENT,

@@ -13,11 +13,11 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 
 <?php
 
-// Check if user is logged in
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: login.php");
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../admin_login.php');
+    exit();
+}
+
 
 // Database connection
 require_once '../../Configurations/config.php';
