@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
     exit();
 }
 
+$course_id = intval($_GET['course_id']);
 
 // Get staff details from session
 $staff_name = $_SESSION['username'] ?? 'Staff';
