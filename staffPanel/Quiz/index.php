@@ -209,7 +209,7 @@ $result = mysqli_query($conn, $query);
                                                    title="Manage Questions">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </a>
-                                                <a href="edit_quiz.php?id=<?php echo $quiz['quiz_id']; ?>" 
+                                                <a href="edit_quiz.php?id=<?php echo $quiz['quiz_id']; ?>course_id=<?php echo $quiz['course_id']; ?>" 
                                                    class="btn btn-sm btn-outline-primary" 
                                                    title="Edit Quiz">
                                                     <i class="bi bi-pencil"></i>
