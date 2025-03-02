@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Redirect based on user role
             if ($user['role'] === 'admin') {
                 header("Location: ../adminPanel/");
-            } elseif ($user['role'] === 'staff') {
-                header("Location: staff_dashboard.php");
+            } elseif ($user['role'] === 'Staff') {
+                header("Location: ../staffPanel");
             } else {
                 header("Location: ./");
             }
@@ -82,6 +82,7 @@ $conn->close();
             min-height: 100vh;
             display: flex;
             align-items: center;
+            flex-direction: column !important;
         }
         .login-container {
             max-width: 450px;

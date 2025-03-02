@@ -13,14 +13,14 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 
 <?php
 
-// Check if user is logged in
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: login.php");
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../admin_login.php');
+    exit();
+}
+
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Check if user ID is provided
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -126,10 +126,14 @@ if (!$user) {
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="../Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="../Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="../Shop/shop.php">Shop</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
                             <a href="../Schedule/" class="nav-link">

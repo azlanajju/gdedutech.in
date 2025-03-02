@@ -21,16 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($first_name)) $errors[] = "First name is required";
     if (empty($last_name)) $errors[] = "Last name is required";
 
-    // Only proceed if no validation errors
+    // Check for duplicate username or email
     if (empty($errors)) {
-        // Check for duplicate username or email
         $checkStmt = $conn->prepare("SELECT user_id FROM Users WHERE username = ? OR email = ?");
         $checkStmt->bind_param("ss", $username, $email);
         $checkStmt->execute();
         $result = $checkStmt->get_result();
 
         if ($result->num_rows > 0) {
-            $_SESSION['error_message'] = "Username or Email already exists. Please try another.";
+            $errors[] = "Username or Email already exists. Please try another.";
             $checkStmt->close();
         } else {
             $checkStmt->close();
@@ -41,53 +40,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Handle profile image upload
             $profile_image_name = null;
             if ($profile_image && $profile_image['error'] == 0) {
-                $profile_image_name = time() . '_' . basename($profile_image['name']);
-                $profile_image_path = UPLOADS_DIR . $profile_image_name;
+                // Validate file type and size
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+                if (in_array($profile_image['type'], $allowed_types) && $profile_image['size'] <= 2000000) { // 2MB limit
+                    $profile_image_name = time() . '_' . basename($profile_image['name']);
+                    $profile_image_path = "./Profile/student_profile/" . $profile_image_name;
+                    $uploading_image_path = "student_profile/" . $profile_image_name;
 
-                // Create uploads directory if it doesn't exist
-                if (!file_exists(UPLOADS_DIR)) {
-                    mkdir(UPLOADS_DIR, 0777, true);
-                }
-
-                // Move the uploaded file
-                if (!move_uploaded_file($profile_image['tmp_name'], $profile_image_path)) {
-                    $_SESSION['error_message'] = "Error uploading profile image.";
-                    header('Location: signup.php');
-                    exit();
+                    
+                    // Move the uploaded file
+                    if (!move_uploaded_file($profile_image['tmp_name'], $profile_image_path)) {
+                        $errors[] = "Error uploading profile image.";
+                    }
+                } else {
+                    $errors[] = "Invalid file type or size. Please upload a JPEG, PNG, or GIF image under 2MB.";
                 }
             }
 
-            // Insert user into the database
-            $stmt = $conn->prepare("
-                INSERT INTO Users (username, password_hash, email, first_name, last_name, profile_image, role, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-            $role = "student"; // Default role
-            $status = "active"; // Default status
-            $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $profile_image_name, $role, $status);
+            // If no errors, insert user into the database
+            if (empty($errors)) {
+                $stmt = $conn->prepare("
+                    INSERT INTO Users (username, password_hash, email, first_name, last_name, profile_image, role, status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $role = "student"; // Default role
+                $status = "active"; // Default status
+                $stmt->bind_param("ssssssss", $username, $password_hash, $email, $first_name, $last_name, $uploading_image_path, $role, $status);
 
-            if ($stmt->execute()) {
-                $_SESSION['success_message'] = "Registration successful! Please login.";
-                $registration_success = true;
-            } else {
-                $_SESSION['error_message'] = "Error: " . $stmt->error;
+                if ($stmt->execute()) {
+                    $_SESSION['success_message'] = "Registration successful! You will be redirected to the login page.";
+                    $registration_success = true;
+                } else {
+                    $errors[] = "Error: " . $stmt->error;
+                }
+                ?>
+                
+                <?php if (isset($registration_success) && $registration_success): ?>
+                    <div>
+                        <script>
+                            setTimeout(() => {
+                                window.location.href = "./login.php"; // Redirect to the login page
+                            }, 5000); // 5000 milliseconds = 5 seconds
+                        </script>
+                    </div>
+                <?php endif;                 
+
+                $stmt->close();
             }
-
-            $stmt->close();
         }
+    }
 
-        $conn->close();
-
-        // Redirect after processing
-        if ($registration_success) {
-            header('Location: login.php');
-            exit();
-        } else {
-            header('Location: signup.php');
-            exit();
-        }
-    } else {
-        // If there are validation errors, store them in session
+    // If there are validation errors, store them in session
+    if (!empty($errors)) {
         $_SESSION['error_message'] = implode("<br>", $errors);
     }
 }
@@ -116,6 +120,7 @@ if (isset($_SESSION['success_message'])) {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             padding: 40px 0;
         }

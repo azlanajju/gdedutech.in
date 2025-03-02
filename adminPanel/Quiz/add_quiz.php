@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Fetch courses for dropdown
 $courses_query = mysqli_query($conn, "SELECT course_id, title FROM Courses ORDER BY title");

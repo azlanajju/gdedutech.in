@@ -24,3 +24,7 @@
     color: white !important;
   }
   
+  .breadcrumb-item a {
+    text-decoration: none;
+    color: var(--accent-color);
+  }

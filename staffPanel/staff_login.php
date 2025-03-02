@@ -1,4 +1,11 @@
 <?php
+$host = $_SERVER['HTTP_HOST'];
+
+if (strpos($host, 'staff.gdedutech.com') !== false) {
+    header("Location: https://gdedutech.com/staffPanel/staff_login.php");
+}
+?>
+<?php
 require_once '../Configurations/config.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 

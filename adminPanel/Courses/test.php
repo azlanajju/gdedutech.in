@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 if (!isset($_GET['course_id']) || !isset($_SESSION['user_id'])) {
     header("Location: ./");

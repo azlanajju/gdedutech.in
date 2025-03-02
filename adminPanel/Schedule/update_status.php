@@ -3,9 +3,10 @@ session_start();
 require_once '../../Configurations/config.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../../login.php');
+    header('Location: ../admin_login.php');
     exit();
 }
+
 
 if (isset($_GET['id']) && isset($_GET['status'])) {
     $meeting_id = intval($_GET['id']);

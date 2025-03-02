@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle course deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {
@@ -24,7 +24,7 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
         $_SESSION['message'] = "Error deleting course: " . mysqli_error($conn);
         $_SESSION['message_type'] = "danger";
     }
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
@@ -88,10 +88,14 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="../Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="../Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="../Shop/shop.php">Shop</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
                             <a href="../Schedule/index.php" class="nav-link">
@@ -142,8 +146,11 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                             <p class="text-muted">Manage and organize courses</p>
                         </div>
                         <div class="col-auto">
-                            <a href="./add_course.php" class="btn btn-primary">
+                            <!-- <a href="./add_course.php" class="btn btn-primary">
                                 <i class="bi bi-plus-circle me-2"></i>Add New Course
+                            </a> -->
+                            <a href="./certificates.php" class="btn btn-primary ms-2">
+                                <i class="bi bi-award me-2"></i>Certificates
                             </a>
                         </div>
                     </div>
@@ -169,7 +176,7 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                             <a href="./viewCourseDetails.php?course_id=<?php echo $course['course_id'] ?>" class="course-link">
                                 <div class="thumbnail-container">
                                     <img 
-                                        src="<?php echo $course['thumbnail'] ? "../../uploads/course_uploads/thumbnails/" . htmlspecialchars($course['thumbnail']) : '../images/default-course.png'; ?>"
+                                        src="<?php echo $course['thumbnail'] ? "../../../uploads/course_uploads/thumbnails/" . htmlspecialchars($course['thumbnail']) : '../images/default-course.png'; ?>"
                                         class="course-thumbnail"
                                         alt="<?php echo htmlspecialchars($course['title']); ?>"
                                         loading="lazy"
@@ -218,6 +225,11 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                                title="Delete Course">
                                                 <i class="bi bi-trash"></i>
                                             </a>
+                                            <?php if ($course['isPopular']): ?>
+                                                <a href="mark_unpopular.php?id=<?php echo $course['course_id']; ?>" class="btn btn-sm btn-danger">Unpopular</a>
+                                            <?php else: ?>
+                                                <a href="mark_popular.php?id=<?php echo $course['course_id']; ?>" class="btn btn-sm btn-success">Popular</a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>

@@ -188,13 +188,34 @@ $lessons_result->data_seek(0);
         .plyr--full-ui input[type=range] {
             color: #3498db;
         }
+        @media (max-width: 768px) {
+
+        /* Styles for the fixed sidebar */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 70vw;
+            height: 100vh;
+            background-color: #2c3e50; /* Sidebar background color */
+            z-index: 1000; /* Ensure sidebar is above other content */
+            transform: translateX(-100%); /* Initially hidden */
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+        #sidebar.show {
+            transform: translateX(0); /* Show sidebar */
+        }
+        .main-content.hidden {
+            display: none; /* Hide main content when sidebar is open */
+        }
+    }
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <div class="col-auto sidebar" id="sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none">
                     <span class="fs-5 fw-bolder" style="display: flex;align-items:center;"><img height="35px" src="../../Images/Logos/edutechLogo.png" alt="">&nbsp; GD Edu Tech</span>
@@ -239,7 +260,11 @@ $lessons_result->data_seek(0);
                     </ul>
                 </div>
             </div>
-
+            <div class="col-auto d-md-none">
+                <button class="btn btn-primary" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
 
             <!-- Main Content -->
             <div class="col py-3">
@@ -403,13 +428,15 @@ $lessons_result->data_seek(0);
                                             </p>
                                         <?php else: ?>
                                             <?php
-                                            // Fetch quiz details
+                                            // Fetch quiz details and enrollment status
                                             $quiz_query = "SELECT q.*, 
-                                                         (SELECT COUNT(*) FROM Questions WHERE quiz_id = q.quiz_id) as question_count
+                                                         (SELECT COUNT(*) FROM Questions WHERE quiz_id = q.quiz_id) as question_count,
+                                                         e.assessment_status
                                                          FROM Quizzes q 
-                                                         WHERE q.course_id = ?";
+                                                         JOIN Enrollments e ON q.course_id = e.course_id
+                                                         WHERE q.course_id = ? AND e.student_id = ?";
                                             $quiz_stmt = $conn->prepare($quiz_query);
-                                            $quiz_stmt->bind_param('i', $course_id);
+                                            $quiz_stmt->bind_param('ii', $course_id, $user_id);
                                             $quiz_stmt->execute();
                                             $quiz_result = $quiz_stmt->get_result();
                                             ?>
@@ -428,11 +455,23 @@ $lessons_result->data_seek(0);
                                                                 <i class="bi bi-award me-1"></i>
                                                                 <?php echo $quiz['total_marks']; ?> Marks
                                                             </span>
+                                                            <?php if ($quiz['assessment_status'] === 'completed'): ?>
+                                                                <span class="badge bg-success">
+                                                                    <i class="bi bi-check-circle me-1"></i>Completed
+                                                                </span>
+                                                            <?php endif; ?>
                                                         </div>
-                                                        <a href="take_quiz.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
-                                                           class="btn btn-primary mt-3">
-                                                            <i class="bi bi-pencil-square me-2"></i>Start Assessment
-                                                        </a>
+                                                        <?php if ($quiz['assessment_status'] === 'completed'): ?>
+                                                            <a href="view_certificate.php?course_id=<?php echo $course_id; ?>" 
+                                                               class="btn btn-success mt-3">
+                                                                <i class="bi bi-award me-2"></i>View Certificate
+                                                            </a>
+                                                        <?php else: ?>
+                                                            <a href="take_quiz.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
+                                                               class="btn btn-primary mt-3">
+                                                                <i class="bi bi-pencil-square me-2"></i>Start Assessment
+                                                            </a>
+                                                        <?php endif; ?>
                                                     </div>
                                                 <?php endwhile; ?>
                                             <?php else: ?>
@@ -500,6 +539,23 @@ $lessons_result->data_seek(0);
                         }
                     });
                 });
+            });
+
+            const sidebar = document.getElementById('sidebar');
+            const toggleButton = document.getElementById('sidebarToggle');
+            const mainContent = document.getElementById('mainContent');
+
+            toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('show'); // Toggle sidebar visibility
+                mainContent.classList.toggle('hidden'); // Hide main content when sidebar is open
+            });
+
+            // Close sidebar when clicking outside of it
+            document.addEventListener('click', function(event) {
+                if (!sidebar.contains(event.target) && !toggleButton.contains(event.target) && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show'); // Hide sidebar
+                    mainContent.classList.remove('hidden'); // Show main content
+                }
             });
         });
     </script>

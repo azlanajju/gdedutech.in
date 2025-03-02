@@ -4,7 +4,7 @@ require_once '../../Configurations/config.php';
 
 // Check if user is logged in and is a student
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: ../login.php");
+    header("Location: Location: ../login.php");
     exit();
 }
 ?>

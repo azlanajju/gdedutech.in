@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // // Check if user is logged in and has admin privileges
 // if (!isset($_SESSION['user_id'])) {
@@ -22,7 +22,7 @@ require_once '../config.php';
 // Get course ID from URL
 $course_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if (!$course_id) {
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
@@ -37,7 +37,7 @@ mysqli_stmt_execute($stmt);
 $course = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
 if (!$course) {
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         mysqli_commit($conn);
-        header("Location: courses.php");
+        header("Location: ./");
         exit();
         
     } catch (Exception $e) {
@@ -267,11 +267,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <i class="bi bi-book me-2"></i> Courses
                         </a>
                     </li>
-                    <li class="w-100">
-                        <a href="../Quiz/" class="nav-link">
-                            <i class="bi bi-lightbulb me-2"></i> Quiz
-                        </a>
-                    </li>
+                    <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="../Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="../Shop/shop.php">Shop</a></li>
+                            </ul>
+                        </li>
                     <li class="w-100">
                         <a href="../Schedule/" class="nav-link">
                             <i class="bi bi-calendar-event me-2"></i> Schedule
@@ -385,7 +389,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label>Course Thumbnail</label>
                             <?php if ($course['thumbnail']): ?>
                                 <div class="mb-2">
-                                    <img src="./thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
+                                    <img src="../../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" 
                                          alt="Current thumbnail" style="max-width: 200px;">
                                 </div>
                             <?php endif; ?>
@@ -465,7 +469,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         
                         <div class="mt-4">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <a href="courses.php" class="btn btn-link">Cancel</a>
+                            <a href="./" class="btn btn-link">Cancel</a>
                         </div>
                     </form>
                 </div>

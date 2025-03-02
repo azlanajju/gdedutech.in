@@ -139,10 +139,14 @@ if ($qr_result->num_rows > 0) {
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="./Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="./Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
                             <a href="./Schedule/" class="nav-link">
@@ -217,7 +221,7 @@ if ($qr_result->num_rows > 0) {
                                         </div>
                                     <?php endif; ?>
 
-                                    <form action="" method="POST" enctype="multipart/form-data">
+                                    <form action="" method="POST" enctype="multipart/form-data" style="text-align: center;">
                                         <label for="qr_code" class="custom-file-upload">
                                             <i class="bi bi-cloud-upload fs-3 mb-2"></i>
                                             <h5>Upload New QR Code</h5>

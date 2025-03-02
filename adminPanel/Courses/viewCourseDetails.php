@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 <?php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 if (!isset($_GET['course_id']) || !isset($_SESSION['user_id'])) {
     header("Location: ./");
@@ -143,10 +143,14 @@ mysqli_data_seek($lessons_result, 0);
                     <i class="bi bi-book me-2"></i> Courses
                 </a>
             </li>
-            <li class="w-100">
-                <a href="../Quiz/" class="nav-link">
-                    <i class="bi bi-lightbulb me-2"></i> Quiz
-                </a>
+            <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="../Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="../Shop/shop.php">Shop</a></li>
+                            </ul>
             </li>
             <li class="w-100">
                 <a href="../Schedule/" class="nav-link">
@@ -193,7 +197,7 @@ mysqli_data_seek($lessons_result, 0);
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" class="card-img-top" alt="Course Thumbnail">
+                            <img src="../../../uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>" class="card-img-top" alt="Course Thumbnail">
                             <div class="card-body">
                                 <h1 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h1>
                                 <p class="card-text"><?php echo htmlspecialchars($course['description']); ?></p>
@@ -262,7 +266,7 @@ mysqli_data_seek($lessons_result, 0);
                                             <video controls crossorigin playsinline
                                                    class="course-video"
                                                    <?php echo !$is_unlocked ? 'disabled' : ''; ?>>
-                                                <source src="./course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" type="video/mp4">
+                                                <source src="../../../uploads/course_uploads/course_videos/<?php echo htmlspecialchars($video['video_url']); ?>" type="video/mp4">
                                             </video>
                                         </div>
                                         <?php endwhile; ?>

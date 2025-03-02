@@ -34,7 +34,7 @@ CREATE TABLE Courses (
     created_by INT NOT NULL,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     category_id INT,
-    course_type VARCHAR(50),
+    course_type TINYINT(1) DEFAULT 0,
     status ENUM('published', 'draft') DEFAULT 'published',
     isPopular VARCHAR(50),
     uploadedBy_id INT,
@@ -79,6 +79,7 @@ CREATE TABLE Enrollments (
     progress DECIMAL(5, 2) DEFAULT 0.00 CHECK (progress >= 0 AND progress <= 100),
     access_status ENUM('active', 'expired', 'canceled') DEFAULT 'active',
     completion_status ENUM('pending', 'completed') DEFAULT 'pending',
+    assessment_status ENUM('pending', 'completed') DEFAULT 'pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES Users(user_id) ON DELETE CASCADE,
@@ -302,4 +303,74 @@ CREATE TABLE StudentAnswers (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (question_id) REFERENCES StudentQuestions(question_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Accessories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    image VARCHAR(255) DEFAULT NULL,  -- Column to store the image file path or URL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE Documents (
+    document_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) DEFAULT 0.00 CHECK (price >= 0),
+    document_url VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL,
+    upload_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+CREATE TABLE question_papers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    pdf VARCHAR(255) NOT NULL,
+    status ENUM('locked', 'open') NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE -- Correct reference to Users table
+);
+
+CREATE TABLE access_requests ( -- forr question papers
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paper_id INT NOT NULL,
+    user_id INT NOT NULL,
+    request_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'granted') DEFAULT 'pending',
+    FOREIGN KEY (paper_id) REFERENCES question_papers(id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Careers (
+    job_id INT PRIMARY KEY AUTO_INCREMENT,
+    job_title VARCHAR(255) NOT NULL,
+    company_name VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    salary_range VARCHAR(100),
+    job_description TEXT NOT NULL,
+    requirements TEXT NOT NULL,
+    benefits TEXT,
+    application_deadline DATE,
+    job_type ENUM('Full-time', 'Part-time', 'Contract', 'Internship') NOT NULL,
+    status ENUM('Active', 'Closed', 'Draft') DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE job_applications (
+    application_id INT PRIMARY KEY AUTO_INCREMENT,
+    job_id INT NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    resume_path VARCHAR(255) NOT NULL,
+    cover_letter TEXT,
+    portfolio_url VARCHAR(255),
+    application_date DATETIME NOT NULL,
+    status ENUM('Pending', 'Reviewed', 'Shortlisted', 'Rejected') NOT NULL DEFAULT 'Pending',
+    FOREIGN KEY (job_id) REFERENCES Careers(job_id)
 );

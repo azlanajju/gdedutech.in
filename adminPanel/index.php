@@ -1,4 +1,11 @@
 <?php
+$host = $_SERVER['HTTP_HOST'];
+
+if (strpos($host, 'admin.gdedutech.com') !== false) {
+    header("Location: https://gdedutech.com/adminPanel");
+}
+?>
+<?php
 session_start();
 
 // Check if user is logged in and is admin
@@ -48,10 +55,15 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 <i class="bi bi-book me-2 "></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="./Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="./Career/">Career portal</a></li>
+                                <li><a class="dropdown-item" href="./Shop/shop.php">Shop</a></li>
+                                <li><a class="dropdown-item" href="./Resources/index.php">Resources</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
                             <a href="./Schedule/index.php" class="nav-link">
@@ -108,7 +120,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         <div class="col-md-3">
                             <?php
                             // Include the database configuration file
-                            require_once 'config.php';
+                            require_once '../Configurations/config.php';
 
                             // Query to fetch the total number of users and new users for the current month
                             $totalUsersQuery = "
@@ -170,7 +182,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                         <div class="col-md-3">
                             <?php
                             // Include the database configuration file
-                            require_once 'config.php';
+                            require_once '../Configurations/config.php';
 
                             // Query to fetch total active courses and new courses added in the last 7 days
                             $activeCoursesQuery = "
@@ -216,14 +228,14 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                     <h6 class="card-title">Total Revenue</h6>
                                     <h2>₹
                                         0
-                                </h2>
+                                    </h2>
                                     <p class="mb-0"><i class="bi bi-arrow-up"></i> 8% this month</p>
                                 </div>
                             </div>
                         </div>
                         <?php
                         // Include the config file for database connection
-                        include 'config.php';
+                        include '../Configurations/config.php';
 
                         // Initialize variables for course completion
                         $courseCompletion = 0;
@@ -346,11 +358,15 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                                         <td class="d-none d-md-table-cell">
                                                             <div class="d-flex align-items-center">
                                                                 <?php if ($activity['profile_image']): ?>
-                                                                    <img src="../uploads/<?php echo htmlspecialchars($activity['profile_image']); ?>"
+                                                                    <img
+                                                                        src="<?php echo !empty($activity['profile_image']) && file_exists('../studentPanel/Profile/' . $activity['profile_image'])
+                                                                                    ? '../studentPanel/Profile/' . htmlspecialchars($activity['profile_image'])
+                                                                                    : '../assets/images/default-avatar.png'; ?>"
                                                                         class="rounded-circle me-2"
                                                                         width="32"
                                                                         height="32"
                                                                         alt="Profile">
+
                                                                 <?php else: ?>
                                                                     <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
                                                                         style="width: 32px; height: 32px;">
@@ -443,21 +459,21 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-primary">
-                                            <i class="bi bi-plus-circle me-2"></i>Add New Course
+                                        <button onclick='window.location.href="./Users/Messages"'  class="btn btn-primary">
+                                            <i class="bi bi-plus-circle me-2"></i>Add an Announcement
                                         </button>
-                                        <button class="btn btn-outline-primary">
+                                        <button onclick='window.location.href="./Users/add_user.php"' class="btn btn-outline-primary">
                                             <i class="bi bi-person-plus me-2"></i>Create User
                                         </button>
-                                        <button class="btn btn-outline-primary">
-                                            <i class="bi bi-file-text me-2"></i>Generate Report
+                                        <button onclick='window.location.href="./pending_payments.php"' class="btn btn-outline-primary">
+                                            <i class="bi bi-file-text me-2"></i>Pending Payments
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- System Status -->
-                            <div class="card mt-4">
+                            <!-- <div class="card mt-4">
                                 <div class="card-header bg-white">
                                     <h5 class="card-title mb-0">System Status</h5>
                                 </div>
@@ -481,7 +497,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -496,7 +512,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <?php
                                 // Include the database configuration file
-                                require_once 'config.php';
+                                require_once '../Configurations/config.php';
 
                                 // Fetch the 10 most recent users
                                 $query = "SELECT username, role FROM Users ORDER BY date_joined DESC LIMIT 10";
@@ -552,7 +568,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
                                 </div>
                                 <?php
                                 // Include the database configuration file
-                                require_once 'config.php';
+                                require_once '../Configurations/config.php';
 
                                 // Fetch only popular courses
                                 $query = "SELECT title FROM Courses WHERE isPopular = 'yes'";

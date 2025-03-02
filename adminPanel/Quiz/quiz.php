@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle quiz deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {

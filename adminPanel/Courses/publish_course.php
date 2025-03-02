@@ -12,7 +12,7 @@ $admin_name = $_SESSION['username'] ?? 'Admin';
 ?>
 <?php
 // publish_course.php
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 if (isset($_GET['id'])) {
     $course_id = intval($_GET['id']);

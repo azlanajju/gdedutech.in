@@ -2,7 +2,7 @@
 session_start();
 
 // Database connection
-require_once '../config.php';
+require_once '../../Configurations/config.php';
 
 // Handle category deletion
 if (isset($_GET['delete']) && isset($_GET['id'])) {
@@ -77,10 +77,14 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
-                        <li class="w-100">
-                            <a href="../Quiz/" class="nav-link">
-                                <i class="bi bi-lightbulb me-2"></i> Quiz
+                        <li class="w-100 dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-lightbulb me-2"></i> Quick Links
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="quizDropdown">
+                                <li><a class="dropdown-item" href="../Career/index.php">Career portal</a></li>
+                                <li><a class="dropdown-item" href="../Shop/shop.php">Shop</a></li>
+                            </ul>
                         </li>
                         <li class="w-100">
                             <a href="../Schedule/index.php" class="nav-link">

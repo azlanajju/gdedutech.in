@@ -28,7 +28,7 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
         $_SESSION['message'] = "Error deleting quiz: " . mysqli_error($conn);
         $_SESSION['message_type'] = "danger";
     }
-    header("Location: quiz.php");
+    header("Location: ./");
     exit();
 }
 
