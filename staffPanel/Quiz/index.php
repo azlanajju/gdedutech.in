@@ -214,7 +214,7 @@ $result = mysqli_query($conn, $query);
                                                    title="Edit Quiz">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="quiz.php?delete=1&id=<?php echo $quiz['quiz_id']; ?>" 
+                                                <a href="./index.php?delete=1&id=<?php echo $quiz['quiz_id']; ?>" 
                                                    class="btn btn-sm btn-outline-danger" 
                                                    onclick="return confirm('Are you sure? This will delete the quiz and all its questions.');" 
                                                    title="Delete Quiz">
