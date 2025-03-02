@@ -204,7 +204,7 @@ $result = mysqli_query($conn, $query);
                                             </div>
                                             
                                             <div class="btn-group" role="group">
-                                                <a href="add_question.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
+                                                <a href="add_question.php?quiz_id=<?php echo $quiz['quiz_id']; ?>&course_id=<?php echo $quiz['course_id']; ?>" 
                                                    class="btn btn-sm btn-outline-success" 
                                                    title="Manage Questions">
                                                     <i class="bi bi-plus-circle"></i>
