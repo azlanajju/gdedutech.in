@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
 }
 
 $course_id = intval($_GET['course_id']);
-
+$staff_id = $_SESSION['user_id'];
 // Get staff details from session
 $staff_name = $_SESSION['username'] ?? 'Staff';
 
