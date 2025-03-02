@@ -15,7 +15,7 @@ $staff_name = $_SESSION['username'] ?? 'Staff';
 if (!isset($_GET['id'])) {
     $_SESSION['message'] = "No quiz ID provided.";
     $_SESSION['message_type'] = "danger";
-    header("Location: quiz.php");
+    header("Location: ./");
     exit();
 }
 
@@ -29,7 +29,7 @@ $quiz = mysqli_fetch_assoc($result);
 if (!$quiz) {
     $_SESSION['message'] = "Quiz not found.";
     $_SESSION['message_type'] = "danger";
-    header("Location: quiz.php");
+    header("Location: ./");
     exit();
 }
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_query($conn, $update_query)) {
         $_SESSION['message'] = "Quiz updated successfully.";
         $_SESSION['message_type'] = "success";
-        header("Location: quiz.php");
+        header("Location: ./");
         exit();
     } else {
         $_SESSION['message'] = "Error updating quiz: " . mysqli_error($conn);
