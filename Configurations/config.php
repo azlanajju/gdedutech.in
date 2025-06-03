@@ -2,7 +2,7 @@
 $host = $_SERVER['HTTP_HOST'];
 
 if (strpos($host, 'gdedutech.com') !== false) {
-    $conn = new mysqli("localhost", "u229215627_edutech", "Azl@n2002", "u229215627_edutech");
+    $conn = new mysqli("srv1752.hstgr.io", "u229215627_edutech", "Azl@n2002", "u229215627_edutech");
 
 } elseif (strpos($host, 'edutech.intelexsolutions-test.site') !== false || 
           strpos($host, 'gdedutech.in') !== false) {
