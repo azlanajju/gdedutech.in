@@ -64,7 +64,7 @@ $current_year = date('Y');
                 <ul class="contact-info">
                     <li data-aos="fade" data-aos-delay="400">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-text">123 Education Street, Tech Valley, Mumbai, India</div>
+                        <div class="contact-text">2-108/C-7, Ground Floor, Sri Mantame Complex, Near Soorya Infotech Park, Kurnadu Post, Mudipu Road, Bantwal- 574153</div>
                     </li>
                     <li data-aos="fade" data-aos-delay="450">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
@@ -72,7 +72,7 @@ $current_year = date('Y');
                     </li>
                     <li data-aos="fade" data-aos-delay="500">
                         <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                        <div class="contact-text">+91 123 456 7890</div>
+                        <div class="contact-text">+91 9995194472</div>
                     </li>
                 </ul>
                 
