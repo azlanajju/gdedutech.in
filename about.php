@@ -26,6 +26,30 @@ require_once './Configurations/config.php';
     <!-- Custom JavaScript -->
     <script src="./js/main.js" defer></script>
     <style>
+
+        /* Add custom styles for the contact image */
+        .about-hero-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            animation: float 6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            box-shadow: none;
+            border: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
         /* Mobile Responsiveness for About Page */
         @media (max-width: 991.98px) {
             .about-header {
@@ -193,8 +217,8 @@ require_once './Configurations/config.php';
                     <h1 class="text-white display-5 fw-bold mb-3">About GD Edutech</h1>
                     <p class="text-white-50 lead mb-0">Empowering minds through quality education and innovative learning solutions.</p>
                 </div>
-                <div class="col-md-5" data-aos="fade-left">
-                    <img src="./Images/Others/about-hero.png" alt="About Us" class="img-fluid rounded-4 shadow-lg">
+                <div class="col-md-5 col-12 text-center" data-aos="fade-left">
+                    <img src="./Images/Others/book.png" alt="About" class="about-hero-image">
                 </div>
             </div>
         </div>

@@ -31,6 +31,10 @@ require_once './Configurations/config.php';
             --transition-speed: 0.3s;
         }
 
+        .premium-feature-card .card-icon i {
+            color: #0d7298 !important; 
+        }
+
         /* General Mobile Improvements */
         @media (max-width: 991.98px) {
             .container {
@@ -385,6 +389,8 @@ require_once './Configurations/config.php';
         .blog-hero-image:hover::after {
             opacity: 1;
         }
+
+
     </style>
 </head>
 
@@ -406,7 +412,7 @@ require_once './Configurations/config.php';
                     <p class="text-white-50 lead mb-0">Discover the latest trends, tips, and insights in education and technology.</p>
                 </div>
                 <div class="col-md-5 col-12 text-center" data-aos="fade-left">
-                    <img src="./Images/Others/image1.png" alt="Blog" class="blog-hero-image">
+                    <img src="./Images/Others/blog.png" alt="Blog" class="blog-hero-image">
                 </div>
             </div>
         </div>

@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                     <p class="text-white-50 lead mb-0">Get in touch with us for any questions or inquiries.</p>
                 </div>
                 <div class="col-md-5" data-aos="fade-left">
-                    <img src="./Images/Others/img2.png" alt="Contact Us" class="contact-hero-image">
+                    <img src="./Images/Others/contact.png" alt="Contact Us" class="contact-hero-image">
                 </div>
             </div>
         </div>

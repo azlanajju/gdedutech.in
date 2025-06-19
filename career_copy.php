@@ -4,6 +4,10 @@ error_reporting(E_ALL);
 
 session_start();
 require_once './Configurations/config.php';
+
+// Fetch active job listings
+$query = "SELECT * FROM Careers WHERE status = 'Active' ORDER BY created_at DESC";
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +47,7 @@ require_once './Configurations/config.php';
                     <p class="text-white-50 lead mb-0">Be part of our mission to transform education through technology and innovation.</p>
                 </div>
                 <div class="col-md-5" data-aos="fade-left">
-                    <img src="./Images/Others/career2.png" alt="Careers" class="career-hero-image">
+                    <img src="./Images/Others/career.png" alt="Careers" class="career-hero-image">
                 </div>
             </div>
         </div>
@@ -121,18 +125,74 @@ require_once './Configurations/config.php';
                 </div>
             </div>
             <div class="row g-4">
-                <div class="col-12 text-center" data-aos="fade-up">
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
-                        No job openings available at the moment. Please check back later.
+                <?php if (mysqli_num_rows($result) > 0): ?>
+                    <?php while ($job = mysqli_fetch_assoc($result)): ?>
+                        <div class="col-lg-6" data-aos="fade-up" data-job-type="<?php echo htmlspecialchars($job['job_type']); ?>">
+                            <div class="premium-card job-card h-100">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-start mb-4">
+                                        <div>
+                                            <span class="badge bg-<?php echo $job['job_type'] === 'Full-time' ? 'primary' : 'success'; ?> mb-2">
+                                                <?php echo htmlspecialchars($job['job_type']); ?>
+                                            </span>
+                                            <h4 class="card-title mb-2"><?php echo htmlspecialchars($job['job_title']); ?></h4>
+                                            <div class="d-flex align-items-center text-muted mb-3">
+                                                <i class="bi bi-geo-alt me-2"></i>
+                                                <span><?php echo htmlspecialchars($job['location']); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="job-salary">
+                                            <span class="text-primary fw-bold"><?php echo htmlspecialchars($job['salary_range']); ?></span>
+                                            <span class="text-muted d-block">per annum</span>
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted mb-4"><?php echo htmlspecialchars($job['job_description']); ?></p>
+                                    <div class="job-requirements mb-4">
+                                        <h6 class="mb-3">Key Requirements:</h6>
+                                        <ul class="requirements-list">
+                                            <?php
+                                            $requirements = explode("\n", $job['requirements']);
+                                            foreach ($requirements as $requirement) {
+                                                if (!empty(trim($requirement))) {
+                                                    echo '<li><i class="bi bi-check-circle-fill text-primary me-2"></i>' . htmlspecialchars(trim($requirement)) . '</li>';
+                                                }
+                                            }
+                                            ?>
+                                        </ul>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="job-meta">
+                                            <span class="text-muted me-3">
+                                                <i class="bi bi-clock me-1"></i>
+                                                Posted <?php echo date('M d, Y', strtotime($job['created_at'])); ?>
+                                            </span>
+                                            <span class="text-muted">
+                                                <i class="bi bi-calendar me-1"></i>
+                                                Deadline: <?php echo date('M d, Y', strtotime($job['application_deadline'])); ?>
+                                            </span>
+                                        </div>
+                                        <a href="apply.php?id=<?php echo $job['job_id']; ?>" class="btn btn-primary apply-btn">
+                                            Apply Now <i class="bi bi-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="col-12 text-center" data-aos="fade-up">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            No job openings available at the moment. Please check back later.
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
     <!-- Life at GD Edu Tech -->
-    <!-- <section class="py-5">
+    <section class="py-5">
         <div class="container">
             <div class="row text-center mb-5">
                 <div class="col-lg-8 mx-auto">
@@ -170,7 +230,7 @@ require_once './Configurations/config.php';
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- CTA Section -->
     <section class="cta-section" data-aos="fade-up">
