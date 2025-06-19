@@ -33,245 +33,151 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GD Edu Tech - Transform Your Future</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <style>
-        /* Mobile responsiveness */
-        @media (max-width: 576px) {
-            .hero-section h1 {
-                font-size: 2.5rem;
-                /* Adjusted font size for smaller screens */
-            }
-
-            .hero-section p {
-                font-size: 1rem;
-                /* Adjusted font size for smaller screens */
-            }
-
-            .stats-highlight {
-                flex-direction: column;
-                /* Stack stats vertically */
-                align-items: center;
-                /* Center align items */
-            }
-
-            .stats-highlight div {
-                margin-bottom: 1rem;
-                /* Add spacing between stats */
-            }
-
-            .navbar .btn {
-                width: 100%;
-                /* Full width buttons on mobile */
-                margin: 5px 0;
-                /* Spacing between buttons */
-            }
-
-            .carousel-item img {
-                height: auto;
-                /* Maintain aspect ratio for images */
-            }
-        }
-    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <!-- Swiper JS CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-color);">
-        <div class="container">
-            <a class="navbar-brand" href="#"><img style="height: 40px;" src="./Images/Logos/GD_Full_logo.png" alt=""></a>
-            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon text-dark"></span>
-                <img src="./Images/Others/menu.png" style="height:35px;" alt=""> </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#courses">Courses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#categories">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="career.php">Career</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="./studentPanel/" class="btn btn-outline-light me-2">Dashboard</a>
-                    <?php else: ?>
-                        <a href="./studentPanel/login.php" class="btn btn-outline-light me-2">Login</a>
-                        <a href="./studentPanel/signup.php" class="btn btn-primary">Sign Up</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </nav>
+     <?php include './navbar.php'; ?>
+
 
     <!-- Hero Section -->
-    <section class="hero-section text-center">
+    <section class="hero-section" id="home">
+        <div id="particles-js"></div>
+        <div class="shape shape-1" data-aos="fade-right" data-aos-duration="1000"></div>
+        <div class="shape shape-2" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200"></div>
+        <div class="shape shape-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400"></div>
+        
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 text-lg-start">
-                    <h1 class="display-4 fw-bold mb-4 text-white">
-                        Transform Your Future with
-                        <span class="gradient-text">GD Edu Tech</span>
-                    </h1>
-                    <p class="lead mb-5 text-white opacity-90">
-                        Access world-class education from anywhere. Learn at your own pace with expert-led courses.
-                    </p>
-                    <div class="d-flex gap-3 home-btns-container">
-                        <a href="./studentPanel/signup.php" class="btn btn-light btn-lg px-5 rounded-pill home-btns">
-                            <i class="bi bi-rocket-takeoff me-2"></i>Start Learning Today
-                        </a>
-                        <a href="#courses" class="btn btn-outline-light btn-lg px-5 rounded-pill home-btns">
-                            <i class="bi bi-play-circle me-2"></i>Explore Courses
-                        </a>
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="hero-content">
+                        <div class="hero-badge" data-aos="fade-up" data-aos-delay="200">
+                            <i class="bi bi-lightning-fill me-2"></i>Transform Your Future with GD Edu Tech
+                        </div>
+                        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="400">Discover a <span data-text="World of Learning">World of Learning</span> for Your Future</h1>
+                        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="600">Join thousands of students in our world-class online programs and develop the skills needed for in-demand careers.</p>
+                        
+                        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="800">
+                            <a href="#courses" class="btn-primary-action">
+                                Explore Courses <i class="bi bi-arrow-right"></i>
+                            </a>
+                            <a href="about.php" class="btn-secondary-action">
+                                Learn More <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                                <h3><span class="counter">50</span>+</h3>
+                                <p>Expert Instructors</p>
+                            </div>
+                            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                                <h3><span class="counter">100</span>+</h3>
+                                <p>Quality Courses</p>
+                            </div>
+                            <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                                <h3><span class="counter">10</span>K+</h3>
+                                <p>Active Students</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-5 d-flex gap-4 stats-highlight">
-                        <div class="text-white">
-                            <h3 class="fw-bold mb-0">10K+</h3>
-                            <p class="mb-0 opacity-75">Active Students</p>
+                    </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="hero-image-wrapper">
+                        <img src="./Images/Others/illustration_home1.png" alt="Education Platform" class="hero-image">
+                        
+                        <div class="hero-card hero-card-1">
+                            <div class="hero-card-icon">
+                                <i class="bi bi-laptop"></i>
+                            </div>
+                            <div class="hero-card-content">
+                                <h4>Learn Anywhere</h4>
+                                <p>24/7 Access to Courses</p>
+                            </div>
                         </div>
-                        <div class="text-white">
-                            <h3 class="fw-bold mb-0">500+</h3>
-                            <p class="mb-0 opacity-75">Expert Courses</p>
-                        </div>
-                        <div class="text-white">
-                            <h3 class="fw-bold mb-0">4.8</h3>
-                            <p class="mb-0 opacity-75">User Rating</p>
+                        
+                        <div class="hero-card hero-card-2">
+                            <div class="hero-card-icon">
+                                <i class="bi bi-award-fill"></i>
+                            </div>
+                            <div class="hero-card-content">
+                                <h4>Get Certified</h4>
+                                <p>Industry Recognized</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <img style="filter: hue-rotate(100deg);" src="./Images/Others/illustration_home.png" alt="Education Illustration" class="img-fluid hero-image">
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- After hero section, before features section -->
-    <section class="py-5">
-        <div class="container">
-            <div id="featureCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="2"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row justify-content-center">
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-collection-play fs-1 text-primary mb-3"></i>
-                                        <h4>Interactive Learning</h4>
-                                        <p>Engage with interactive content, quizzes, and hands-on projects</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-clock-history fs-1 text-primary mb-3"></i>
-                                        <h4>Learn at Your Pace</h4>
-                                        <p>Access course content 24/7 and learn at your own schedule</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row justify-content-center">
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-people fs-1 text-primary mb-3"></i>
-                                        <h4>Community Support</h4>
-                                        <p>Join a community of learners and get peer support</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-chat-dots fs-1 text-primary mb-3"></i>
-                                        <h4>Expert Feedback</h4>
-                                        <p>Get personalized feedback from industry experts</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row justify-content-center">
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-phone fs-1 text-primary mb-3"></i>
-                                        <h4>Mobile Learning</h4>
-                                        <p>Learn on any device with our mobile-friendly platform</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-patch-check fs-1 text-primary mb-3"></i>
-                                        <h4>Verified Certificates</h4>
-                                        <p>Earn industry-recognized certificates upon completion</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#featureCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#featureCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
+        
     </section>
 
     <!-- Features Section -->
-    <section class="py-5">
+    <section class="features-section" id="features">
         <div class="container">
-            <h2 class="text-center mb-5">Why Choose GD Edu Tech?</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card card h-100 p-4">
-                        <div class="card-body text-center">
-                            <i class="bi bi-laptop fs-1 text-primary mb-3"></i>
-                            <h4>Learn Anywhere</h4>
-                            <p>Access courses from any device, anytime, anywhere.</p>
+            <div class="section-header" data-aos="fade-up">
+                <span class="sub-heading text-accent-gradient">Why Choose Us</span>
+                <h2 class="heading">Features That <span class="text-gradient">Set Us Apart</span></h2>
+                <p class="lead">Discover the features that make our learning platform unique and effective</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card-wrapper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="premium-feature-card">
+                        <div class="feature-content">
+                            <div class="card-icon">
+                                <i class="bi bi-laptop-fill"></i>
+                            </div>
+                            <h3>Online Learning</h3>
+                            <p>Access our courses anytime, anywhere with our flexible online learning platform. Learn at your own pace with 24/7 access to course materials.</p>
+                            <a href="#" class="feature-link">Learn More <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-card card h-100 p-4">
-                        <div class="card-body text-center">
-                            <i class="bi bi-person-check fs-1 text-primary mb-3"></i>
-                            <h4>Expert Instructors</h4>
-                            <p>Learn from industry experts and professionals.</p>
+
+                <!-- Feature 2 -->
+                <div class="feature-card-wrapper" data-aos="fade-up" data-aos-delay="200">
+                    <div class="premium-feature-card">
+                        <div class="feature-content">
+                            <div class="card-icon">
+                                <i class="bi bi-person-video3"></i>
+                            </div>
+                            <h3>Expert Instructors</h3>
+                            <p>Learn from industry professionals with years of practical experience. Get personalized guidance and support throughout your learning journey.</p>
+                            <a href="#" class="feature-link">Learn More <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-card card h-100 p-4">
-                        <div class="card-body text-center">
-                            <i class="bi bi-award fs-1 text-primary mb-3"></i>
-                            <h4>Certificates</h4>
-                            <p>Earn recognized certificates upon completion.</p>
+
+                <!-- Feature 3 -->
+                <div class="feature-card-wrapper" data-aos="fade-up" data-aos-delay="300">
+                    <div class="premium-feature-card">
+                        <div class="feature-content">
+                            <div class="card-icon">
+                                <i class="bi bi-award-fill"></i>
+                            </div>
+                            <h3>Certifications</h3>
+                            <p>Earn industry-recognized certifications upon course completion. Boost your resume with credentials that matter to employers.</p>
+                            <a href="#" class="feature-link">Learn More <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -282,10 +188,10 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <!-- Popular Courses -->
     <section class="py-5 bg-light" id="courses">
         <div class="container">
-            <h2 class="text-center mb-5">Popular Courses</h2>
+            <h2 class="text-center mb-5" data-aos="fade-up">Popular Courses</h2>
             <div class="row g-4">
-                <?php foreach ($popular_courses as $course): ?>
-                    <div class="col-md-4">
+                <?php foreach ($popular_courses as $index => $course): ?>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="<?php echo $index * 200; ?>">
                         <div class="course-card card h-100">
                             <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>"
                                 class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
@@ -299,9 +205,6 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                                     <?php echo substr(htmlspecialchars($course['description']), 0, 100) . '...'; ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted">
-                                        <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
-                                    </span>
                                     <a href="./studentPanel/MyCourses/course.php?id=<?php echo $course['course_id']; ?>"
                                         class="btn btn-primary">Learn More</a>
                                 </div>
@@ -311,23 +214,37 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                 <?php endforeach; ?>
             </div>
         </div>
+        <div class="view-all-course" data-aos="fade-up" data-aos-delay="200" style="text-align: center;display: flex;justify-content: center;align-items: center;margin-top: 30px;">
+            <a href="courses.php" class="btn btn-primary">View All Courses</a>
+        </div>
     </section>
 
     <!-- Categories Section -->
-    <section class="py-5" id="categories">
+    <section class="categories-section" id="categories">
         <div class="container">
-            <h2 class="text-center mb-5">Browse Categories</h2>
-            <div class="row g-4">
-                <?php foreach ($categories as $category): ?>
-                    <div class="col-md-3">
-                        <div class="category-card card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
-                                <p class="card-text text-muted">
-                                    <?php echo $category['course_count']; ?> courses
-                                </p>
-                                <a href="./studentPanel/login.php"
-                                    class="stretched-link"></a>
+            <div class="section-header text-center" data-aos="fade-up">
+                <span class="sub-heading text-accent-gradient">Learning Paths</span>
+                <h2 class="heading">Explore Our <span class="text-gradient">Categories</span></h2>
+                <p class="lead">Discover specialized learning paths tailored to your interests</p>
+            </div>
+            
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <?php foreach ($categories as $index => $category): ?>
+                <div class="col" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+                    <div class="category-card h-100">
+                        <div class="category-icon">
+                            <div class="icon-bg"></div>
+                            <i class="<?php echo !empty($category['icon']) ? $category['icon'] : 'bi bi-book'; ?>"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><?php echo $category['name']; ?></h3>
+                            <p><?php echo !empty($category['description']) ? substr($category['description'], 0, 80) . '...' : 'Explore courses in this category'; ?></p>
+                            <div class="category-meta">
+                                <span><i class="bi bi-collection"></i> <?php echo $category['course_count']; ?> Courses</span>
+                            </div>
+                            <a href="courses.php?category=<?php echo $category['category_id']; ?>" class="category-link">
+                                View Courses <i class="bi bi-arrow-right"></i>
+                            </a>
                             </div>
                         </div>
                     </div>
@@ -336,131 +253,488 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
+    <!-- Testimonial Section -->
+    <section class="testimonial-section" id="testimonials">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-person-fill fs-1 text-primary mb-3"></i>
-                        <h3>10,000+</h3>
-                        <p class="mb-0">Active Students</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-book-fill fs-1 text-primary mb-3"></i>
-                        <h3>500+</h3>
-                        <p class="mb-0">Total Courses</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-star-fill fs-1 text-primary mb-3"></i>
-                        <h3>4.8</h3>
-                        <p class="mb-0">Average Rating</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-award-fill fs-1 text-primary mb-3"></i>
-                        <h3>15,000+</h3>
-                        <p class="mb-0">Certificates Awarded</p>
-                    </div>
-                </div>
+
+        <!-- testimonial section --- not required for now -->
+            <!-- <div class="section-header text-center" data-aos="fade-up">
+                <h6 class="text-primary text-uppercase fw-bold mb-3">
+                    <i class="bi bi-star-fill me-2"></i>Student Reviews
+                </h6>
+                <h2 class="display-5 fw-bold text-white mb-3">What Our Students Say</h2>
+                <div class="section-divider mx-auto"></div>
             </div>
-        </div>
-    </section>
-    <!-- Image Slider Section -->
-    <!-- Gallery Section -->
-    <section class="py-5 bg-light" id="gallery">
-        <div class="container">
-            <h2 class="text-center mb-5 display-6 fw-bold">Our Learning Journey</h2>
-            <div id="galleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
-                <div class="carousel-inner rounded shadow-lg overflow-hidden">
-                    <?php
-                    $images = glob('./Images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-                    $chunks = array_chunk($images, 4); // Split images into chunks of 4
-                    foreach ($chunks as $index => $chunk): ?>
-                        <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                            <div class="row g-3">
-                                <?php foreach ($chunk as $image): ?>
-                                    <div class="col-md-3">
-                                        <div class="gallery-item position-relative overflow-hidden">
-                                            <img src="<?php echo $image; ?>"
-                                                class="d-block w-100 gallery-image"
-                                                alt="Gallery Image"
-                                                style="height: 250px; object-fit: cover; transition: transform 0.3s ease;">
-                                            <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                                                <div class="overlay-content text-center text-white">
-                                                    <i class="bi bi-zoom-in fs-3"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+
+            <div class="testimonial-slider-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="swiper testimonialSwiper">
+                    <div class="swiper-wrapper">
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-content">
+                                    <div class="rating mb-3">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
                                     </div>
-                                <?php endforeach; ?>
+                                    <div class="testimonial-text">
+                                        <i class="bi bi-quote quote-icon"></i>
+                                        <p>The quality of education and support at GD Edu Tech is exceptional. The instructors are knowledgeable and always willing to help. I've learned so much in such a short time!</p>
+                                    </div>
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-image">
+                                        <img src="./Images/Others/testimonial-1.jpg" alt="Sarah Johnson">
+                                    </div>
+                                    <div class="author-info">
+                                        <h5>Sarah Johnson</h5>
+                                        <p>Web Development Student</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-content">
+                                    <div class="rating mb-3">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <div class="testimonial-text">
+                                        <i class="bi bi-quote quote-icon"></i>
+                                        <p>The practical approach to learning and industry-relevant curriculum helped me land my dream job. GD Edu Tech has truly transformed my career path!</p>
+                                    </div>
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-image">
+                                        <img src="./Images/Others/testimonial-2.jpg" alt="Michael Chen">
+                                    </div>
+                                    <div class="author-info">
+                                        <h5>Michael Chen</h5>
+                                        <p>Data Science Graduate</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-content">
+                                    <div class="rating mb-3">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+                                    <div class="testimonial-text">
+                                        <i class="bi bi-quote quote-icon"></i>
+                                        <p>The flexibility of online learning combined with expert instruction makes GD Edu Tech stand out. I've gained valuable skills that I use every day in my work.</p>
+                                    </div>
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-image">
+                                        <img src="./Images/Others/testimonial-3.jpg" alt="Emily Rodriguez">
+                                    </div>
+                                    <div class="author-info">
+                                        <h5>Emily Rodriguez</h5>
+                                        <p>UI/UX Design Student</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-pagination"></div>
+                    <div class="slider-arrows">
+                        <button class="slider-prev">
+                            <i class="bi bi-arrow-left"></i>
+                        </button>
+                        <button class="slider-next">
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+            </div> -->
+
+            <!-- Call to Action -->
+            <div class="testimonial-cta" data-aos="fade-up" data-aos-delay="400" style="text-align: center;display: flex;justify-content: center;align-items: center;margin-top: 40px;">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 mb-4 mb-lg-0">
+                        <div class="cta-content">
+                            <h3 class="text-white mb-2">Ready to Start Your Learning Journey?</h3>
+                            <p class="text-white-50 mb-0">Join thousands of successful students who have transformed their careers with us.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="./studentPanel/signup.php" class="btn btn-light btn-lg rounded-pill">
+                            Get Started Now
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
+
         </div>
     </section>
 
 
-
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <img height="50px" src="./Images/Logos/gd_edutech_logo.png" alt="">
-                    <h5>About GD Edu Tech</h5>
-                    <p>Transforming education through technology. Learn, grow, and succeed with our platform.</p>
+    <!-- Gallery Section -->
+    <section class="py-5 bg-light" id="gallery">
+        <div class="container py-5">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-heading text-center" data-aos="fade-up">Our Learning Journey</h2>
+                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">Take a glimpse at our vibrant learning community in action</p>
                 </div>
-                <div class="col-md-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-light">About Us</a></li>
-                        <li><a href="#" class="text-light">Contact</a></li>
-                        <li><a href="#" class="text-light">Privacy Policy</a></li>
-                        <li><a href="#" class="text-light">Terms of Service</a></li>
-                    </ul>
+            </div>
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="col-12">
+                    <div class="swiper gallerySwiper">
+                        <div class="swiper-wrapper">
+                            <?php
+                            $images = glob('./Images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+                            foreach ($images as $image): ?>
+                                <div class="swiper-slide">
+                                    <div class="premium-card overflow-hidden">
+                                        <img src="<?php echo $image; ?>" 
+                                            class="img-fluid w-100" 
+                                            alt="Gallery Image" 
+                                            style="height: 400px; object-fit: cover;">
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                 </div>
-                <div class="col-md-4">
-                    <h5>Contact Us</h5>
-                    <p>
-                        <i class="bi bi-envelope me-2"></i> info@gdedutech.com<br>
-                        <i class="bi bi-phone me-2"></i> +1 234 567 890
-                    </p>
-                    <div class="social-links">
-                        <a href="#" class="text-light me-3"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-light me-3"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-light me-3"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
+                        <div class="swiper-pagination mt-4"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
 
+    <?php include 'footer.php'; ?>
+
+    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Waypoints -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- Counter Up -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+
     <script>
+        // Initialize AOS with custom settings
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false,
+            offset: 120,
+            delay: 100
+        });
+
+        // Enhanced Mobile Menu Behavior
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInside = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
+                if (!isClickInside && navbarCollapse.classList.contains('show')) {
+                    navbarToggler.click();
+                }
+            });
+
+            // Close menu when clicking on a link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navbarCollapse.classList.contains('show')) {
+                        navbarToggler.click();
+                    }
+                });
+            });
+
+            // Enhanced scroll behavior
+            let lastScrollTop = 0;
+            const navbar = document.querySelector('.navbar');
+            
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Add/remove scrolled class
+                if (scrollTop > 50) {
+                    navbar.classList.add('scrolled');
+                    navbar.classList.remove('navbar-dark');
+                    navbar.classList.add('navbar-light');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    navbar.classList.remove('navbar-light');
+                    navbar.classList.add('navbar-dark');
+                }
+
+                // Hide/show navbar on scroll
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // Scrolling down & not at the top
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    // Scrolling up or at the top
+                    navbar.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        });
+
+        // Initialize Swiper for Testimonials
+        var testimonialSwiper = new Swiper(".testimonialSwiper", {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoHeight: true,
+            pagination: {
+                el: ".testimonialSwiper .swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".slider-next",
+                prevEl: ".slider-prev",
+            },
+            breakpoints: {
+                576: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 40,
+                },
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+        });
+        
+        // Initialize Swiper for Gallery
+        var gallerySwiper = new Swiper(".gallerySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            autoHeight: true,
+            navigation: {
+                nextEl: ".gallerySwiper .swiper-button-next",
+                prevEl: ".gallerySwiper .swiper-button-prev",
+            },
+            pagination: {
+                el: ".gallerySwiper .swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+                576: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                992: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+            },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+        });
+        
+        // Counter Animation
+        const counterUp = window.counterUp = (el, options = {}) => {
+            const {
+                duration = 1000,
+                delay = 16,
+            } = options;
+            
+            if (typeof el === 'string') {
+                el = document.querySelector(el);
+            }
+            
+            const start = el.innerText.replace(/,/g, '');
+            const countTo = parseInt(el.getAttribute('data-count').replace(/,/g, ''));
+            const inc = countTo / (duration / delay);
+            let current = start;
+            
+            const counter = setInterval(() => {
+                current = Math.ceil(current + inc);
+                el.innerText = current.toLocaleString();
+                
+                if (parseInt(current) >= countTo) {
+                    clearInterval(counter);
+                    el.innerText = countTo.toLocaleString();
+                }
+            }, delay);
+        };
+        
+        // Initialize counters when in viewport
+        const counterElements = document.querySelectorAll('.counter');
+        const observerOptions = {
+            threshold: 0.2
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    counterUp(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        counterElements.forEach(el => {
+            observer.observe(el);
+        });
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {
-                document.querySelector('.navbar').classList.add('scrolled');
+                navbar.classList.add('scrolled');
+                navbar.classList.remove('navbar-dark');
+                navbar.classList.add('navbar-light');
             } else {
-                document.querySelector('.navbar').classList.remove('scrolled');
+                navbar.classList.remove('scrolled');
+                navbar.classList.remove('navbar-light');
+                navbar.classList.add('navbar-dark');
             }
+        });
+        
+        
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
         });
     </script>
 </body>

@@ -3,13 +3,13 @@ session_start();
 require_once './Configurations/config.php';
 
 // Check if job_id is provided
-if (!isset($_GET['job_id'])) {
+if (!isset($_GET['id'])) {
     header('Location: career.php');
     exit();
 }
 
 // Fetch job details
-$job_id = intval($_GET['job_id']);
+$job_id = intval($_GET['id']);
 $sql = "SELECT * FROM Careers WHERE job_id = ? AND status = 'Active'";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $job_id);
