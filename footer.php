@@ -16,10 +16,10 @@ $current_year = date('Y');
                             </div>
                 <p class="tagline">Empowering minds through quality education and innovative learning solutions. Join us in shaping the future of education.</p>
                 <div class="social-icons">
-                    <a href="#" class="social-icon" data-aos="fade" data-aos-delay="200"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon" data-aos="fade" data-aos-delay="300"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-icon" data-aos="fade" data-aos-delay="400"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon" data-aos="fade" data-aos-delay="500"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/people/GD-EDU-TECH/" class="social-icon" data-aos="fade" data-aos-delay="200"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/company/gd-edu-tech/" class="social-icon" data-aos="fade" data-aos-delay="300"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/gd_edu__tech/" class="social-icon" data-aos="fade" data-aos-delay="400"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@GDEDUTECH" class="social-icon" data-aos="fade" data-aos-delay="500"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
 
@@ -30,8 +30,8 @@ $current_year = date('Y');
                     <li data-aos="fade" data-aos-delay="250"><a href="courses.php">Courses</a></li>
                     <li data-aos="fade" data-aos-delay="300"><a href="contact.php">Contact</a></li>
                     <li data-aos="fade" data-aos-delay="350"><a href="career.php">Careers</a></li>
-                    <li data-aos="fade" data-aos-delay="400"><a href="privacy-policy.php">Privacy Policy</a></li>
-                    <li data-aos="fade" data-aos-delay="450"><a href="terms.php">Terms & Conditions</a></li>
+                    <li data-aos="fade" data-aos-delay="400"><a href="#">Privacy Policy</a></li>
+                    <li data-aos="fade" data-aos-delay="450"><a href="#">Terms & Conditions</a></li>
                             </ul>
                     </div>
 
@@ -64,15 +64,15 @@ $current_year = date('Y');
                 <ul class="contact-info">
                     <li data-aos="fade" data-aos-delay="400">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-text">2-108/C-7, Ground Floor, Sri Mantame Complex, Near Soorya Infotech Park, Kurnadu Post, Mudipu Road, Bantwal- 574153</div>
+                        <div class="contact-text">Kankanady, Mangalore, Karnataka, India</div>
                     </li>
                     <li data-aos="fade" data-aos-delay="450">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-text">info@gdedutech.in</div>
+                        <div class="contact-text">gdedutech24@gmail.com</div>
                     </li>
                     <li data-aos="fade" data-aos-delay="500">
                         <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                        <div class="contact-text">+91 9995194472</div>
+                        <div class="contact-text">+91 7259267480</div>
                     </li>
                 </ul>
                 

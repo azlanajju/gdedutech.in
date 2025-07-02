@@ -337,9 +337,9 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                                         <?php echo substr(htmlspecialchars($course['description']), 0, 100) . '...'; ?>
                                     </p>
                                     <div class="d-flex justify-content-between align-items-center mt-auto">
-                                        <span class="text-muted">
+                                        <!-- <span class="text-muted">
                                             <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
-                                        </span>
+                                        </span> -->
                                         <a href="./studentPanel/MyCourses/course.php?id=<?php echo $course['course_id']; ?>"
                                             class="btn btn-sm btn-primary">Learn More</a>
                                     </div>

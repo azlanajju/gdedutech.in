@@ -412,7 +412,7 @@ require_once './Configurations/config.php';
                     <p class="text-white-50 lead mb-0">Discover the latest trends, tips, and insights in education and technology.</p>
                 </div>
                 <div class="col-md-5 col-12 text-center" data-aos="fade-left">
-                    <img src="./Images/Others/blog.png" alt="Blog" class="blog-hero-image">
+                    <!-- <img src="./Images/Others/blog.png" alt="Blog" class="blog-hero-image"> -->
                 </div>
             </div>
         </div>

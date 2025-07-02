@@ -342,10 +342,6 @@ $user_name = $_SESSION['username'] ?? 'Student';
         </div>
     </div>
 
-    <?php
-    $path = "../../";
-    include("../../footer.php");
-    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sidebar toggle functionality for mobile

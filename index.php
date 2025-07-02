@@ -239,9 +239,9 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                         <div class="category-content">
                             <h3><?php echo $category['name']; ?></h3>
                             <p><?php echo !empty($category['description']) ? substr($category['description'], 0, 80) . '...' : 'Explore courses in this category'; ?></p>
-                            <div class="category-meta">
+                            <!-- <div class="category-meta">
                                 <span><i class="bi bi-collection"></i> <?php echo $category['course_count']; ?> Courses</span>
-                            </div>
+                            </div> -->
                             <a href="courses.php?category=<?php echo $category['category_id']; ?>" class="category-link">
                                 View Courses <i class="bi bi-arrow-right"></i>
                             </a>

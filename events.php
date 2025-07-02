@@ -27,6 +27,9 @@ require_once './Configurations/config.php';
     <script src="./js/main.js" defer></script>
     <style>
         /* Add custom styles for the events image */
+        .premium-feature-card .card-icon i {
+            color: #0d7298 !important; 
+        }
         .events-hero-image {
             max-width: 100%;
             height: auto;
@@ -70,7 +73,7 @@ require_once './Configurations/config.php';
                     <p class="text-white-50 lead mb-0">Join our educational events, workshops, and webinars to enhance your learning journey.</p>
                 </div>
                 <div class="col-md-5" data-aos="fade-left">
-                    <img src="./Images/Others/event2.png" alt="Events" class="events-hero-image">
+                    <!-- <img src="./Images/Others/event2.png" alt="Events" class="events-hero-image"> -->
                 </div>
             </div>
         </div>

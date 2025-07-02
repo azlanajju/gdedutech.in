@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                     <p class="text-white-50 lead mb-0">Get in touch with us for any questions or inquiries.</p>
                 </div>
                 <div class="col-md-5" data-aos="fade-left">
-                    <img src="./Images/Others/contact.png" alt="Contact Us" class="contact-hero-image">
+                    <!-- <img src="./Images/Others/contact.png" alt="Contact Us" class="contact-hero-image"> -->
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                             </div>
                             <div>
                                 <h5>Our Location</h5>
-                                <p class="text-muted mb-0">123 Education St, Learning City</p>
+                                <p class="text-muted mb-0">Kankanady, Mangalore, Karnataka, India</p>
                             </div>
                         </div>
                         
@@ -139,8 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                             </div>
                             <div>
                                 <h5>Email Us</h5>
-                                <p class="text-muted mb-0">info@gdedutech.com</p>
-                                <p class="text-muted mb-0">support@gdedutech.com</p>
+                                <p class="text-muted mb-0">gdedutech24@gmail.com</p>
                             </div>
                         </div>
                         
@@ -150,24 +149,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                             </div>
                             <div>
                                 <h5>Call Us</h5>
-                                <p class="text-muted mb-0">+1 234 567 890</p>
-                                <p class="text-muted mb-0">+1 987 654 321</p>
+                                <p class="text-muted mb-0">+91 7259267480</p>
                             </div>
                         </div>
                         
                         <div class="social-links mt-5">
                             <h5>Connect With Us</h5>
                             <div class="d-flex mt-3">
-                                <a href="#" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
+                                <a href="https://www.facebook.com/people/GD-EDU-TECH/" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
                                     <i class="bi bi-facebook"></i>
                                 </a>
-                                <a href="#" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-twitter"></i>
+                                <a href="https://www.youtube.com/@GDEDUTECH/" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-youtube"></i>
                                 </a>
-                                <a href="#" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
+                                <a href="https://www.linkedin.com/company/gd-edu-tech/" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
                                     <i class="bi bi-linkedin"></i>
                                 </a>
-                                <a href="#" class="p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
+                                <a href="https://www.instagram.com/gd_edu__tech/" class="p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
                                     <i class="bi bi-instagram"></i>
                                 </a>
                             </div>
@@ -223,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             <div class="row">
                 <div class="col-12" data-aos="fade-up">
                     <div class="premium-card p-0 overflow-hidden">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30591910525!2d-74.25986630089809!3d40.69714941280076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1649226028489!5m2!1sen!2sin" 
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59581.22283851267!2d74.77494418116903!3d12.882478463122082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xaca9ff5b4f31f2cd%3A0xca2c5cd617d9d383!2sGD%20EDU%20TECH!5e0!3m2!1sen!2sin!4v1751472498695!5m2!1sen!2sin"
                             width="100%" 
                             height="450" 
                             style="border:0;" 

@@ -166,7 +166,7 @@ $categories_result = $conn->query($categories_query);
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Resources/index.php" class="nav-link text-white">
+                            <a href="../Resources/index.php" class="nav-link text-white">
                                 <i class="bi bi-file-earmark-text me-2"></i> Resources
                             </a>
                         </li>
@@ -250,10 +250,7 @@ $categories_result = $conn->query($categories_query);
             </div>
         </div>
     </div>
-    <?php
-    $path = "../../";
-    include("../../footer.php");
-    ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebar = document.getElementById('sidebar');
