@@ -51,6 +51,9 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/index.css">
+    
+    <link rel="icon" type="image/png" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="./Images/Logos/GD_Only_logo.png">
 </head>
 
 <body>

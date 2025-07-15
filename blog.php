@@ -23,6 +23,9 @@ require_once './Configurations/config.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
+        
+    <link rel="icon" type="image/png" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="./Images/Logos/GD_Only_logo.png">
     <style>
         /* Enhanced mobile responsiveness for blog.php */
         :root {

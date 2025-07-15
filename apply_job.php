@@ -95,6 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
+        
+    <link rel="icon" type="image/png" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="./Images/Logos/GD_Only_logo.png">
 </head>
 <body>
     <?php include 'navbar.php'; ?>

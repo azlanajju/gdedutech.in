@@ -142,6 +142,9 @@ $recommended_courses_result = $recommended_courses_stmt->get_result();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/student_dashboard.css">
+        
+    <link rel="icon" type="image/png" href="../Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="../Images/Logos/GD_Only_logo.png">
     <style>
         /* Custom styles for the sidebar */
         .sidebar {

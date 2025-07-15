@@ -76,6 +76,9 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="./css/style.css">
     <!-- Custom JavaScript -->
     <script src="./js/main.js" defer></script>
+    
+    <link rel="icon" type="image/png" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="./Images/Logos/GD_Only_logo.png">
 </head>
 
 <body>
