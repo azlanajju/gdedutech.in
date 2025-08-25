@@ -13,7 +13,7 @@ $current_year = date('Y');
             <div class="footer-logo-section" data-aos="fade" data-aos-duration="1200">
                 <div class="logo-container">
                     <img src="./Images/Logos/GD_Full_logo.png" alt="GD Edu Tech Logo">
-                            </div>
+                </div>
                 <p class="tagline">Empowering minds through quality education and innovative learning solutions. Join us in shaping the future of education.</p>
                 <div class="social-icons">
                     <a href="https://www.facebook.com/people/GD-EDU-TECH/" class="social-icon" data-aos="fade" data-aos-delay="200"><i class="fab fa-facebook-f"></i></a>
@@ -21,8 +21,13 @@ $current_year = date('Y');
                     <a href="https://www.instagram.com/gd_edu__tech/" class="social-icon" data-aos="fade" data-aos-delay="400"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.youtube.com/@GDEDUTECH" class="social-icon" data-aos="fade" data-aos-delay="500"><i class="fab fa-youtube"></i></a>
                         </div>
-                    </div>
 
+                    <div class="ventures">
+                    <h2 class="ventures-title">
+                        PRO GEE DEE VENTURES
+                    </h2>
+                </div>
+                    </div>
             <div class="footer-links-section" data-aos="fade" data-aos-duration="1200" data-aos-delay="100">
                 <h3 class="footer-heading">Quick Links</h3>
                             <ul class="footer-links">
@@ -455,6 +460,27 @@ $current_year = date('Y');
 
     .footer-dev-logo:hover {
         transform: scale(1.05);
+    }
+
+    .ventures {
+        margin-top: 9%;
+        margin-left: 2%;
+        transition: all 0.3s ease;
+    }
+
+    .ventures:hover {
+        transform: translateY(-1px);
+    }
+
+    .ventures-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: rgb(213, 213, 213);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0;
+        position: relative;
+        z-index: 1;
     }
 
     @media (max-width: 768px) {
