@@ -53,7 +53,11 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="./css/index.css">
     
     <link rel="icon" type="image/png" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./Images/Logos/GD_Only_logo.png">
     <link rel="shortcut icon" href="./Images/Logos/GD_Only_logo.png">
+    <link rel="apple-touch-icon" href="./Images/Logos/GD_Only_logo.png">
+    <meta name="msapplication-TileImage" content="./Images/Logos/GD_Only_logo.png">
 </head>
 
 <body>
