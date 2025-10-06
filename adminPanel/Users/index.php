@@ -83,6 +83,16 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
+                        <li class="w-100">
+                            <a href="../Blogs/" class="nav-link">
+                                <i class="bi bi-journal-text me-2"></i> Blogs
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../Events/" class="nav-link">
+                                <i class="bi bi-calendar2-event me-2"></i> Events
+                            </a>
+                        </li>
                         <li class="w-100 dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-lightbulb me-2"></i> Quick Links
@@ -316,6 +326,59 @@ $admin_name = $_SESSION['first_name'] ?? 'Admin';
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        /* Fix layout for Users page specifically */
+        .container-fluid .row {
+            margin: 0;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px; /* Fixed width for sidebar */
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .col.py-3 {
+            margin-left: 250px; /* Space for fixed sidebar */
+            width: calc(100% - 250px);
+            min-height: 100vh;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        /* Ensure main content doesn't overlap */
+        .main-content-wrapper {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                height: auto;
+                width: 100%;
+            }
+            
+            .col.py-3 {
+                margin-left: 0;
+                width: 100%;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .main-content-wrapper {
+                margin-left: 0;
+                padding: 15px;
+            }
+        }
+    </style>
 </body>
 
 </html>
