@@ -155,7 +155,7 @@ if (!$application) {
     </div>
 </div>
 <div class="modal-footer">
-    <a href="<?php echo '../../Uploads/Resumes/' . basename($application['resume_path']); ?>" 
+    <a href="<?php echo '../../uploads/resumes/' . basename($application['resume_path']); ?>" 
        class="btn btn-primary" target="_blank">
         <i class="bi bi-file-earmark-pdf me-2"></i>View Resume
     </a>
