@@ -228,7 +228,7 @@ $days_remaining = $interval->days;
 
                             <div class="mb-4">
                                 <div class="d-flex align-items-center mb-3">
-                                    <div class="icon-box-small bg-primary bg-opacity-10 text-primary me-3">
+                                    <div class="contact-icon me-3">
                                         <i class="bi bi-geo-alt"></i>
                                     </div>
                                     <div>
@@ -236,14 +236,10 @@ $days_remaining = $interval->days;
                                         <strong><?php echo htmlspecialchars($job['location']); ?></strong>
                                     </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="portfolio" class="form-label">Portfolio/Website (Optional)</label>
-                                    <input type="url" class="form-control form-control-lg" id="portfolio" name="portfolio_url" placeholder="https://yourportfolio.com">
-                                </div>
+                            
 
                                 <div class="d-flex align-items-center mb-3">
-                                    <div class="icon-box-small bg-success bg-opacity-10 text-success me-3">
+                                    <div class="contact-icon me-3">
                                         <i class="bi bi-cash-stack"></i>
                                     </div>
                                     <div>
@@ -253,7 +249,7 @@ $days_remaining = $interval->days;
                                 </div>
 
                                 <div class="d-flex align-items-center">
-                                    <div class="icon-box-small bg-warning bg-opacity-10 text-warning me-3">
+                                    <div class="contact-icon me-3">
                                         <i class="bi bi-calendar-check"></i>
                                     </div>
                                     <div>
@@ -506,12 +502,34 @@ $days_remaining = $interval->days;
         .icon-box-small:hover {
             transform: scale(1.1);
         }
+        
+        .contact-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            width: 40px;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            color: #0d6efd;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-icon:hover {
+            background-color: #0d6efd;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
 
         .badge {
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.03em;
             padding: 0.5rem 1rem;
+            background-color: #0078a8 !important;
+            color: #fff;
         }
 
         .form-control:focus,
@@ -528,7 +546,6 @@ $days_remaining = $interval->days;
 
         .form-control-lg,
         .form-select-lg {
-            padding: 0.75rem 1rem;
             border-radius: 0.5rem;
         }
 
@@ -558,7 +575,6 @@ $days_remaining = $interval->days;
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(var(--bs-primary-rgb), 0.4);
-            background: linear-gradient(135deg, #0056b3 0%, var(--primary) 100%);
         }
 
         .btn-outline-primary {
@@ -595,16 +611,12 @@ $days_remaining = $interval->days;
         }
 
         .premium-card {
-            background: #ffffff;
             border: none;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .premium-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         /* Form validation styles */
@@ -631,7 +643,7 @@ $days_remaining = $interval->days;
         }
 
         input[type="file"]::file-selector-button:hover {
-            background-color: #0056b3;
+            background-color: #0078a8;
         }
     </style>
 
