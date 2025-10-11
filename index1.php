@@ -26,6 +26,8 @@ $categories_query = "
 $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
