@@ -19,10 +19,10 @@ function getProjectRootPath() {
 	return $doc; // best-effort
 }
 
-// Absolute uploads base path as requested
+// Relative uploads base path
 function getUploadsBasePath() {
-	$absolute = 'C:\\xampp\\htdocs\\gdedutech.in\\uploads' . DIRECTORY_SEPARATOR; // Windows absolute path
-	return $absolute;
+	$relative = '../../uploads/'; // Using relative path instead of absolute path
+	return $relative;
 }
 
 $error = '';

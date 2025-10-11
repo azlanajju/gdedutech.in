@@ -26,4 +26,4 @@ CREATE TABLE BlogSections (
 
 ALTER TABLE Blogs
 ADD COLUMN category_id INT NULL,
-ADD FOREIGN KEY (category_id) REFERENCES BlogEventCategories(category_id) ON DELETE SET NULL;
+ADD FOREIGN KEY (category_id) REFERENCES BlogCategories(category_id) ON DELETE SET NULL;

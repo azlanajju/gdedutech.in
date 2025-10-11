@@ -16,4 +16,4 @@ CREATE TABLE Events (
 
 ALTER TABLE Events
 ADD COLUMN category_id INT NULL,
-ADD FOREIGN KEY (category_id) REFERENCES BlogEventCategories(category_id) ON DELETE SET NULL;
+ADD FOREIGN KEY (category_id) REFERENCES EventCategories(category_id) ON DELETE SET NULL;
