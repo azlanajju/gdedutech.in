@@ -76,6 +76,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                 transform: translateY(0px);
             }
         }
+        /* Center icons perfectly inside rounded circles on this page */
+        .rounded-circle.bg-primary.bg-opacity-10 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 !important;
+        }
+        .contact-info {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .contact-info li {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(0, 120, 168, 0.1);
+            border-radius: 50%;
+            margin-right: 15px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .contact-text {
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        
+        .contact-text h5 {
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .contact-text p {
+            color: var(--gray);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--light);
+            border-radius: 50%;
+            color: var(--primary);
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 
@@ -125,51 +196,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                     <p>Please fill out the form, and we'll get back to you as soon as possible.</p>
                     
                     <div class="mt-5">
-                        <div class="d-flex mb-4">
-                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-4" style="width: 60px; height: 60px">
-                                <i class="bi bi-geo-alt fs-3 text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>Our Location</h5>
-                                <p class="text-muted mb-0">Kankanady, Mangalore, Karnataka, India</p>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex mb-4">
-                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-4" style="width: 60px; height: 60px">
-                                <i class="bi bi-envelope fs-3 text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>Email Us</h5>
-                                <p class="text-muted mb-0">gdedutech24@gmail.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex mb-4">
-                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-4" style="width: 60px; height: 60px">
-                                <i class="bi bi-phone fs-3 text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>Call Us</h5>
-                                <p class="text-muted mb-0">+91 7259267480</p>
-                            </div>
-                        </div>
+                        <ul class="contact-info">
+                            <li data-aos="fade" data-aos-delay="400">
+                                <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="contact-text">
+                                    <h5>Our Location</h5>
+                                    <p class="mb-0">Kankanady Gate 4th floor, Kankanady Bypass road, Kankanady, Mangalore, Karnataka, India</p>
+                                </div>
+                            </li>
+                            <li data-aos="fade" data-aos-delay="450">
+                                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="contact-text">
+                                    <h5>Email Us</h5>
+                                    <p class="mb-0">gdedutech24@gmail.com</p>
+                                </div>
+                            </li>
+                            <li data-aos="fade" data-aos-delay="500">
+                                <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                                <div class="contact-text">
+                                    <h5>Call Us</h5>
+                                    <p class="mb-0">+91 7204626299</p>
+                                </div>
+                            </li>
+                        </ul>
                         
                         <div class="social-links mt-5">
                             <h5>Connect With Us</h5>
-                            <div class="d-flex mt-3">
-                                <a href="https://www.facebook.com/people/GD-EDU-TECH/" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-facebook"></i>
-                                </a>
-                                <a href="https://www.youtube.com/@GDEDUTECH/" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-youtube"></i>
-                                </a>
-                                <a href="https://www.linkedin.com/company/gd-edu-tech/" class="me-3 p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-linkedin"></i>
-                                </a>
-                                <a href="https://www.instagram.com/gd_edu__tech/" class="p-3 rounded-circle bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-instagram"></i>
-                                </a>
+                            <div class="social-icons mt-3">
+                                <a href="https://www.facebook.com/people/GD-EDU-TECH/" class="social-icon" data-aos="fade" data-aos-delay="200"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.linkedin.com/company/gd-edu-tech/" class="social-icon" data-aos="fade" data-aos-delay="300"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="https://www.instagram.com/gd_edu__tech/" class="social-icon" data-aos="fade" data-aos-delay="400"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.youtube.com/@GDEDUTECH" class="social-icon" data-aos="fade" data-aos-delay="500"><i class="fab fa-youtube"></i></a>
                             </div>
                         </div>
                     </div>
@@ -249,6 +306,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             <div class="row">
                 <div class="col-lg-8 mx-auto" data-aos="fade-up" data-aos-delay="400">
                     <div class="accordion" id="faqAccordion">
+                        <?php
+                        // Fetch FAQs from database
+                        $faq_query = "SELECT * FROM FAQs ORDER BY created_at DESC LIMIT 5";
+                        $faq_result = mysqli_query($conn, $faq_query);
+                        
+                        if (mysqli_num_rows($faq_result) > 0) {
+                            $first = true;
+                            $count = 0;
+                            while ($faq = mysqli_fetch_assoc($faq_result)) {
+                                $count++;
+                                $show = $first ? 'show' : '';
+                                $expanded = $first ? 'true' : 'false';
+                                $collapsed = $first ? '' : 'collapsed';
+                                $first = false;
+                        ?>
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="heading<?php echo $count; ?>">
+                                <button class="accordion-button <?php echo $collapsed; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $count; ?>" aria-expanded="<?php echo $expanded; ?>" aria-controls="collapse<?php echo $count; ?>">
+                                    <?php echo htmlspecialchars($faq['question']); ?>
+                                </button>
+                            </h2>
+                            <div id="collapse<?php echo $count; ?>" class="accordion-collapse collapse <?php echo $show; ?>" aria-labelledby="heading<?php echo $count; ?>" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <?php echo htmlspecialchars($faq['answer']); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                            }
+                        } else {
+                            // Fallback to static FAQs if none in database
+                        ?>
                         <div class="accordion-item border-0 mb-3 shadow-sm">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -285,30 +374,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item border-0 mb-3 shadow-sm">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    Do I get a certificate after completing a course?
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Yes, upon successful completion of a course, you will receive a certificate of completion that you can share on your resume or LinkedIn profile. Our certificates are recognized by many employers and institutions.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item border-0 shadow-sm">
-                            <h2 class="accordion-header" id="headingFive">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                    How long do I have access to a course after enrollment?
-                                </button>
-                            </h2>
-                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Once you enroll in a course, you have lifetime access to the course materials. You can revisit the content as many times as you need, even after you complete the course.
-                                </div>
-                            </div>
-                        </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -326,4 +392,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
     <script src="js/back-to-top.js"></script>
 </body>
 
-</html> 
+</html>

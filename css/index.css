@@ -852,6 +852,41 @@ img {
     transform: translateY(0);
 }
 
+/* Course Card Clickable Styles */
+.course-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.course-card:hover .card-title {
+    color: var(--primary);
+}
+
+.course-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary) !important;
+    color: white !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: var(--bs-border-radius-pill) !important;
+    padding: 12px 48px !important;
+}
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
 .course-badge {
     position: absolute;
     top: 15px;
@@ -872,6 +907,12 @@ img {
     right: 15px;
     background: linear-gradient(45deg, var(--accent), var(--accent-secondary));
     color: white;
+}
+
+.bg-primary {
+    background: var(--primary) !important;
+    color: white !important;
+    border: 2px solid var(--primary) !important;
 }
 
 .course-content {

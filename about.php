@@ -219,9 +219,9 @@ require_once './Configurations/config.php';
                     <h1 class="text-white display-5 fw-bold mb-3">About GD Edutech</h1>
                     <p class="text-white-50 lead mb-0">Empowering minds through quality education and innovative learning solutions.</p>
                 </div>
-                <div class="col-md-5 col-12 text-center" data-aos="fade-left">
+                <!-- <div class="col-md-5 col-12 text-center" data-aos="fade-left">
                     <img src="./Images/Others/book.png" alt="About" class="about-hero-image">
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="page-header-shape">
@@ -243,7 +243,7 @@ require_once './Configurations/config.php';
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                     <div class="position-relative">
-                        <img src="./Images/Others/about-story.jpg" alt="Our Story" class="img-fluid rounded shadow">
+                        <img src="./Images/Others/about-hero1.jpg" alt="Our Story" class="img-fluid rounded shadow" style="height: 400px; object-fit: cover;">
                         <!-- <div class="position-absolute top-0 start-0 translate-middle bg-primary text-white rounded-circle p-4" style="width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;">
                             <div class="text-center">
                                 <h3 class="mb-0">2020</h3>

@@ -197,11 +197,12 @@ $blogs_result = mysqli_query($conn, $blogs_query);
 										?>
                                         <img src="<?php echo $coverSrc ?: '../../uploads/1732891498_images.jpg'; ?>" class="cover-img" alt="<?php echo htmlspecialchars($blog['title']); ?>" loading="lazy">
 										<div class="card-body d-flex flex-column">
-											<h5 class="card-title mb-1"><?php echo htmlspecialchars($blog['title']); ?></h5>
+											<h5 class="card-title mb-3"><?php 
+											echo htmlspecialchars(mb_strimwidth($blog['title'], 0, 40, '...')); ?></h5>
 											<p class="blog-description mb-3"><?php
 												$excerpt = $blog['content'] ?? '';
 												$excerpt = strip_tags($excerpt);
-												$excerpt = strlen($excerpt) > 140 ? substr($excerpt, 0, 140) . '...' : $excerpt;
+												$excerpt = strlen($excerpt) > 140 ? substr($excerpt, 0, 100) . '...' : $excerpt;
 												echo htmlspecialchars($excerpt);
 											?></p>
 											<div class="d-flex justify-content-between align-items-center mt-auto">

@@ -148,7 +148,7 @@ img {
 }
 
 .btn-primary {
-    background: var(--background-gradient);
+    background: var(--primary) !important;
     color: white;
     border: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -166,8 +166,9 @@ img {
 }
 
 .btn-outline-primary:hover {
-    background: var(--background-gradient);
+    background: var(--primary);
     color: white;
+    border: none !important;
 }
 
 .btn-login {
@@ -1357,6 +1358,9 @@ img {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 }
 
+.text-primary {
+    color: var(--primary) !important;
+}
 .hero-cta .btn-light {
     padding: 15px 35px;
     font-size: 1.1rem;

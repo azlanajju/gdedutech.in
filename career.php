@@ -34,6 +34,47 @@ require_once './Configurations/config.php';
 </head>
 <body>
     <?php include 'navbar.php'; ?>
+    
+    <!-- Toast Notification -->
+    <div id="successToast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999; display: none;">
+        <div class="toast show bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close" onclick="hideToast()"></button>
+            </div>
+            <div class="toast-body">
+                <p class="mb-0">Your application has been submitted successfully! We'll get back to you soon.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Function to show success toast
+        function showSuccessToast() {
+            const toast = document.getElementById('successToast');
+            toast.style.display = 'block';
+            
+            // Automatically hide after 5 seconds
+            setTimeout(function() {
+                hideToast();
+            }, 5000);
+        }
+        
+        // Function to hide toast
+        function hideToast() {
+            const toast = document.getElementById('successToast');
+            toast.style.display = 'none';
+        }
+        
+        // Check if redirected from successful form submission
+        <?php if(isset($_SESSION['success']) && isset($_SESSION['show_toast'])): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            showSuccessToast();
+            <?php unset($_SESSION['show_toast']); ?>
+        });
+        <?php endif; ?>
+    </script>
 
     <!-- Page Header -->
     <section class="page-header position-relative overflow-hidden">
@@ -114,6 +155,7 @@ require_once './Configurations/config.php';
     <!-- Current Openings Section -->
     <section class="py-5 bg-light">
         <div class="container">
+            
             <div class="row mb-5">
                 <div class="col-lg-6">
                     <h2 class="section-heading" data-aos="fade-up">Current Openings</h2>
@@ -121,63 +163,86 @@ require_once './Configurations/config.php';
                 </div>
                 <div class="col-lg-6 text-lg-end" data-aos="fade-up" data-aos-delay="200">
                     <div class="btn-group" role="group" aria-label="Job filter">
-                        <button type="button" class="btn btn-primary active" data-filter="all">All</button>
-                        <button type="button" class="btn btn-outline-primary" data-filter="Full-time">Full-time</button>
-                        <button type="button" class="btn btn-outline-primary" data-filter="Remote">Remote</button>
+                        <button type="button" class="btn btn-primary active filter-btn" data-filter="all">All</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Full-time">Full-time</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Part-time">Part-time</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Contract">Contract</button>
+                        <button type="button" class="btn btn-outline-primary filter-btn" data-filter="Internship">Internship</button>
                     </div>
                 </div>
             </div>
-            <div class="row g-4">
+            <div class="row g-4" id="job-listings">
+                <!-- No jobs message (hidden by default) -->
+                <div id="no-jobs-message" class="col-12 text-center" style="display: none;" data-aos="fade-up">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <span id="no-jobs-text">No job openings available at the moment. Please check back later.</span>
+                    </div>
+                </div>
+                
+                <?php
+                // Fetch active job listings from the database
+                $query = "SELECT * FROM Careers WHERE status = 'Active' AND application_deadline >= CURDATE() ORDER BY created_at DESC";
+                $result = mysqli_query($conn, $query);
+                
+                if (mysqli_num_rows($result) > 0) {
+                    while ($job = mysqli_fetch_assoc($result)) {
+                        // Format the deadline date
+                        $deadline = new DateTime($job['application_deadline']);
+                        $formatted_deadline = $deadline->format('M d, Y');
+                        
+                        // Calculate days remaining
+                        $today = new DateTime();
+                        $interval = $today->diff($deadline);
+                        $days_remaining = $interval->days;
+                        $deadline_class = ($days_remaining <= 7) ? 'text-danger' : 'text-muted';
+                ?>
+                <div class="col-lg-6 job-item" data-category="<?php echo htmlspecialchars($job['job_type']); ?>" data-job-type="<?php echo htmlspecialchars($job['job_type']); ?>" data-aos="fade-up">
+                    <div class="job-card-new">
+                        <div class="job-tag"><?php echo htmlspecialchars($job['job_type']); ?></div>
+                        <div class="job-card-content">
+                            <div class="job-location">
+                                <i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($job['location']); ?>
+                            </div>
+                            <div class="job-salary-range">
+                                ₹ <?php echo str_replace('₹', '', htmlspecialchars($job['salary_range'])); ?>
+                            </div>
+                            
+                            <h3 class="job-title"><?php echo htmlspecialchars($job['job_title']); ?></h3>
+                            
+                            <p class="job-description"><?php echo nl2br(substr(htmlspecialchars($job['job_description']), 0, 140)) . '...'; ?></p>
+                        </div>
+                        
+                        <div class="job-footer">
+                            <div class="deadline <?php echo $deadline_class; ?>">
+                                <i class="bi bi-calendar-event"></i> Deadline: <?php echo $formatted_deadline; ?>
+                                <?php if ($days_remaining <= 7): ?>
+                                    (<?php echo $days_remaining; ?> days left)
+                                <?php endif; ?>
+                            </div>
+                            <a href="apply.php?job_id=<?php echo $job['job_id']; ?>" class="learn-more">
+                                Learn More
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                    }
+                } else {
+                ?>
                 <div class="col-12 text-center" data-aos="fade-up">
                     <div class="alert alert-info">
                         <i class="bi bi-info-circle me-2"></i>
                         No job openings available at the moment. Please check back later.
                     </div>
                 </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </section>
-
-    <!-- Life at GD Edu Tech -->
-    <!-- <section class="py-5">
-        <div class="container">
-            <div class="row text-center mb-5">
-                <div class="col-lg-8 mx-auto">
-                    <h2 class="section-heading" data-aos="fade-up">Life at GD Edu Tech</h2>
-                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100">See what makes our workplace special</p>
-                </div>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                    <div class="premium-card overflow-hidden">
-                        <img src="./Images/Others/office-1.jpg" alt="Office Life" class="img-fluid">
-                        <div class="p-4">
-                            <h5>Modern Workspace</h5>
-                            <p class="text-muted mb-0">State-of-the-art facilities designed for productivity and collaboration.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="premium-card overflow-hidden">
-                        <img src="./Images/Others/office-2.jpg" alt="Team Events" class="img-fluid">
-                        <div class="p-4">
-                            <h5>Team Events</h5>
-                            <p class="text-muted mb-0">Regular team building activities and celebrations.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="premium-card overflow-hidden">
-                        <img src="./Images/Others/office-3.jpg" alt="Learning Culture" class="img-fluid">
-                        <div class="p-4">
-                            <h5>Learning Culture</h5>
-                            <p class="text-muted mb-0">Continuous learning and professional development opportunities.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
 
     <!-- CTA Section -->
     <section class="cta-section" data-aos="fade-up">
@@ -211,113 +276,199 @@ require_once './Configurations/config.php';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <!-- Back to Top Button -->
     <script src="js/back-to-top.js"></script>
+    
+    <!-- Job Filtering Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            
+            // Job filtering functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const jobItems = document.querySelectorAll('.job-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active', 'btn-primary'));
+                    filterButtons.forEach(btn => btn.classList.add('btn-outline-primary'));
+                    
+                    // Add active class to clicked button
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('active', 'btn-primary');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Show/hide job items based on filter
+                    jobItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
     <style>
-        /* Job Card Premium Styling */
-        .job-card {
-            border: none;
-            background: #ffffff;
-            transition: all 0.3s ease;
+        /* Job Card Styling - Matching Course Card Design */
+        .job-card-new {
             position: relative;
+            background: #ffffff;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .job-card-new:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .job-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .job-card-content {
+            padding: 1.5rem;
+        }
+        
+        .job-location, .job-salary-range {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        
+        .job-location i, .job-salary-range i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+        
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+        
+        .job-description {
+            color: #64748b;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
-        .job-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(13, 110, 253, 0.05), rgba(13, 110, 253, 0.02));
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .job-card:hover::before {
-            opacity: 1;
-        }
-
-        .job-card .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .job-salary {
-            text-align: right;
-            padding: 0.5rem 1rem;
-            background: rgba(13, 110, 253, 0.1);
-            border-radius: 8px;
-        }
-
-        .job-salary span {
-            display: block;
-            line-height: 1.2;
-        }
-
-        .requirements-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .requirements-list li {
-            margin-bottom: 0.75rem;
+        
+        .job-footer {
             display: flex;
-            align-items: flex-start;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e2e8f0;
         }
-
-        .requirements-list li i {
-            margin-top: 0.25rem;
+        
+        .deadline {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 500;
         }
-
-        .job-meta {
+        
+        .deadline i {
+            margin-right: 5px;
+            color: #94a3b8;
+        }
+        
+        .learn-more {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
             font-size: 0.9rem;
         }
-
-        .apply-btn {
-            padding: 0.75rem 1.5rem;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+        
+        .learn-more i {
+            margin-left: 6px;
+            transition: transform 0.3s ease;
+            font-size: 0.85rem;
         }
-
-        .apply-btn:hover {
+        
+        .learn-more:hover {
+            color:rgb(0, 0, 0);
+            transform: translateY(-2px);
+        }
+        
+        .learn-more:hover i {
             transform: translateX(5px);
         }
-
+        
         /* Mobile Responsiveness */
         @media (max-width: 767.98px) {
-            .job-card {
-                margin-bottom: 1.5rem;
+            .job-card-new {
+                padding: 20px;
+                margin-bottom: 20px;
             }
-
-            .job-card .card-title {
+            
+            .job-tag {
+                top: 20px;
+                right: 20px;
+                font-size: 0.7rem;
+                padding: 4px 10px;
+            }
+            
+            .job-title {
                 font-size: 1.3rem;
+                margin: 12px 0;
             }
-
-            .job-salary {
-                padding: 0.375rem 0.75rem;
-            }
-
-            .requirements-list li {
-                font-size: 0.9rem;
-            }
-
-            .apply-btn {
-                padding: 0.625rem 1.25rem;
-                font-size: 0.9rem;
-            }
-
-            .job-meta {
+            
+            .job-location, .job-salary-range {
                 font-size: 0.8rem;
+                margin-bottom: 6px;
+            }
+            
+            .job-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .learn-more {
+                margin-top: 10px;
             }
         }
 
@@ -357,6 +508,40 @@ require_once './Configurations/config.php';
         document.addEventListener('DOMContentLoaded', function() {
             const filterButtons = document.querySelectorAll('[data-filter]');
             const jobCards = document.querySelectorAll('[data-job-type]');
+            const noJobsMessage = document.getElementById('no-jobs-message');
+            const noJobsText = document.getElementById('no-jobs-text');
+
+            // Function to check if any jobs are visible
+            function checkVisibleJobs(filter) {
+                let visibleCount = 0;
+                jobCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-job-type') === filter) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show or hide the no jobs message
+                if (visibleCount === 0) {
+                    noJobsMessage.style.display = 'block';
+                    if (filter === 'all') {
+                        noJobsText.textContent = 'No job openings available at the moment. Please check back later.';
+                    } else {
+                        noJobsText.textContent = 'No ' + filter + ' positions available at the moment. Please try another category or check back later.';
+                    }
+                } else {
+                    noJobsMessage.style.display = 'none';
+                }
+                
+                return visibleCount;
+            }
+            
+            // Initial check (in case there are no jobs at all)
+            if (jobCards.length === 0) {
+                noJobsMessage.style.display = 'block';
+            }
 
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -371,18 +556,12 @@ require_once './Configurations/config.php';
                     this.classList.add('btn-primary');
 
                     const filter = this.getAttribute('data-filter');
-
-                    // Filter job cards
-                    jobCards.forEach(card => {
-                        if (filter === 'all' || card.getAttribute('data-job-type') === filter) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+                    
+                    // Filter job cards and check if any are visible
+                    checkVisibleJobs(filter);
                 });
             });
         });
     </script>
 </body>
-</html> 
+</html>

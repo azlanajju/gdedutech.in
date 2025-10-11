@@ -316,6 +316,40 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                 </div>
             </div>
             
+            <style>
+                .premium-card {
+                    border-radius: 10px;
+                    border: none;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    overflow: hidden;
+                    color: inherit;
+                }
+
+                .premium-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                }
+                
+                .course-card {
+                    cursor: pointer;
+                }
+                
+                a.text-decoration-none:hover {
+                    text-decoration: none !important;
+                }
+                
+                a.text-decoration-none {
+                    color: inherit;
+                }
+
+                .badge {
+                    background:rgba(233, 235, 236, 0.7) !important;
+                    border: 1px solid rgba(207, 210, 211, 0.36);
+                    color: black;
+                }
+            </style>
+            
             <div class="row g-4">
                 <?php if (empty($courses)): ?>
                     <div class="col-12 text-center py-5">
@@ -329,29 +363,29 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                 <?php else: ?>
                     <?php foreach ($courses as $index => $course): ?>
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo ($index % 3) * 100; ?>">
-                            <div class="premium-card h-100">
-                                <div class="position-relative">
-                                    <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>"
-                                        class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
-                                        style="height: 200px; object-fit: cover;">
-                                    <span class="badge bg-primary position-absolute top-0 end-0 m-3">
-                                        <?php echo htmlspecialchars($course['category_name']); ?>
-                                    </span>
-                                </div>
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-3"><?php echo htmlspecialchars($course['title']); ?></h5>
-                                    <p class="card-text text-muted mb-4">
-                                        <?php echo substr(htmlspecialchars($course['description']), 0, 100) . '...'; ?>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                                        <!-- <span class="text-muted">
-                                            <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
-                                        </span> -->
-                                        <a href="./studentPanel/MyCourses/course.php?id=<?php echo $course['course_id']; ?>"
-                                            class="btn btn-sm btn-primary">Learn More</a>
+                            <a href="./studentPanel/MyCourses/course.php?id=<?php echo $course['course_id']; ?>" class="text-decoration-none">
+                                <div class="premium-card h-100 course-card">
+                                    <div class="position-relative">
+                                        <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>"
+                                            class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
+                                            style="height: 200px; object-fit: cover;">
+                                        <span class="badge bg-primary position-absolute top-0 end-0 m-3">
+                                            <?php echo htmlspecialchars($course['category_name']); ?>
+                                        </span>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title mb-3"><?php echo htmlspecialchars($course['title']); ?></h5>
+                                        <p class="card-text text-muted mb-4">
+                                            <?php echo substr(htmlspecialchars($course['description']), 0, 100) . '...'; ?>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                                            <!-- <span class="text-muted">
+                                                <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
+                                            </span> -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -388,6 +422,97 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
         </div>
     </section>
 
+    <!-- Offline Courses Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title" data-aos="fade-up">Offline Courses</h2>
+                    <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Join our in-person classroom training programs</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <a href="#" class="text-decoration-none">
+                        <div class="premium-card h-100 course-card">
+                            <div class="position-relative">
+                                <img src="./Images/Others/web.jpg" class="card-img-top" alt="Full Stack Web Development" style="height: 200px; object-fit: cover;">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">
+                                    Web Development
+                                </span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-3">Full Stack Web Development</h5>
+                                <p class="card-text text-muted mb-4">
+                                    Master front-end and back-end technologies with this intensive 16-week program covering HTML, CSS, JavaScript, React, Node.js...
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                    <a href="#" class="text-decoration-none">
+                        <div class="premium-card h-100 course-card">
+                            <div class="position-relative">
+                                <img src="./Images/Others/architecture.jpg" class="card-img-top" alt="Data Science Bootcamp" style="height: 200px; object-fit: cover;">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">
+                                    Architectural and Interior Design
+                                </span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-3">Architectural and Interior Design</h5>
+                                <p class="card-text text-muted mb-4">
+                                    Master architectural and interior design with this program using BIM, AutoCAD, Revit, SketchUp, Vray, and Lumion.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#" class="text-decoration-none">
+                        <div class="premium-card h-100 course-card">
+                            <div class="position-relative">
+                                <img src="./Images/Others/market.jpg" class="card-img-top" alt="UI/UX Design Masterclass" style="height: 200px; object-fit: cover;">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">
+                                    Digital Marketing
+                                </span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-3">Digital Marketing</h5>
+                                <p class="card-text text-muted mb-4">
+                                    Master digital marketing with this program covering SEO, SMM, PPC, Google Ads, content marketing, web analytics, WordPress, and Photoshop.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                    <a href="#" class="text-decoration-none">
+                        <div class="premium-card h-100 course-card">
+                            <div class="position-relative">
+                                <img src="./Images/Others/designer.jpg" class="card-img-top" alt="Data Science Bootcamp" style="height: 200px; object-fit: cover;">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">
+                                    Graphic Design and Video Editing
+                                </span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-3">Graphic Design and Video Editing</h5>
+                                <p class="card-text text-muted mb-4">
+                                    Master graphic design and video editing with this program using Canva, Photoshop, Illustrator, Premiere Pro, After Effects, and DaVinci Resolve.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Offline Courses Section -->
+
     <!-- CTA Section -->
     <section class="cta-section" data-aos="fade-up">
         <div class="floating-shape shape-1" data-aos="fade-right" data-aos-delay="200"></div>
@@ -409,10 +534,6 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
                         </a>
                     </div>
                     <div class="cta-features mt-5 d-flex justify-content-center gap-4" data-aos="fade-up" data-aos-delay="1000">
-                        <div class="feature-item">
-                            <i class="bi bi-patch-check-fill text-light mb-2"></i>
-                            <p class="mb-0 text-light">30-Day Money Back</p>
-                        </div>
                         <div class="feature-item">
                             <i class="bi bi-lightning-fill text-light mb-2"></i>
                             <p class="mb-0 text-light">Instant Access</p>
@@ -1135,4 +1256,4 @@ $categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
     </style>
 </body>
 
-</html> 
+</html>

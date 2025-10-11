@@ -1,25 +1,29 @@
--- Main Blog Table
 CREATE TABLE Blogs (
     blog_id INT PRIMARY KEY AUTO_INCREMENT,
-    main_cover_image VARCHAR(255),  -- Main blog cover image URL or file path
+    main_cover_image VARCHAR(255),
     title VARCHAR(255) NOT NULL,
-    content TEXT,  -- Optional main content/intro
-    author_id INT NOT NULL, -- Optional reference to Users table
+    content TEXT,
+    author_id INT,
     status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES Users(user_id) ON DELETE SET NULL
-);
+) ENGINE=InnoDB;
 
--- Blog Subsections Table
+
 CREATE TABLE BlogSections (
     section_id INT PRIMARY KEY AUTO_INCREMENT,
     blog_id INT NOT NULL,
-    title VARCHAR(255),  -- Subtitle
-    content TEXT,                 -- Sub content
-    image VARCHAR(255),           -- Optional image for the section
-    section_order INT DEFAULT 0,  -- For ordering sections
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    image VARCHAR(255),
+    section_order INT DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (blog_id) REFERENCES Blogs(blog_id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
+
+
+ALTER TABLE Blogs
+ADD COLUMN category_id INT NULL,
+ADD FOREIGN KEY (category_id) REFERENCES BlogEventCategories(category_id) ON DELETE SET NULL;

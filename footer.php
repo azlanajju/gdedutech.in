@@ -24,43 +24,42 @@ $current_year = date('Y');
 
                     <div class="ventures">
                     <h2 class="ventures-title">
+                        <a href="https://goldendream.in/">
                         PRO GEE DEE VENTURES
+                        </a>
                     </h2>
                 </div>
                     </div>
             <div class="footer-links-section" data-aos="fade" data-aos-duration="1200" data-aos-delay="100">
                 <h3 class="footer-heading">Quick Links</h3>
                             <ul class="footer-links">
-                    <li data-aos="fade" data-aos-delay="200"><a href="about.php">About Us</a></li>
+                    <li data-aos="fade" data-aos-delay="100"><a href="index.php">Home</a></li>
                     <li data-aos="fade" data-aos-delay="250"><a href="courses.php">Courses</a></li>
-                    <li data-aos="fade" data-aos-delay="300"><a href="contact.php">Contact</a></li>
+                    <li data-aos="fade" data-aos-delay="100"><a href="blog.php">Blog</a></li>
+                    <li data-aos="fade" data-aos-delay="100"><a href="events.php">Events</a></li>
+                    <li data-aos="fade" data-aos-delay="200"><a href="about.php">About Us</a></li>
                     <li data-aos="fade" data-aos-delay="350"><a href="career.php">Careers</a></li>
-                    <li data-aos="fade" data-aos-delay="400"><a href="#">Privacy Policy</a></li>
-                    <li data-aos="fade" data-aos-delay="450"><a href="#">Terms & Conditions</a></li>
+                    <li data-aos="fade" data-aos-delay="300"><a href="contact.php">Contact</a></li>
                             </ul>
                     </div>
 
             <div class="footer-courses-section" data-aos="fade" data-aos-duration="1200" data-aos-delay="200">
                 <h3 class="footer-heading">Popular Courses</h3>
                 <div class="course-item" data-aos="fade" data-aos-delay="300">
-                    <div class="course-icon"><i class="fas fa-code"></i></div>
+                    <div class="course-icon"><i class="fas fa-code"></i></div> 
                     <div class="course-name">Web Development</div>
                         </div>
-                <div class="course-item" data-aos="fade" data-aos-delay="350">
-                    <div class="course-icon"><i class="fas fa-database"></i></div>
-                    <div class="course-name">Data Science</div>
-                    </div>
-                <div class="course-item" data-aos="fade" data-aos-delay="400">
-                    <div class="course-icon"><i class="fas fa-robot"></i></div>
-                    <div class="course-name">Machine Learning</div>
-                                </div>
                 <div class="course-item" data-aos="fade" data-aos-delay="450">
                     <div class="course-icon"><i class="fas fa-bullhorn"></i></div>
                     <div class="course-name">Digital Marketing</div>
-                                </div>
-                <div class="course-item" data-aos="fade" data-aos-delay="500">
-                    <div class="course-icon"><i class="fas fa-chart-line"></i></div>
-                    <div class="course-name">Business Analytics</div>
+                </div>
+                <div class="course-item" data-aos="fade" data-aos-delay="550">
+                    <div class="course-icon"><i class="fas fa-drafting-compass"></i></div>
+                    <div class="course-name">Architecture Design</div>
+                </div>
+                <div class="course-item" data-aos="fade" data-aos-delay="600">
+                    <div class="course-icon"><i class="fas fa-paint-brush"></i></div>
+                    <div class="course-name">Graphic Designing</div>
                 </div>
             </div>
             
@@ -69,7 +68,7 @@ $current_year = date('Y');
                 <ul class="contact-info">
                     <li data-aos="fade" data-aos-delay="400">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-text">Kankanady, Mangalore, Karnataka, India</div>
+                        <div class="contact-text">Kankanady Gate 4th floor, Kankanady Bypass road, Kankanady, Mangalore, Karnataka, India</div>
                     </li>
                     <li data-aos="fade" data-aos-delay="450">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
@@ -77,7 +76,7 @@ $current_year = date('Y');
                     </li>
                     <li data-aos="fade" data-aos-delay="500">
                         <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                        <div class="contact-text">+91 7259267480</div>
+                        <div class="contact-text">+91 7204626299</div>
                     </li>
                 </ul>
                 
@@ -96,11 +95,11 @@ $current_year = date('Y');
             <div class="footer-bottom-text">
                             © <?php echo $current_year; ?> GD Edu Tech. All rights reserved.
             </div>
-            <div class="footer-bottom-links">
+            <!-- <div class="footer-bottom-links">
                 <a href="privacy-policy.php" data-aos="fade" data-aos-delay="500">Privacy Policy</a>
                 <a href="terms.php" data-aos="fade" data-aos-delay="550">Terms of Service</a>
                 <a href="cookie-policy.php" data-aos="fade" data-aos-delay="600">Cookie Policy</a>
-                    </div>
+                    </div> -->
             <div class="developed-by" data-aos="fade" data-aos-delay="650">
                             <span>Developed by</span>
                             <img onclick="window.open('https://intelexsolutions.in')" 
@@ -311,12 +310,13 @@ $current_year = date('Y');
         list-style: none;
         padding: 0;
         margin: 0;
+        margin-bottom: 1.5em; 
     }
 
     .contact-info li {
         display: flex;
         margin-bottom: 15px;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .contact-icon {

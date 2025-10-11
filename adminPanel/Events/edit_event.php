@@ -20,18 +20,54 @@ $q->execute();
 $event = $q->get_result()->fetch_assoc();
 if (!$event) { $_SESSION['message']='Event not found.'; $_SESSION['message_type']='danger'; header('Location: ./'); exit(); }
 
-$error = '';
+// Load existing images
+$imagesQuery = $conn->prepare("SELECT * FROM events_images WHERE event_id = ? ORDER BY created_at DESC");
+$imagesQuery->bind_param('i', $id);
+$imagesQuery->execute();
+$existingImages = $imagesQuery->get_result()->fetch_all(MYSQLI_ASSOC);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Load existing social links
+$socialQuery = $conn->prepare("SELECT * FROM social_links WHERE target_type = 'event' AND target_id = ? ORDER BY platform ASC");
+$socialQuery->bind_param('i', $id);
+$socialQuery->execute();
+$existingSocialLinks = $socialQuery->get_result()->fetch_all(MYSQLI_ASSOC);
+
+$error = '';
+$createdCategoryId = 0;
+
+// Inline create category
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_category'])) {
+    $newCat = trim($_POST['new_category_name'] ?? '');
+    if ($newCat !== '') {
+        $insCat = $conn->prepare("INSERT INTO EventCategories (name) VALUES (?)");
+        $insCat->bind_param('s', $newCat);
+        if ($insCat->execute()) {
+            $createdCategoryId = $insCat->insert_id;
+        } else {
+            $error = 'Failed to create category: ' . $conn->error;
+        }
+    } else {
+        $error = 'Category name cannot be empty.';
+    }
+}
+
+// Load categories list
+$eventCategories = [];
+$catRes = $conn->query("SELECT category_id, name FROM EventCategories ORDER BY name ASC");
+if ($catRes) { while ($c = $catRes->fetch_assoc()) { $eventCategories[] = $c; } }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['create_category'])) {
 	$title = trim($_POST['title'] ?? '');
 	$description = $_POST['description'] ?? '';
 	$location = $_POST['location'] ?? '';
 	$event_date = $_POST['event_date'] ?? null;
 	$event_time = $_POST['event_time'] ?? null;
 	$event_link = $_POST['event_link'] ?? '';
-	$media_url = $_POST['media_url'] ?? '';
 	$status = $_POST['status'] ?? 'upcoming';
+    $category_id = intval($_POST['category_id'] ?? 0);
 	$coverFileName = $event['main_cover_image'];
+	$uploadedImages = [];
+	$socialLinks = [];
 
 	if (!empty($_FILES['cover_image']['name']) && isset($_FILES['cover_image']['error']) && $_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
 		$dir = getUploadsBasePath() . 'events' . DIRECTORY_SEPARATOR;
@@ -44,10 +80,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 	}
 
-	if (!$error) {
-		$st = $conn->prepare("UPDATE Events SET main_cover_image=?, title=?, description=?, location=?, event_date=?, event_time=?, event_link=?, media_url=?, status=? WHERE event_id=?");
-		$st->bind_param('sssssssssi', $coverFileName, $title, $description, $location, $event_date, $event_time, $event_link, $media_url, $status, $id);
+	// Handle additional event images
+	if (!empty($_FILES['event_images']['name'][0]) && !$error) {
+		$imagesDir = getUploadsBasePath() . 'events' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+		if (!is_dir($imagesDir)) { @mkdir($imagesDir, 0775, true); }
+		
+		foreach ($_FILES['event_images']['name'] as $key => $filename) {
+			if ($_FILES['event_images']['error'][$key] === UPLOAD_ERR_OK) {
+				$ext = preg_replace('/[^a-zA-Z0-9]/','', pathinfo($filename, PATHINFO_EXTENSION));
+				$imageFileName = time() . '_' . $key . '_event_image.' . $ext;
+				$target = $imagesDir . $imageFileName;
+				if (move_uploaded_file($_FILES['event_images']['tmp_name'][$key], $target)) {
+					$uploadedImages[] = 'uploads/events/images/' . $imageFileName;
+				}
+			}
+		}
+	}
+
+	// Handle social links
+	if (!empty($_POST['social_platform']) && !empty($_POST['social_url'])) {
+		foreach ($_POST['social_platform'] as $key => $platform) {
+			if (!empty($platform) && !empty($_POST['social_url'][$key])) {
+				$socialLinks[] = [
+					'platform' => $platform,
+					'url' => $_POST['social_url'][$key]
+				];
+			}
+		}
+	}
+
+    if (!$error) {
+        $st = $conn->prepare("UPDATE Events SET main_cover_image=?, title=?, description=?, location=?, event_date=?, event_time=?, event_link=?, status=?, category_id = NULLIF(?, 0) WHERE event_id=?");
+        $st->bind_param('ssssssssii', $coverFileName, $title, $description, $location, $event_date, $event_time, $event_link, $status, $category_id, $id);
 		if ($st->execute()) {
+			// Insert additional images
+			foreach ($uploadedImages as $imageUrl) {
+				$imageStmt = $conn->prepare("INSERT INTO events_images (event_id, image_url) VALUES (?, ?)");
+				$imageStmt->bind_param('is', $id, $imageUrl);
+				$imageStmt->execute();
+			}
+			
+			// Delete existing social links and insert new ones
+			$deleteSocialStmt = $conn->prepare("DELETE FROM social_links WHERE target_type = 'event' AND target_id = ?");
+			$deleteSocialStmt->bind_param('i', $id);
+			$deleteSocialStmt->execute();
+			
+			foreach ($socialLinks as $link) {
+				$socialStmt = $conn->prepare("INSERT INTO social_links (target_type, target_id, platform, url) VALUES ('event', ?, ?, ?)");
+				$socialStmt->bind_param('iss', $id, $link['platform'], $link['url']);
+				$socialStmt->execute();
+			}
+			
 			$_SESSION['message'] = 'Event updated successfully.';
 			$_SESSION['message_type'] = 'success';
 			header('Location: ./');
@@ -116,6 +199,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<?php if ($error): ?><div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
 
 				<form method="post" enctype="multipart/form-data" class="card p-3">
+					<div class="mb-3">
+						<label class="form-label">Category</label>
+						<div class="dropdown" data-bs-auto-close="outside">
+							<?php 
+								$selId = $createdCategoryId ?: intval($event['category_id'] ?? 0); 
+								$selName = '-- No category --';
+								foreach ($eventCategories as $c) { if (intval($c['category_id']) === intval($selId)) { $selName = $c['name']; break; } }
+							?>
+							<button id="eventCategoryDropdownBtn" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<span id="eventCategoryDropdownLabel"><?php echo htmlspecialchars($selName); ?></span>
+							</button>
+							<input type="hidden" name="category_id" id="eventCategoryIdInput" value="<?php echo intval($selId); ?>">
+							<div class="dropdown-menu p-2" style="min-width: 280px; max-height: 320px; overflow:auto;">
+								<div class="list-group list-group-flush mb-2">
+									<button type="button" class="list-group-item list-group-item-action event-category-option" data-id="0">-- No category --</button>
+									<?php foreach ($eventCategories as $c): ?>
+										<button type="button" class="list-group-item list-group-item-action event-category-option" data-id="<?php echo intval($c['category_id']); ?>"><?php echo htmlspecialchars($c['name']); ?></button>
+									<?php endforeach; ?>
+								</div>
+								<div class="dropdown-divider"></div>
+								<div class="px-1 py-2">
+									<div class="mb-1 small text-muted">Create new category</div>
+									<div class="input-group">
+										<input type="text" name="new_category_name" class="form-control" placeholder="New category name">
+										<button class="btn btn-outline-primary" name="create_category" value="1" type="submit" formnovalidate>Add</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					<div class="mb-3"><label class="form-label">Title</label><input name="title" class="form-control" value="<?php echo htmlspecialchars($event['title']); ?>" required></div>
 					<div class="mb-3"><label class="form-label">Cover Image</label><input type="file" name="cover_image" class="form-control" accept="image/*">
 						<?php if (!empty($event['main_cover_image'])): ?><div class="mt-2"><img src="<?php echo '../../uploads/events/' . htmlspecialchars($event['main_cover_image']); ?>" alt="cover" height="100"></div><?php endif; ?>
@@ -127,8 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						<div class="col-md-3"><label class="form-label">Time</label><input type="time" name="event_time" class="form-control" value="<?php echo htmlspecialchars($event['event_time']); ?>"></div>
 					</div>
 					<div class="row g-3 mt-1">
-						<div class="col-md-6"><label class="form-label">Event Link</label><input name="event_link" class="form-control" value="<?php echo htmlspecialchars($event['event_link']); ?>"></div>
-						<div class="col-md-6"><label class="form-label">Media URL</label><input name="media_url" class="form-control" value="<?php echo htmlspecialchars($event['media_url']); ?>"></div>
+						<div class="col-md-12"><label class="form-label">Event Link</label><input name="event_link" class="form-control" value="<?php echo htmlspecialchars($event['event_link']); ?>"></div>
 					</div>
 					<div class="mb-3 mt-3">
 						<label class="form-label">Status</label>
@@ -138,6 +249,105 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							<?php endforeach; ?>
 						</select>
 					</div>
+					
+					<!-- Event Images Section -->
+					<div class="mb-4">
+						<h5 class="mb-3"><i class="bi bi-images me-2"></i>Event Images</h5>
+						<div class="card">
+							<div class="card-body">
+								<!-- Existing Images -->
+								<?php if (!empty($existingImages)): ?>
+									<div class="mb-3">
+										<label class="form-label">Current Images</label>
+										<div class="row g-2">
+											<?php foreach ($existingImages as $image): ?>
+												<div class="col-md-3">
+													<div class="card">
+														<img src="../../<?php echo htmlspecialchars($image['image_url']); ?>" class="card-img-top" style="height: 120px; object-fit: cover;" alt="Event Image">
+														<div class="card-body p-2">
+															<small class="text-muted">
+																<?php echo date('M d, Y', strtotime($image['created_at'])); ?>
+															</small>
+														</div>
+													</div>
+												</div>
+											<?php endforeach; ?>
+										</div>
+									</div>
+								<?php endif; ?>
+								
+								<!-- Upload New Images -->
+								<div class="mb-3">
+									<label class="form-label">Upload Additional Images</label>
+									<input type="file" name="event_images[]" class="form-control" accept="image/*" multiple>
+									<small class="form-text text-muted">You can select multiple images at once</small>
+								</div>
+								<div id="imagePreview" class="row g-2"></div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Social Links Section -->
+					<div class="mb-4">
+						<h5 class="mb-3"><i class="bi bi-link-45deg me-2"></i>Social Links</h5>
+						<div class="card">
+							<div class="card-body">
+								<div id="socialLinksContainer">
+									<?php if (!empty($existingSocialLinks)): ?>
+										<?php foreach ($existingSocialLinks as $index => $link): ?>
+											<div class="social-link-item row g-3 mb-3">
+												<div class="col-md-4">
+													<select name="social_platform[]" class="form-select">
+														<option value="">Select Platform</option>
+														<option value="facebook" <?php echo $link['platform'] === 'facebook' ? 'selected' : ''; ?>>Facebook</option>
+														<option value="twitter" <?php echo $link['platform'] === 'twitter' ? 'selected' : ''; ?>>Twitter</option>
+														<option value="instagram" <?php echo $link['platform'] === 'instagram' ? 'selected' : ''; ?>>Instagram</option>
+														<option value="linkedin" <?php echo $link['platform'] === 'linkedin' ? 'selected' : ''; ?>>LinkedIn</option>
+														<option value="youtube" <?php echo $link['platform'] === 'youtube' ? 'selected' : ''; ?>>YouTube</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<input type="url" name="social_url[]" class="form-control" placeholder="https://..." value="<?php echo htmlspecialchars($link['url']); ?>">
+												</div>
+												<div class="col-md-2">
+													<button type="button" class="btn btn-outline-danger w-100 remove-social-link">
+														<i class="bi bi-trash"></i>
+													</button>
+												</div>
+											</div>
+										<?php endforeach; ?>
+									<?php else: ?>
+										<div class="social-link-item row g-3 mb-3">
+											<div class="col-md-4">
+												<select name="social_platform[]" class="form-select">
+													<option value="">Select Platform</option>
+													<option value="facebook">Facebook</option>
+													<option value="twitter">Twitter</option>
+													<option value="instagram">Instagram</option>
+													<option value="linkedin">LinkedIn</option>
+													<option value="youtube">YouTube</option>
+													<option value="tiktok">TikTok</option>
+													<option value="pinterest">Pinterest</option>
+												</select>
+											</div>
+											<div class="col-md-6">
+												<input type="url" name="social_url[]" class="form-control" placeholder="https://...">
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-outline-danger w-100 remove-social-link" style="display: none;">
+													<i class="bi bi-trash"></i>
+												</button>
+											</div>
+										</div>
+									<?php endif; ?>
+								</div>
+								<button type="button" class="btn btn-outline-primary" id="addSocialLink">
+									<i class="bi bi-plus me-1"></i>Add Social Link
+								</button>
+							</div>
+						</div>
+					</div>
+					
 					<button type="submit" class="btn btn-primary"><i class="bi bi-save me-2"></i>Save Changes</button>
 				</form>
 			</div>
@@ -146,6 +356,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('click', function(e){
+    if (e.target && e.target.classList.contains('event-category-option')) {
+        var id = e.target.getAttribute('data-id');
+        var label = e.target.textContent.trim();
+        var input = document.getElementById('eventCategoryIdInput');
+        var lblEl = document.getElementById('eventCategoryDropdownLabel');
+        if (input) input.value = id;
+        if (lblEl) lblEl.textContent = label;
+    }
+});
+
+// Social Links Management
+document.getElementById('addSocialLink').addEventListener('click', function() {
+    const container = document.getElementById('socialLinksContainer');
+    const newItem = document.createElement('div');
+    newItem.className = 'social-link-item row g-3 mb-3';
+    newItem.innerHTML = `
+        <div class="col-md-4">
+            <select name="social_platform[]" class="form-select">
+                <option value="">Select Platform</option>
+                <option value="facebook">Facebook</option>
+                <option value="twitter">Twitter</option>
+                <option value="instagram">Instagram</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="youtube">YouTube</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <input type="url" name="social_url[]" class="form-control" placeholder="https://...">
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger w-100 remove-social-link">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    `;
+    container.appendChild(newItem);
+    updateRemoveButtons();
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-social-link')) {
+        e.target.closest('.social-link-item').remove();
+        updateRemoveButtons();
+    }
+});
+
+function updateRemoveButtons() {
+    const items = document.querySelectorAll('.social-link-item');
+    items.forEach((item, index) => {
+        const removeBtn = item.querySelector('.remove-social-link');
+        if (items.length > 1) {
+            removeBtn.style.display = 'block';
+        } else {
+            removeBtn.style.display = 'none';
+        }
+    });
+}
+
+// Image Preview
+document.querySelector('input[name="event_images[]"]').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+    
+    Array.from(e.target.files).forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const col = document.createElement('div');
+                col.className = 'col-md-3';
+                col.innerHTML = `
+                    <div class="card">
+                        <img src="${e.target.result}" class="card-img-top" style="height: 120px; object-fit: cover;">
+                        <div class="card-body p-2">
+                            <small class="text-muted">${file.name}</small>
+                        </div>
+                    </div>
+                `;
+                preview.appendChild(col);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
+// Initialize remove buttons
+updateRemoveButtons();
+</script>
 </body>
 </html>
 

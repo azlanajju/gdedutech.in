@@ -33,6 +33,31 @@ $blog_q = $conn->prepare("SELECT * FROM Blogs WHERE blog_id = ?");
 $blog_q->bind_param('i', $id);
 $blog_q->execute();
 $blog = $blog_q->get_result()->fetch_assoc();
+$categories = [];
+$catsRes = $conn->query("SELECT category_id, name FROM BlogCategories ORDER BY name ASC");
+if ($catsRes) { while ($c = $catsRes->fetch_assoc()) { $categories[] = $c; } }
+
+// Load existing social links
+$socialQuery = $conn->prepare("SELECT * FROM social_links WHERE target_type = 'blog' AND target_id = ? ORDER BY platform ASC");
+$socialQuery->bind_param('i', $id);
+$socialQuery->execute();
+$existingSocialLinks = $socialQuery->get_result()->fetch_all(MYSQLI_ASSOC);
+
+$createdCategoryId = 0;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_category'])) {
+    $newCat = trim($_POST['new_category_name'] ?? '');
+    if ($newCat !== '') {
+        $insCat = $conn->prepare("INSERT INTO BlogCategories (name) VALUES (?)");
+        $insCat->bind_param('s', $newCat);
+        if ($insCat->execute()) {
+            $createdCategoryId = $insCat->insert_id;
+        } else {
+            $error = 'Failed to create category: ' . $conn->error;
+        }
+    } else {
+        $error = 'Category name cannot be empty.';
+    }
+}
 if (!$blog) {
 	$_SESSION['message'] = 'Blog not found.';
 	$_SESSION['message_type'] = 'danger';
@@ -42,11 +67,13 @@ if (!$blog) {
 
 $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['create_category'])) {
 	$title = trim($_POST['title'] ?? '');
 	$content = $_POST['content'] ?? '';
 	$status = $_POST['status'] ?? 'draft';
+	$category_id = intval($_POST['category_id'] ?? 0);
 	$coverFileName = $blog['main_cover_image'];
+	$socialLinks = [];
 
     // Handle cover image upload (optional replacement)
     if (!empty($_FILES['cover_image']['name']) && isset($_FILES['cover_image']['error']) && $_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
@@ -63,9 +90,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 	}
 
+	// Handle social links
+	if (!empty($_POST['social_platform']) && !empty($_POST['social_url'])) {
+		foreach ($_POST['social_platform'] as $key => $platform) {
+			if (!empty($platform) && !empty($_POST['social_url'][$key])) {
+				$socialLinks[] = [
+					'platform' => $platform,
+					'url' => $_POST['social_url'][$key]
+				];
+			}
+		}
+	}
+
 	if (!$error) {
-        $stmt = $conn->prepare("UPDATE Blogs SET main_cover_image = ?, title = ?, content = ?, status = ? WHERE blog_id = ?");
-        $stmt->bind_param('ssssi', $coverFileName, $title, $content, $status, $id);
+		$stmt = $conn->prepare("UPDATE Blogs SET main_cover_image = ?, title = ?, content = ?, status = ?, category_id = NULLIF(?, 0) WHERE blog_id = ?");
+		$stmt->bind_param('ssssii', $coverFileName, $title, $content, $status, $category_id, $id);
         if ($stmt->execute()) {
             // Update sections: strategy - delete and reinsert (simple, consistent with CASCADE)
             $conn->query("DELETE FROM BlogSections WHERE blog_id = " . intval($id));
@@ -100,6 +139,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $ins->execute();
                     }
                 }
+            }
+
+            // Delete existing social links and insert new ones
+            $deleteSocialStmt = $conn->prepare("DELETE FROM social_links WHERE target_type = 'blog' AND target_id = ?");
+            $deleteSocialStmt->bind_param('i', $id);
+            $deleteSocialStmt->execute();
+            
+            foreach ($socialLinks as $link) {
+                $socialStmt = $conn->prepare("INSERT INTO social_links (target_type, target_id, platform, url) VALUES ('blog', ?, ?, ?)");
+                $socialStmt->bind_param('iss', $id, $link['platform'], $link['url']);
+                $socialStmt->execute();
             }
 
             $_SESSION['message'] = 'Blog updated successfully.';
@@ -227,6 +277,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <form method="post" enctype="multipart/form-data" class="card p-3">
                         <div class="mb-3">
+                            <label class="form-label d-block">Category</label>
+                            <div class="dropdown" data-bs-auto-close="outside">
+                                <?php 
+                                    $selectedId = $createdCategoryId ?: intval($blog['category_id'] ?? 0);
+                                    $selectedCatName = '-- No category --';
+                                    foreach ($categories as $cat) {
+                                        if (intval($cat['category_id']) === intval($selectedId)) { $selectedCatName = $cat['name']; break; }
+                                    }
+                                ?>
+                                <button id="categoryDropdownBtn" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span id="categoryDropdownLabel"><?php echo htmlspecialchars($selectedCatName); ?></span>
+                                </button>
+                                <input type="hidden" name="category_id" id="categoryIdInput" value="<?php echo intval($selectedId); ?>">
+                                <div class="dropdown-menu p-2" style="min-width: 280px; max-height: 320px; overflow:auto;">
+                                    <div class="list-group list-group-flush mb-2">
+                                        <button type="button" class="list-group-item list-group-item-action category-option" data-id="0">-- No category --</button>
+                                        <?php foreach ($categories as $cat): ?>
+                                            <button type="button" class="list-group-item list-group-item-action category-option" data-id="<?php echo intval($cat['category_id']); ?>"><?php echo htmlspecialchars($cat['name']); ?></button>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="px-1 py-2">
+                                        <div class="mb-1 small text-muted">Create new category</div>
+                                        <div class="input-group">
+                                            <input type="text" name="new_category_name" class="form-control" placeholder="New category name">
+                                            <button class="btn btn-outline-primary" name="create_category" value="1" type="submit" formnovalidate>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Title</label>
                             <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($blog['title']); ?>" required>
                         </div>
@@ -317,6 +399,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="published" <?php echo $blog['status']==='published'?'selected':''; ?>>Published</option>
                             </select>
                         </div>
+                        
+                        <!-- Social Links Section -->
+                        <div class="mb-4">
+                            <h5 class="mb-3"><i class="bi bi-link-45deg me-2"></i>Social Links</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div id="socialLinksContainer">
+                                        <?php if (!empty($existingSocialLinks)): ?>
+                                            <?php foreach ($existingSocialLinks as $index => $link): ?>
+                                                <div class="social-link-item row g-3 mb-3">
+                                                    <div class="col-md-4">
+                                                        <select name="social_platform[]" class="form-select">
+                                                            <option value="">Select Platform</option>
+                                                            <option value="facebook" <?php echo $link['platform'] === 'facebook' ? 'selected' : ''; ?>>Facebook</option>
+                                                            <option value="twitter" <?php echo $link['platform'] === 'twitter' ? 'selected' : ''; ?>>Twitter</option>
+                                                            <option value="instagram" <?php echo $link['platform'] === 'instagram' ? 'selected' : ''; ?>>Instagram</option>
+                                                            <option value="linkedin" <?php echo $link['platform'] === 'linkedin' ? 'selected' : ''; ?>>LinkedIn</option>
+                                                            <option value="youtube" <?php echo $link['platform'] === 'youtube' ? 'selected' : ''; ?>>YouTube</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="url" name="social_url[]" class="form-control" placeholder="https://..." value="<?php echo htmlspecialchars($link['url']); ?>">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="btn btn-outline-danger w-100 remove-social-link">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <div class="social-link-item row g-3 mb-3">
+                                                <div class="col-md-4">
+                                                    <select name="social_platform[]" class="form-select">
+                                                        <option value="">Select Platform</option>
+                                                        <option value="facebook">Facebook</option>
+                                                        <option value="twitter">Twitter</option>
+                                                        <option value="instagram">Instagram</option>
+                                                        <option value="linkedin">LinkedIn</option>
+                                                        <option value="youtube">YouTube</option>
+                                                        <option value="tiktok">TikTok</option>
+                                                        <option value="pinterest">Pinterest</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="url" name="social_url[]" class="form-control" placeholder="https://...">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-outline-danger w-100 remove-social-link" style="display: none;">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary" id="addSocialLink">
+                                        <i class="bi bi-plus me-1"></i>Add Social Link
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <button type="submit" class="btn btn-primary"><i class="bi bi-save me-2"></i>Save Changes</button>
                     </form>
                 </div>
@@ -329,11 +473,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         (function(){
             const wrapper = document.getElementById('sections-wrapper');
             const addBtn = document.getElementById('add-section');
+            // category dropdown interaction
+            document.addEventListener('click', function(e){
+                if (e.target && e.target.classList.contains('category-option')) {
+                    const id = e.target.getAttribute('data-id');
+                    const label = e.target.textContent.trim();
+                    const input = document.getElementById('categoryIdInput');
+                    const lblEl = document.getElementById('categoryDropdownLabel');
+                    if (input) input.value = id;
+                    if (lblEl) lblEl.textContent = label;
+                }
+            });
             if (addBtn) {
                 addBtn.addEventListener('click', function(){
                     const tmpl = wrapper.querySelector('.section-item');
                     const clone = tmpl.cloneNode(true);
-                    clone.querySelectorAll('input').forEach(i => { if(i.type==='number'){ i.value = 1 } else { i.value = '' }});
+                    clone.querySelectorAll('input').forEach(i => { 
+                        if(i.type==='number' && i.name === 'section_order[]'){ 
+                            // Find the highest order value currently in use
+                            let maxOrder = 0;
+                            wrapper.querySelectorAll('.section-item input[name="section_order[]"]').forEach(input => {
+                                const orderValue = parseInt(input.value) || 0;
+                                if (orderValue > maxOrder) {
+                                    maxOrder = orderValue;
+                                }
+                            });
+                            // Set the new section's order to one higher than the current maximum
+                            i.value = maxOrder + 1;
+                        } else if(i.type !== 'number') { 
+                            i.value = '' 
+                        }
+                    });
                     clone.querySelectorAll('textarea').forEach(t => t.value = '');
                     const imgPreview = clone.querySelector('img');
                     if (imgPreview) imgPreview.remove();
@@ -349,6 +519,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 });
             }
         })();
+
+        // Social Links Management
+        document.getElementById('addSocialLink').addEventListener('click', function() {
+            const container = document.getElementById('socialLinksContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'social-link-item row g-3 mb-3';
+            newItem.innerHTML = `
+                <div class="col-md-4">
+                    <select name="social_platform[]" class="form-select">
+                        <option value="">Select Platform</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="youtube">YouTube</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input type="url" name="social_url[]" class="form-control" placeholder="https://...">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger w-100 remove-social-link">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(newItem);
+            updateRemoveButtons();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-social-link')) {
+                e.target.closest('.social-link-item').remove();
+                updateRemoveButtons();
+            }
+        });
+
+        function updateRemoveButtons() {
+            const items = document.querySelectorAll('.social-link-item');
+            items.forEach((item, index) => {
+                const removeBtn = item.querySelector('.remove-social-link');
+                if (items.length > 1) {
+                    removeBtn.style.display = 'block';
+                } else {
+                    removeBtn.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize remove buttons
+        updateRemoveButtons();
     </script>
 </body>
 
