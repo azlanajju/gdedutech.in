@@ -511,14 +511,14 @@ $days_remaining = $interval->days;
             width: 40px;
             background-color: #f8f9fa;
             border-radius: 50%;
-            color: #0d6efd;
+            color: #0078a8;
             font-size: 1.2rem;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .contact-icon:hover {
-            background-color: #0d6efd;
+            background-color: #0078a8;
             color: #ffffff;
             transform: translateY(-3px);
         }
