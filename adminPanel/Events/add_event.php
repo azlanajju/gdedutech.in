@@ -8,7 +8,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 require_once '../../Configurations/config.php';
 
 function getUploadsBasePath() {
-	return 'C:\\xampp\\htdocs\\gdedutech.in\\uploads' . DIRECTORY_SEPARATOR;
+		$relative = '../../uploads/'; // Using relative path instead of absolute path
+		return $relative;
 }
 
 $error = '';

@@ -18,8 +18,8 @@ function getProjectRootPath() {
 }
 
 function getUploadsBasePath() {
-	$absolute = 'C:\\xampp\\htdocs\\gdedutech.in\\uploads' . DIRECTORY_SEPARATOR;
-	return $absolute;
+	$relative = '../../uploads/'; // Using relative path instead of absolute path
+	return $relative;
 }
 
 $id = intval($_GET['id'] ?? 0);
