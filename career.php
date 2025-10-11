@@ -172,14 +172,6 @@ require_once './Configurations/config.php';
                 </div>
             </div>
             <div class="row g-4" id="job-listings">
-                <!-- No jobs message (hidden by default) -->
-                <div id="no-jobs-message" class="col-12 text-center" style="display: none;" data-aos="fade-up">
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
-                        <span id="no-jobs-text">No job openings available at the moment. Please check back later.</span>
-                    </div>
-                </div>
-                
                 <?php
                 // Fetch active job listings from the database
                 $query = "SELECT * FROM Careers WHERE status = 'Active' AND application_deadline >= CURDATE() ORDER BY created_at DESC";

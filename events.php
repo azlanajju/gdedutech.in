@@ -432,73 +432,112 @@ function getSocialIconClass($platform) {
 
     
 
-    <!-- Upcoming Events -->
+    <!-- Events Section -->
     <section class="py-5">
         <div class="container">
-            <?php $hasUpcoming = !empty($sectionsData['upcoming']['events']); ?>
-            <?php foreach ($sectionsData as $statusKey => $section): ?>
-                <?php if (!empty($section['events'])): ?>
-                    <div class="row mb-4 mt-2">
-                        <div class="col-lg-6 col-12">
-                            <h3 class="section-heading" data-aos="fade-up"><?php echo htmlspecialchars($section['label']); ?></h3>
-                            <?php if (!empty($section['subtitle'])): ?>
-                                <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100"><?php echo htmlspecialchars($section['subtitle']); ?></p>
-                            <?php endif; ?>
+            <?php 
+            $hasAnyEvents = false;
+            foreach ($sectionsData as $statusKey => $section) {
+                if (!empty($section['events'])) {
+                    $hasAnyEvents = true;
+                    break;
+                }
+            }
+            
+            if (!$hasAnyEvents): 
+            ?>
+                <div class="row mb-4 mt-2">
+                    <div class="col-lg-6 col-12">
+                        <h3 class="section-heading" data-aos="fade-up">Latest Events</h3>
+                        <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100">Stay updated with our upcoming events</p>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-12" data-aos="fade-up">
+                        <?php if (!empty($eventCategories)): ?>
+                            <?php $allActive = $selectedCategoryId === 0 ? 'btn-primary text-white' : 'btn-outline-primary'; ?>
+                            <a href="events.php" class="btn btn-sm rounded-pill me-2 mb-3 <?php echo $allActive; ?>">All</a>
+                            <?php foreach ($eventCategories as $cat): 
+                                $isActive = ($selectedCategoryId === intval($cat['category_id'])) ? 'btn-primary text-white' : 'btn-outline-primary';
+                            ?>
+                                <a href="events.php?category_id=<?php echo intval($cat['category_id']); ?>" class="btn btn-sm rounded-pill me-2 mb-3 <?php echo $isActive; ?>"><?php echo htmlspecialchars($cat['name']); ?></a>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div> -->
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center" role="alert">
+                            <i class="bi bi-info-circle me-2"></i> No event posts available at the moment. Please check back later.
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12" data-aos="fade-up">
-                            <?php if (!empty($eventCategories)): ?>
-                                <?php $allActive = $selectedCategoryId === 0 ? 'btn-primary text-white' : 'btn-outline-primary'; ?>
-                                <a href="events.php" class="btn btn-sm rounded-pill me-2 mb-3 <?php echo $allActive; ?>">All</a>
-                                <?php foreach ($eventCategories as $cat): 
-                                    $isActive = ($selectedCategoryId === intval($cat['category_id'])) ? 'btn-primary text-white' : 'btn-outline-primary';
-                                ?>
-                                    <a href="events.php?category_id=<?php echo intval($cat['category_id']); ?>" class="btn btn-sm rounded-pill me-2 mb-3 <?php echo $isActive; ?>"><?php echo htmlspecialchars($cat['name']); ?></a>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                </div>
+                <div class="my-5"></div>
+            <?php else: ?>
+                <?php foreach ($sectionsData as $statusKey => $section): ?>
+                    <?php if (!empty($section['events'])): ?>
+                        <div class="row mb-4 mt-2">
+                            <div class="col-lg-6 col-12">
+                                <h3 class="section-heading" data-aos="fade-up"><?php echo htmlspecialchars($section['label']); ?></h3>
+                                <?php if (!empty($section['subtitle'])): ?>
+                                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100"><?php echo htmlspecialchars($section['subtitle']); ?></p>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row g-4">
-                        <?php foreach ($section['events'] as $index => $ev): ?>
-                            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
-                                <div class="card h-100 shadow-sm border-0 position-relative event-card" style="cursor: pointer;" onclick="window.location.href='event-details.php?event_id=<?php echo intval($ev['event_id']); ?>'">
-                                    <?php if (!empty($ev['main_cover_image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(resolveEventImageUrl($ev['main_cover_image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($ev['title']); ?>" style="height:200px;object-fit:cover;">
-                                    <?php else: ?>
-                                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:200px;">
-                                            <i class="bi bi-calendar-event display-4 text-muted"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="mb-2 text-muted small">
-                                            <?php if (!empty($ev['event_date'])): ?>
-                                                <i class="bi bi-calendar3 me-1"></i><?php echo date('M d, Y', strtotime($ev['event_date'])); ?>
-                                            <?php endif; ?>
-                                            <?php if (!empty($ev['event_time'])): ?>
-                                                <span class="ms-3"><i class="bi bi-clock me-1"></i><?php echo htmlspecialchars(substr($ev['event_time'],0,5)); ?></span>
-                                            <?php endif; ?>
-                                        </div>
-                                        <h5 class="card-title mb-2 text-clamp-2"><?php echo htmlspecialchars($ev['title']); ?></h5>
-                                        <p class="card-text text-muted flex-grow-1 text-clamp-3"><?php echo htmlspecialchars(strip_tags($ev['description'] ?? '')); ?></p>
-                                        <?php if (!empty($ev['location'])): ?>
-                                            <div class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i><?php echo htmlspecialchars($ev['location']); ?></div>
+                        <div class="row">
+                            <div class="col-12" data-aos="fade-up">
+                                <?php if (!empty($eventCategories)): ?>
+                                    <?php $allActive = $selectedCategoryId === 0 ? 'btn-primary text-white' : 'btn-outline-primary'; ?>
+                                    <a href="events.php" class="btn btn-sm rounded-pill me-2 mb-3 <?php echo $allActive; ?>">All</a>
+                                    <?php foreach ($eventCategories as $cat): 
+                                        $isActive = ($selectedCategoryId === intval($cat['category_id'])) ? 'btn-primary text-white' : 'btn-outline-primary';
+                                    ?>
+                                        <a href="events.php?category_id=<?php echo intval($cat['category_id']); ?>" class="btn btn-sm rounded-pill me-2 mb-3 <?php echo $isActive; ?>"><?php echo htmlspecialchars($cat['name']); ?></a>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <?php foreach ($section['events'] as $index => $ev): ?>
+                                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+                                    <div class="card h-100 shadow-sm border-0 position-relative event-card" style="cursor: pointer;" onclick="window.location.href='event-details.php?event_id=<?php echo intval($ev['event_id']); ?>'">
+                                        <?php if (!empty($ev['main_cover_image'])): ?>
+                                            <img src="<?php echo htmlspecialchars(resolveEventImageUrl($ev['main_cover_image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($ev['title']); ?>" style="height:200px;object-fit:cover;">
+                                        <?php else: ?>
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:200px;">
+                                                <i class="bi bi-calendar-event display-4 text-muted"></i>
+                                            </div>
                                         <?php endif; ?>
+                                        <div class="card-body d-flex flex-column">
+                                            <div class="mb-2 text-muted small">
+                                                <?php if (!empty($ev['event_date'])): ?>
+                                                    <i class="bi bi-calendar3 me-1"></i><?php echo date('M d, Y', strtotime($ev['event_date'])); ?>
+                                                <?php endif; ?>
+                                                <?php if (!empty($ev['event_time'])): ?>
+                                                    <span class="ms-3"><i class="bi bi-clock me-1"></i><?php echo htmlspecialchars(substr($ev['event_time'],0,5)); ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <h5 class="card-title mb-2 text-clamp-2"><?php echo htmlspecialchars($ev['title']); ?></h5>
+                                            <p class="card-text text-muted flex-grow-1 text-clamp-3"><?php echo htmlspecialchars(strip_tags($ev['description'] ?? '')); ?></p>
+                                            <?php if (!empty($ev['location'])): ?>
+                                                <div class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i><?php echo htmlspecialchars($ev['location']); ?></div>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
+                            <?php endforeach; ?>
+                            <?php if ($section['hasMore']):
+                                $nextPage = ($selectedStatus ? ($page + 1) : 2);
+                            ?>
+                            <div class="text-center mt-4" data-aos="fade-up">
+                                <button class="btn btn-outline-primary btn-sm load-more-events" data-status="<?php echo htmlspecialchars($statusKey); ?>" data-next-page="<?php echo intval($nextPage); ?>" data-total="<?php echo intval($section['total']); ?>">View More</button>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <?php if ($section['hasMore']):
-                        $nextPage = ($selectedStatus ? ($page + 1) : 2);
-                    ?>
-                    <div class="text-center mt-4" data-aos="fade-up">
-                        <button class="btn btn-outline-primary btn-sm load-more-events" data-status="<?php echo htmlspecialchars($statusKey); ?>" data-next-page="<?php echo intval($nextPage); ?>" data-total="<?php echo intval($section['total']); ?>">View More</button>
-                    </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="my-5"></div>
                     <?php endif; ?>
-                    <div class="my-5"></div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </section>
 
