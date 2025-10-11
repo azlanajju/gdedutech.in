@@ -230,14 +230,8 @@ require_once './Configurations/config.php';
                 <?php
                     }
                 } else {
-                ?>
-                <div class="col-12 text-center" data-aos="fade-up">
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
-                        No job openings available at the moment. Please check back later.
-                    </div>
-                </div>
-                <?php
+                    // Show the no-jobs-message div when no jobs are found
+                    echo '<script>document.getElementById("no-jobs-message").style.display = "block";</script>';
                 }
                 ?>
             </div>
