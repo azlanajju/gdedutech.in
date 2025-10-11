@@ -14,7 +14,7 @@ require_once '../../Configurations/config.php';
 $admin_name = $_SESSION['first_name'] ?? 'Admin';
 
 // Add resume base path
-$resume_base_path = '../../Uploads/Resumes/';
+$resume_base_path = '../../uploads/resumes/';
 if (!is_dir($resume_base_path)) {
     // Log error or create directory if needed
     error_log("Resume directory not found: " . $resume_base_path);
