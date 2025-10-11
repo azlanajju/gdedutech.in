@@ -23,93 +23,83 @@ $papers_result = mysqli_query($conn, $papers_query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
+    <link rel="stylesheet" href="../../css/customBootstrap.css">
+            
+    <link rel="icon" type="image/png" href="../../Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="../../Images/Logos/GD_Only_logo.png">
     <style>
         :root {
             --primary-color: #2c3e50;
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                height: 100vh;
-                width: 80%;
-                max-width: 300px;
-                z-index: 999;
-                background-color: var(--primary-color);
-                transition: 0.3s ease-in-out;
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .sidebar-backdrop {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 998;
-                display: none;
-            }
-
-            .sidebar-backdrop.active {
-                display: block;
-            }
-
-            .mobile-nav {
-                display: block !important;
-            }
-
-            .main-content {
-                margin-left: 0 !important;
-            }
+        /* Sidebar styles (copied from MyCourses) */
+        .sidebar {
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2c3e50;
+            z-index: 1000;
         }
-
-        .mobile-nav {
+        .sidebar.show {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 997;
-            background-color: var(--primary-color);
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
         }
-
-        .main-content {
-            margin-top: 70px;
+        .sidebar-overlay.show {
+            display: block;
         }
-
-        @media (min-width: 769px) {
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            .sidebar-overlay {
+                display: none;
+            }
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+        @media (max-width: 767.98px) {
             .main-content {
                 margin-top: 0;
                 margin-left: 250px;
             }
         }
-
-        /* Add styles for sidebar background */
-        .sidebar {
-            background-color: var(--primary-color);
+        .main-content {
+            margin-top: 50px;
         }
     </style>
 </head>
 
 <body>
+    <!-- Hamburger Button -->
+    <div class="topbar d-flex justify-content-between align-items-center p-2">
+        <button class="btn btn-outline-secondary sidebar-toggle" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <span class="fw-bold"></span>
+    </div>
     <!-- Mobile Navigation -->
-    <div class="mobile-nav d-flex align-items-center">
+    <!-- <div class="mobile-nav d-flex align-items-center">
         <button class="btn text-white" id="sidebarToggle">
             <i class="bi bi-list fs-3"></i>
         </button>
         <span class="ms-3 fs-4 text-white">GD Edu Tech</span>
-    </div>
+    </div> -->
 
     <!-- Sidebar Backdrop -->
-    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <!-- <div class="sidebar-backdrop" id="sidebarBackdrop"></div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -161,6 +151,9 @@ $papers_result = mysqli_query($conn, $papers_query);
                 </div>
             </div>
 
+            <!-- Sidebar Overlay -->
+            <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
             <!-- Main Content -->
             <div class="col py-3 main-content">
                 <h3 class="mb-4">Available Question Papers</h3>
@@ -199,15 +192,22 @@ $papers_result = mysqli_query($conn, $papers_query);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sidebar Toggle Functionality
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.add('active');
-            document.getElementById('sidebarBackdrop').classList.add('active');
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-        document.getElementById('sidebarBackdrop').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.remove('active');
-            document.getElementById('sidebarBackdrop').classList.remove('active');
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                sidebarOverlay.classList.toggle('show');
+                document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : 'auto';
+            });
+
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            });
         });
 
         // Access Request Function

@@ -1,468 +1,265 @@
-<?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-session_start();
-require_once './Configurations/config.php';
-
-// Fetch popular courses
-$popular_courses_query = "
-    SELECT c.*, 
-           cat.name as category_name,
-           (SELECT COUNT(*) FROM Enrollments e WHERE e.course_id = c.course_id) as student_count
-    FROM Courses c
-    LEFT JOIN Categories cat ON c.category_id = cat.category_id
-    WHERE c.isPopular = '1'
-    AND c.status = 'published'
-    LIMIT 6";
-$popular_courses = $conn->query($popular_courses_query)->fetch_all(MYSQLI_ASSOC);
-
-// Fetch categories
-$categories_query = "
-    SELECT c.*, 
-           (SELECT COUNT(*) FROM Courses WHERE category_id = c.category_id) as course_count
-    FROM Categories c
-    LIMIT 8";
-$categories = $conn->query($categories_query)->fetch_all(MYSQLI_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GD Edu Tech - Transform Your Future</title>
+    <title>We'll Be Back Soon | GD Edu Tech</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="icon" href="./Images/Logos/edutechLogo.png" type="image/png">
     <style>
-        /* Mobile responsiveness */
-        @media (max-width: 576px) {
-            .hero-section h1 {
-                font-size: 2.5rem;
-                /* Adjusted font size for smaller screens */
-            }
+        :root {
+            --primary: #0078a8;
+            --primary-dark: #065d7d;
+            --secondary: #1d91bb;
+            --accent: #cb4d55;
+            --accent-secondary: #d6624e;
+            --dark: #111827;
+            --light: #f8f9fa;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --text-white: #ffffff;
+            --background-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --text-gradient: linear-gradient(90deg, var(--primary), var(--secondary));
+            --accent-gradient: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
 
-            .hero-section p {
-                font-size: 1rem;
-                /* Adjusted font size for smaller screens */
-            }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
 
-            .stats-highlight {
-                flex-direction: column;
-                /* Stack stats vertically */
-                align-items: center;
-                /* Center align items */
-            }
+        .shape {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        .maintenance-container {
+            max-width: 600px;
+            padding: 40px;
+            background: transparent;
+            border-radius: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+            z-index: 10;
+            margin: 20px;
+        }
 
-            .stats-highlight div {
-                margin-bottom: 1rem;
-                /* Add spacing between stats */
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .navbar .btn {
-                width: 100%;
-                /* Full width buttons on mobile */
-                margin: 5px 0;
-                /* Spacing between buttons */
-            }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            position: relative;
+            display: inline-block;
+        }
 
-            .carousel-item img {
-                height: auto;
-                /* Maintain aspect ratio for images */
-            }
+        /* h1:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--text-gradient);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        } */
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        .loader {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .loader:after {
+            content: '';
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 6px solid var(--primary);
+            border-color: var(--primary) transparent var(--primary) transparent;
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--background-gradient);
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(13, 114, 152, 0.3);
+        }
+
+        .contact-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(13, 114, 152, 0.4);
+            color: white;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--text-light);
         }
     </style>
 </head>
-
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-color);">
-        <div class="container">
-            <a class="navbar-brand" href="#"><img style="height: 40px;" src="./Images/Logos/GD_Full_logo.png" alt=""></a>
-            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon text-dark"></span>
-                <img src="./Images/Others/menu.png" style="height:35px;" alt=""> </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#courses">Courses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#categories">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="career.php">Career</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="./studentPanel/" class="btn btn-outline-light me-2">Dashboard</a>
-                    <?php else: ?>
-                        <a href="./studentPanel/login.php" class="btn btn-outline-light me-2">Login</a>
-                        <a href="./studentPanel/signup.php" class="btn btn-primary">Sign Up</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-section text-center">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 text-lg-start">
-                    <h1 class="display-4 fw-bold mb-4 text-white">
-                        Transform Your Future with
-                        <span class="gradient-text">GD Edu Tech</span>
-                    </h1>
-                    <p class="lead mb-5 text-white opacity-90">
-                        Access world-class education from anywhere. Learn at your own pace with expert-led courses.
-                    </p>
-                    <div class="d-flex gap-3 home-btns-container">
-                        <a href="./studentPanel/signup.php" class="btn btn-light btn-lg px-5 rounded-pill home-btns">
-                            <i class="bi bi-rocket-takeoff me-2"></i>Start Learning Today
-                        </a>
-                        <a href="#courses" class="btn btn-outline-light btn-lg px-5 rounded-pill home-btns">
-                            <i class="bi bi-play-circle me-2"></i>Explore Courses
-                        </a>
-                    </div>
-                    <div class="mt-5 d-flex gap-4 stats-highlight">
-                        <div class="text-white">
-                            <h3 class="fw-bold mb-0">10K+</h3>
-                            <p class="mb-0 opacity-75">Active Students</p>
-                        </div>
-                        <div class="text-white">
-                            <h3 class="fw-bold mb-0">500+</h3>
-                            <p class="mb-0 opacity-75">Expert Courses</p>
-                        </div>
-                        <div class="text-white">
-                            <h3 class="fw-bold mb-0">4.8</h3>
-                            <p class="mb-0 opacity-75">User Rating</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <img style="filter: hue-rotate(100deg);" src="./Images/Others/illustration_home.png" alt="Education Illustration" class="img-fluid hero-image">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- After hero section, before features section -->
-    <section class="py-5">
-        <div class="container">
-            <div id="featureCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="2"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row justify-content-center">
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-collection-play fs-1 text-primary mb-3"></i>
-                                        <h4>Interactive Learning</h4>
-                                        <p>Engage with interactive content, quizzes, and hands-on projects</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-clock-history fs-1 text-primary mb-3"></i>
-                                        <h4>Learn at Your Pace</h4>
-                                        <p>Access course content 24/7 and learn at your own schedule</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row justify-content-center">
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-people fs-1 text-primary mb-3"></i>
-                                        <h4>Community Support</h4>
-                                        <p>Join a community of learners and get peer support</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-chat-dots fs-1 text-primary mb-3"></i>
-                                        <h4>Expert Feedback</h4>
-                                        <p>Get personalized feedback from industry experts</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row justify-content-center">
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-phone fs-1 text-primary mb-3"></i>
-                                        <h4>Mobile Learning</h4>
-                                        <p>Learn on any device with our mobile-friendly platform</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="feature-card card h-100 p-4 mx-2">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-patch-check fs-1 text-primary mb-3"></i>
-                                        <h4>Verified Certificates</h4>
-                                        <p>Earn industry-recognized certificates upon completion</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#featureCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#featureCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Why Choose GD Edu Tech?</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card card h-100 p-4">
-                        <div class="card-body text-center">
-                            <i class="bi bi-laptop fs-1 text-primary mb-3"></i>
-                            <h4>Learn Anywhere</h4>
-                            <p>Access courses from any device, anytime, anywhere.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card card h-100 p-4">
-                        <div class="card-body text-center">
-                            <i class="bi bi-person-check fs-1 text-primary mb-3"></i>
-                            <h4>Expert Instructors</h4>
-                            <p>Learn from industry experts and professionals.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card card h-100 p-4">
-                        <div class="card-body text-center">
-                            <i class="bi bi-award fs-1 text-primary mb-3"></i>
-                            <h4>Certificates</h4>
-                            <p>Earn recognized certificates upon completion.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Popular Courses -->
-    <section class="py-5 bg-light" id="courses">
-        <div class="container">
-            <h2 class="text-center mb-5">Popular Courses</h2>
-            <div class="row g-4">
-                <?php foreach ($popular_courses as $course): ?>
-                    <div class="col-md-4">
-                        <div class="course-card card h-100">
-                            <img src="./uploads/course_uploads/thumbnails/<?php echo htmlspecialchars($course['thumbnail']); ?>"
-                                class="card-img-top" alt="<?php echo htmlspecialchars($course['title']); ?>"
-                                style="height: 200px; object-fit: cover;">
-                            <div class="card-body">
-                                <span class="badge bg-primary mb-2">
-                                    <?php echo htmlspecialchars($course['category_name']); ?>
-                                </span>
-                                <h5 class="card-title"><?php echo htmlspecialchars($course['title']); ?></h5>
-                                <p class="card-text text-muted">
-                                    <?php echo substr(htmlspecialchars($course['description']), 0, 100) . '...'; ?>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted">
-                                        <i class="bi bi-people"></i> <?php echo $course['student_count']; ?> students
-                                    </span>
-                                    <a href="./studentPanel/MyCourses/course.php?id=<?php echo $course['course_id']; ?>"
-                                        class="btn btn-primary">Learn More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="py-5" id="categories">
-        <div class="container">
-            <h2 class="text-center mb-5">Browse Categories</h2>
-            <div class="row g-4">
-                <?php foreach ($categories as $category): ?>
-                    <div class="col-md-3">
-                        <div class="category-card card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
-                                <p class="card-text text-muted">
-                                    <?php echo $category['course_count']; ?> courses
-                                </p>
-                                <a href="./studentPanel/login.php"
-                                    class="stretched-link"></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-person-fill fs-1 text-primary mb-3"></i>
-                        <h3>10,000+</h3>
-                        <p class="mb-0">Active Students</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-book-fill fs-1 text-primary mb-3"></i>
-                        <h3>500+</h3>
-                        <p class="mb-0">Total Courses</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-star-fill fs-1 text-primary mb-3"></i>
-                        <h3>4.8</h3>
-                        <p class="mb-0">Average Rating</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-card">
-                        <i class="bi bi-award-fill fs-1 text-primary mb-3"></i>
-                        <h3>15,000+</h3>
-                        <p class="mb-0">Certificates Awarded</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Image Slider Section -->
-    <!-- Gallery Section -->
-    <section class="py-5 bg-light" id="gallery">
-        <div class="container">
-            <h2 class="text-center mb-5 display-6 fw-bold">Our Learning Journey</h2>
-            <div id="galleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
-                <div class="carousel-inner rounded shadow-lg overflow-hidden">
-                    <?php
-                    $images = glob('./Images/gallery/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-                    $chunks = array_chunk($images, 4); // Split images into chunks of 4
-                    foreach ($chunks as $index => $chunk): ?>
-                        <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                            <div class="row g-3">
-                                <?php foreach ($chunk as $image): ?>
-                                    <div class="col-md-3">
-                                        <div class="gallery-item position-relative overflow-hidden">
-                                            <img src="<?php echo $image; ?>"
-                                                class="d-block w-100 gallery-image"
-                                                alt="Gallery Image"
-                                                style="height: 250px; object-fit: cover; transition: transform 0.3s ease;">
-                                            <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                                                <div class="overlay-content text-center text-white">
-                                                    <i class="bi bi-zoom-in fs-3"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-
-
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <img height="50px" src="./Images/Logos/gd_edutech_logo.png" alt="">
-                    <h5>About GD Edu Tech</h5>
-                    <p>Transforming education through technology. Learn, grow, and succeed with our platform.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-light">About Us</a></li>
-                        <li><a href="#" class="text-light">Contact</a></li>
-                        <li><a href="#" class="text-light">Privacy Policy</a></li>
-                        <li><a href="#" class="text-light">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contact Us</h5>
-                    <p>
-                        <i class="bi bi-envelope me-2"></i> info@gdedutech.com<br>
-                        <i class="bi bi-phone me-2"></i> +1 234 567 890
-                    </p>
-                    <div class="social-links">
-                        <a href="#" class="text-light me-3"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-light me-3"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-light me-3"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="particles-js"></div>
+    
+    <div class="maintenance-container" data-aos="fade-up" data-aos-duration="1000">
+        <img src="./Images/Logos/edutechLogo.png" alt="GD Edu Tech Logo" width="120" style="margin-bottom:25px;">
+        <h1>Maintenance Mode</h1>
+        <p>
+            We'll Be Back Soon!
+        </p>
+        <div class="loader"></div>
+        <p>If you need assistance, feel free to contact us:</p>
+        <a href="tel:+91 7204626299" class="contact-link">
+            <i class="bi bi-envelope-fill me-2"></i>Contact Support
+        </a>
+    </div>
+    
+    <footer>
+        &copy; <?php echo date('Y'); ?> GD Edu Tech. All rights reserved.
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                document.querySelector('.navbar').classList.add('scrolled');
-            } else {
-                document.querySelector('.navbar').classList.remove('scrolled');
-            }
+        // Initialize AOS
+        AOS.init();
+        
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#808080"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                },
+                "opacity": {
+                    "value": 0.3,
+                    "random": false,
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#808080",
+                    "opacity": 0.3,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse",
+                        "color": "#0078a8"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1,
+                            "color": "#0078a8"
+                        }
+                    },
+                    "repulse": {
+                        "distance": 100,
+                        "color": "#0078a8"
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
         });
     </script>
 </body>
-
 </html>

@@ -16,7 +16,7 @@ require_once '../../Configurations/config.php';
 if (!isset($_GET['course_id'])) {
     $_SESSION['message'] = "No course selected.";
     $_SESSION['message_type'] = "danger";
-    header("Location: courses.php");
+    header("Location: ../Courses");
     exit();
 }
 
@@ -32,7 +32,7 @@ $course_result = mysqli_stmt_get_result($check_stmt);
 if (mysqli_num_rows($course_result) === 0) {
     $_SESSION['message'] = "Access denied.";
     $_SESSION['message_type'] = "danger";
-    header("Location: courses.php");
+    header("Location: ./");
     exit();
 }
 
