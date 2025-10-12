@@ -90,9 +90,12 @@ $conn->close();
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             align-items: center;
+            flex-direction: column-reverse;
+            gap: 20px;
+            margin: 2em 0 !important;
         }
         .login-container {
             max-width: 450px;
@@ -147,6 +150,10 @@ $conn->close();
             background: transparent;
             border-radius: 10px;
             border: 1px solid #e0e0e0;
+        }
+        .alert {
+            padding: 0.5em;
+            border-radius: 10px;
         }
     </style>
 </head>
