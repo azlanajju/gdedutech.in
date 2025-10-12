@@ -20,13 +20,20 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $job_id = mysqli_real_escape_string($conn, $_GET['id']);
 
-// Delete the career listing
+// First delete related job applications
+$delete_applications_query = "DELETE FROM job_applications WHERE job_id = ?";
+$stmt_applications = mysqli_prepare($conn, $delete_applications_query);
+mysqli_stmt_bind_param($stmt_applications, "i", $job_id);
+mysqli_stmt_execute($stmt_applications);
+mysqli_stmt_close($stmt_applications);
+
+// Then delete the career listing
 $query = "DELETE FROM Careers WHERE job_id = ?";
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "i", $job_id);
 
 if (mysqli_stmt_execute($stmt)) {
-    $_SESSION['message'] = "Career listing deleted successfully";
+    $_SESSION['message'] = "Career listing and related applications deleted successfully";
     $_SESSION['message_type'] = "success";
 } else {
     $_SESSION['message'] = "Error deleting career listing: " . mysqli_error($conn);
