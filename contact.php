@@ -83,19 +83,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             justify-content: center;
             padding: 0 !important;
         }
-        .contact-info {
+        .contact-page-info {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .contact-info li {
-            display: flex;
-            margin-bottom: 15px;
-            align-items: flex-start;
+        .contact-page-info li {
+            display: flex !important;
+            margin-bottom: 30px !important;
+            align-items: flex-start !important;
         }
 
-        .contact-icon {
+        .contact-page-info .contact-icon {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -108,27 +108,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             flex-shrink: 0;
         }
 
-        .contact-text {
-            font-size: 15px;
+        .contact-page-info .contact-text {
+            font-size: 18px !important;
             line-height: 1.5;
+            letter-spacing: 0.5px;
         }
         
-        .contact-text h5 {
-            margin-bottom: 5px;
-            font-size: 16px;
+        .contact-page-info .contact-text h5 {
+            margin-bottom: 6px;
+            font-size: 20px !important;
             font-weight: 600;
         }
         
-        .contact-text p {
+        .contact-page-info .contact-text p {
             color: var(--gray);
         }
         
-        .social-icons {
+        .contact-page-info .social-icons {
             display: flex;
             gap: 15px;
         }
 
-        .social-icon {
+        .contact-page-info .social-icon {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -142,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .social-icon:hover {
+        .contact-page-info .social-icon:hover {
             background-color: var(--primary);
             color: white;
             transform: translateY(-3px);
@@ -193,10 +194,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                 <div class="col-lg-5" data-aos="fade-right">
                     <h2 class="section-heading">Get In Touch</h2>
                     <p class="lead">We're here to help and answer any questions you might have.</p>
-                    <p>Please fill out the form, and we'll get back to you as soon as possible.</p>
                     
                     <div class="mt-5">
-                        <ul class="contact-info">
+                        <ul class="contact-info contact-page-info">
                             <li data-aos="fade" data-aos-delay="400">
                                 <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
                                 <div class="contact-text">
