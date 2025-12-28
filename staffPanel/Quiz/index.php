@@ -204,17 +204,17 @@ $result = mysqli_query($conn, $query);
                                             </div>
                                             
                                             <div class="btn-group" role="group">
-                                                <a href="add_question.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
+                                                <a href="add_question.php?quiz_id=<?php echo $quiz['quiz_id']; ?>&course_id=<?php echo $quiz['course_id']; ?>" 
                                                    class="btn btn-sm btn-outline-success" 
                                                    title="Manage Questions">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </a>
-                                                <a href="edit_quiz.php?id=<?php echo $quiz['quiz_id']; ?>" 
+                                                <a href="edit_quiz.php?id=<?php echo $quiz['quiz_id']; ?>&course_id=<?php echo $quiz['course_id']; ?>" 
                                                    class="btn btn-sm btn-outline-primary" 
                                                    title="Edit Quiz">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="quiz.php?delete=1&id=<?php echo $quiz['quiz_id']; ?>" 
+                                                <a href="./index.php?delete=1&id=<?php echo $quiz['quiz_id']; ?>" 
                                                    class="btn btn-sm btn-outline-danger" 
                                                    onclick="return confirm('Are you sure? This will delete the quiz and all its questions.');" 
                                                    title="Delete Quiz">

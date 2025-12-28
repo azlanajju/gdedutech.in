@@ -29,7 +29,7 @@ if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
 
     // Create unique filename
     $resume_filename = uniqid('resume_') . '.pdf';
-    $upload_dir = 'Uploads/resumes/';
+    $upload_dir = 'Uploads/Resumes/';
     
     // Create directory if it doesn't exist
     if (!file_exists($upload_dir)) {
@@ -99,4 +99,4 @@ try {
     $_SESSION['error'] = "An error occurred while submitting your application. Please try again.";
     header('Location: apply.php?job_id=' . $_POST['job_id']);
     exit();
-} 
+}

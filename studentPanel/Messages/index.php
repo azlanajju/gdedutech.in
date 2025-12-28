@@ -24,6 +24,9 @@ $user_name = $_SESSION['username'] ?? 'Student';
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
     <link rel="stylesheet" href="../../css/customBootstrap.css">
 
+            
+    <link rel="icon" type="image/png" href="../../Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="../../Images/Logos/GD_Only_logo.png">
     <style>
         .sidebar {
             background-color: #2c3e50;
@@ -342,10 +345,6 @@ $user_name = $_SESSION['username'] ?? 'Student';
         </div>
     </div>
 
-    <?php
-    $path = "../../";
-    include("../../footer.php");
-    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sidebar toggle functionality for mobile

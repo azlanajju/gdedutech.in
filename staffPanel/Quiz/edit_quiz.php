@@ -8,6 +8,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
     exit();
 }
 
+$course_id = intval($_GET['course_id']);
+$staff_id = $_SESSION['user_id'];
 // Get staff details from session
 $staff_name = $_SESSION['username'] ?? 'Staff';
 
@@ -15,7 +17,7 @@ $staff_name = $_SESSION['username'] ?? 'Staff';
 if (!isset($_GET['id'])) {
     $_SESSION['message'] = "No quiz ID provided.";
     $_SESSION['message_type'] = "danger";
-    header("Location: quiz.php");
+    header("Location: ./");
     exit();
 }
 
@@ -29,10 +31,23 @@ $quiz = mysqli_fetch_assoc($result);
 if (!$quiz) {
     $_SESSION['message'] = "Quiz not found.";
     $_SESSION['message_type'] = "danger";
-    header("Location: quiz.php");
+    header("Location: ./");
     exit();
 }
 
+// Add check to ensure staff can only view their own courses' quizzes
+$course_check_query = "SELECT course_id FROM Courses WHERE course_id = ? AND created_by = ?";
+$check_stmt = mysqli_prepare($conn, $course_check_query);
+mysqli_stmt_bind_param($check_stmt, 'ii', $course_id, $staff_id);
+mysqli_stmt_execute($check_stmt);
+$course_result = mysqli_stmt_get_result($check_stmt);
+
+if (mysqli_num_rows($course_result) === 0) {
+    $_SESSION['message'] = "Access denied.";
+    $_SESSION['message_type'] = "danger";
+    header("Location: ./");
+    exit();
+}
 // Handle form submission for editing quiz
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = mysqli_real_escape_string($conn, $_POST['title']);
@@ -46,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_query($conn, $update_query)) {
         $_SESSION['message'] = "Quiz updated successfully.";
         $_SESSION['message_type'] = "success";
-        header("Location: quiz.php");
+        header("Location: ./");
         exit();
     } else {
         $_SESSION['message'] = "Error updating quiz: " . mysqli_error($conn);
@@ -57,6 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Fetch available courses for the dropdown
 $courses_query = "SELECT * FROM Courses";
 $courses_result = mysqli_query($conn, $courses_query);
+
+
+
+
 
 ?>
 

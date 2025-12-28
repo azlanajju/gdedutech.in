@@ -36,6 +36,9 @@ if (isset($_SESSION['success'])) {
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
+
+    <link rel="icon" type="image/png" href="../../Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="../../Images/Logos/GD_Only_logo.png">
     <style>
         .meeting-card {
             transition: transform 0.2s;
@@ -179,7 +182,7 @@ if (isset($_SESSION['success'])) {
                             </a>
                         </li>
                         <li class="w-100">
-                            <a href="./Resources/index.php" class="nav-link text-white">
+                            <a href="../Resources/index.php" class="nav-link text-white">
                                 <i class="bi bi-file-earmark-text me-2"></i> Resources
                             </a>
                         </li>
@@ -371,9 +374,5 @@ if (isset($_SESSION['success'])) {
         });
     </script>
 </body>
-<?php
-$path = "../../";
-include("../../footer.php");
-?>
 
 </html>

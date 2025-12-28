@@ -8,6 +8,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Staff') {
     exit();
 }
 
+$course_id = intval($_GET['course_id']);
+$staff_id = $_SESSION['user_id'];
 // Get staff details from session
 $staff_name = $_SESSION['username'] ?? 'Staff';
 
@@ -25,6 +27,19 @@ if (mysqli_num_rows($quiz_query) == 0) {
     exit();
 }
 
+// Add check to ensure staff can only view their own courses' quizzes
+$course_check_query = "SELECT course_id FROM Courses WHERE course_id = ? AND created_by = ?";
+$check_stmt = mysqli_prepare($conn, $course_check_query);
+mysqli_stmt_bind_param($check_stmt, 'ii', $course_id, $staff_id);
+mysqli_stmt_execute($check_stmt);
+$course_result = mysqli_stmt_get_result($check_stmt);
+
+if (mysqli_num_rows($course_result) === 0) {
+    $_SESSION['message'] = "Access denied.";
+    $_SESSION['message_type'] = "danger";
+    header("Location: ./");
+    exit();
+}
 // Handle form submission for adding a question
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = [];

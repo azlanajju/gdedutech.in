@@ -368,7 +368,7 @@ $lessons_result->data_seek(0);
                                                      data-video-id="<?php echo $video['video_id']; ?>"
                                                      data-lesson-id="<?php echo $lesson['lesson_id']; ?>">
                                                     <h5><?php echo htmlspecialchars($video['title']); ?></h5>
-                                                    <p class="text-muted"><?php echo htmlspecialchars($video['description']); ?></p>
+                                                    <p class="text-muted"><?php echo $video['description']; ?></p>
                                                     <video controls crossorigin playsinline
                                                            class="course-video"
                                                            <?php echo !$is_unlocked ? 'disabled' : ''; ?>>

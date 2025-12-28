@@ -53,6 +53,16 @@ $result = mysqli_query($conn, $query);
                                 <i class="bi bi-book me-2"></i> Courses
                             </a>
                         </li>
+                        <li class="w-100">
+                            <a href="../Blogs/" class="nav-link">
+                                <i class="bi bi-journal-text me-2"></i> Blogs
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a href="../Events/" class="nav-link">
+                                <i class="bi bi-calendar2-event me-2"></i> Events
+                            </a>
+                        </li>
                         <li class="w-100 dropdown">
                             <a href="#" class="nav-link dropdown-toggle active" id="quizDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-lightbulb me-2"></i> Quick Links

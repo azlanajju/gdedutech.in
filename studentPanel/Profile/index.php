@@ -88,7 +88,9 @@ $courses_result = $courses_stmt->get_result();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/student_dashboard.css">
     <link rel="stylesheet" href="../../css/customBoorstrap.css">
-
+            
+    <link rel="icon" type="image/png" href="../../Images/Logos/GD_Only_logo.png">
+    <link rel="shortcut icon" href="../../Images/Logos/GD_Only_logo.png">
     <style>
         .profile-container {
             padding: 30px;
@@ -357,10 +359,7 @@ $courses_result = $courses_stmt->get_result();
         </div>
     </div>
 
-    <?php
-    $path = "../../";
-    include("../../footer.php");
-    ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sidebar toggle functionality for mobile
